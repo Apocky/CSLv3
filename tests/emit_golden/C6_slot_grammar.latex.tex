@@ -4,17 +4,17 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{xunicode}
 \usepackage{xltxtra}
-\title%!(MISSING CLOSE BRACE)s}
-%!(EXTRA C6\_slot\_grammar)\author{CSLv3 auto-emit}
+\title{C6\_slot\_grammar}
+\author{CSLv3 auto-emit}
 \date{\today}
 
 \begin{document}
 \maketitle
 \tableofcontents
 
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA slot.grammar.coverage, sec:slotgrammarcoverage)\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA MINIMAL, sec:minimal)\begin{lstlisting}[language=csl]
+\section{slot.grammar.coverage}\label{sec:slotgrammarcoverage}
+\section{MINIMAL}\label{sec:minimal}
+\begin{lstlisting}[language=csl]
 # tests: full slot template [EV] [MOD] [DET] [SUBJ] [REL] [OBJ] [GATE] [SCOPE]
 # glyph-class: evidence markers, modal tokens, determinatives, relation operators
 # features: every slot position exercised; silent defaults omitted where natural
@@ -23,8 +23,8 @@ x : i32
 \begin{lstlisting}[language=csl]
 y : u8
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA EVIDENCE-ONLY, sec:evidence-only)\begin{lstlisting}[language=csl]
+\section{EVIDENCE-ONLY}\label{sec:evidence-only}
+\begin{lstlisting}[language=csl]
 [x] a : i32
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
@@ -36,8 +36,8 @@ y : u8
 \begin{lstlisting}[language=csl]
 [!] d : i32
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA MODAL-ONLY, sec:modal-only)\begin{lstlisting}[language=csl]
+\section{MODAL-ONLY}\label{sec:modal-only}
+\begin{lstlisting}[language=csl]
 W! must-be-true : bool
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
@@ -49,8 +49,8 @@ M? may-happen : bool
 \begin{lstlisting}[language=csl]
 N! must-not-fire : bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA EVIDENCE-AND-MODAL, sec:evidence-and-modal)\begin{lstlisting}[language=csl]
+\section{EVIDENCE-AND-MODAL}\label{sec:evidence-and-modal}
+\begin{lstlisting}[language=csl]
 [x] W! required-and-proven : bool
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
@@ -59,15 +59,15 @@ N! must-not-fire : bool
 \begin{lstlisting}[language=csl]
 [!] N! forbidden-and-failed : bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA DET-WITH-SUBJECT, sec:det-with-subject)\begin{lstlisting}[language=csl]
+\section{DET-WITH-SUBJECT}\label{sec:det-with-subject}
+\begin{lstlisting}[language=csl]
 ∫density : f32
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
 ⊞chunk : u32
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA RELATION-VARIANTS, sec:relation-variants)\begin{lstlisting}[language=csl]
+\section{RELATION-VARIANTS}\label{sec:relation-variants}
+\begin{lstlisting}[language=csl]
 a : i32
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
@@ -82,22 +82,22 @@ x -> y
 \begin{lstlisting}[language=csl]
 s <- src
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA GATE-TRAILING, sec:gate-trailing)\begin{lstlisting}[language=csl]
+\section{GATE-TRAILING}\label{sec:gate-trailing}
+\begin{lstlisting}[language=csl]
 active : bool if ready
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
 pending : bool when unblocked
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA SCOPE-TRAILING, sec:scope-trailing)\begin{lstlisting}[language=csl]
+\section{SCOPE-TRAILING}\label{sec:scope-trailing}
+\begin{lstlisting}[language=csl]
 render : bool @frame
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
 tick : bool @chunk
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA FULL-SLOT, sec:full-slot)\begin{lstlisting}[language=csl]
+\section{FULL-SLOT}\label{sec:full-slot}
+\begin{lstlisting}[language=csl]
 [~] W! ∫flux :: stream @frame
 \end{lstlisting}
 \begin{lstlisting}[language=csl]

@@ -4,18 +4,18 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{xunicode}
 \usepackage{xltxtra}
-\title%!(MISSING CLOSE BRACE)s}
-%!(EXTRA C1\_sort)\author{CSLv3 auto-emit}
+\title{C1\_sort}
+\author{CSLv3 auto-emit}
 \date{\today}
 
 \begin{document}
 \maketitle
 \tableofcontents
 
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA sort.spec, sec:sortspec)\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA GOAL, sec:goal)\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA DATA, sec:data)\begin{lstlisting}[language=csl]
+\section{sort.spec}\label{sec:sortspec}
+\section{GOAL}\label{sec:goal}
+\section{DATA}\label{sec:data}
+\begin{lstlisting}[language=csl]
 # what: in-place comparison sort
 # why:  predictable worst-case, zero allocations
 def Arr't = [i32; _]
@@ -23,8 +23,8 @@ def Arr't = [i32; _]
 \begin{lstlisting}[language=csl]
 def Cmp't = i32 -> i32 -> bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA OPS, sec:ops)\begin{lstlisting}[language=csl]
+\section{OPS}\label{sec:ops}
+\begin{lstlisting}[language=csl]
 fn sort (a : &Arr't, cmp : Cmp't) -> bool = true
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
@@ -33,15 +33,15 @@ fn merge-sort (a : &Arr't, lo : i32, hi : i32, cmp : Cmp't) -> bool = true
 \begin{lstlisting}[language=csl]
 fn merge (a : &Arr't, lo : i32, mid : i32, hi : i32, cmp : Cmp't) -> bool = true
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA INVARIANTS, sec:invariants)\begin{lstlisting}[language=csl]
+\section{INVARIANTS}\label{sec:invariants}
+\begin{lstlisting}[language=csl]
 ⌈time <= n⌉
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
 ⌈extra-space = n⌉
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA TESTS, sec:tests)\begin{lstlisting}[language=csl]
+\section{TESTS}\label{sec:tests}
+\begin{lstlisting}[language=csl]
 [x] case1 : sort-empty-returns-true
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
@@ -50,8 +50,8 @@ fn merge (a : &Arr't, lo : i32, mid : i32, hi : i32, cmp : Cmp't) -> bool = true
 \begin{lstlisting}[language=csl]
 [x] edge : sort-reversed-returns-true
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA ANTI-PATTERNS, sec:anti-patterns)\begin{lstlisting}[language=csl]
+\section{ANTI-PATTERNS}\label{sec:anti-patterns}
+\begin{lstlisting}[language=csl]
 [!] recursion-on-tiny-subarrays
 \end{lstlisting}
 \begin{lstlisting}[language=csl]

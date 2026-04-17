@@ -4,17 +4,17 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{xunicode}
 \usepackage{xltxtra}
-\title%!(MISSING CLOSE BRACE)s}
-%!(EXTRA C7\_morpheme\_stack)\author{CSLv3 auto-emit}
+\title{C7\_morpheme\_stack}
+\author{CSLv3 auto-emit}
 \date{\today}
 
 \begin{document}
 \maketitle
 \tableofcontents
 
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA morpheme.stacking, sec:morphemestacking)\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA ASPECT-ONLY, sec:aspect-only)\begin{lstlisting}[language=csl]
+\section{morpheme.stacking}\label{sec:morphemestacking}
+\section{ASPECT-ONLY}\label{sec:aspect-only}
+\begin{lstlisting}[language=csl]
 # tests: morpheme stacking BASE.aspect.modality.certainty.scope (§03)
 # glyph-class: Dot compound, dotted suffix chains
 # features: .prog .perf .iter .inch .term, .must .may .cant, .cert .prob, .loc .glob
@@ -32,8 +32,8 @@ compact.inch : bool
 \begin{lstlisting}[language=csl]
 sync.term : bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA MODALITY-ONLY, sec:modality-only)\begin{lstlisting}[language=csl]
+\section{MODALITY-ONLY}\label{sec:modality-only}
+\begin{lstlisting}[language=csl]
 commit.must : bool
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
@@ -42,8 +42,8 @@ retry.may : bool
 \begin{lstlisting}[language=csl]
 reorder.cant : bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA CERTAINTY-ONLY, sec:certainty-only)\begin{lstlisting}[language=csl]
+\section{CERTAINTY-ONLY}\label{sec:certainty-only}
+\begin{lstlisting}[language=csl]
 pass.cert : bool
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
@@ -52,15 +52,15 @@ drift.prob : bool
 \begin{lstlisting}[language=csl]
 stall.poss : bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA SCOPE-ONLY, sec:scope-only)\begin{lstlisting}[language=csl]
+\section{SCOPE-ONLY}\label{sec:scope-only}
+\begin{lstlisting}[language=csl]
 cache.loc : bool
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
 cache.glob : bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA TWO-STACK, sec:two-stack)\begin{lstlisting}[language=csl]
+\section{TWO-STACK}\label{sec:two-stack}
+\begin{lstlisting}[language=csl]
 render.prog.cert : bool
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
@@ -69,19 +69,19 @@ merge.inch.must : bool
 \begin{lstlisting}[language=csl]
 spawn.iter.may : bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA THREE-STACK, sec:three-stack)\begin{lstlisting}[language=csl]
+\section{THREE-STACK}\label{sec:three-stack}
+\begin{lstlisting}[language=csl]
 allocate.prog.prob.loc : bool
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
 cleanup.perf.must.glob : bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA FOUR-STACK, sec:four-stack)\begin{lstlisting}[language=csl]
+\section{FOUR-STACK}\label{sec:four-stack}
+\begin{lstlisting}[language=csl]
 reconcile.iter.may.doubt.ctx : bool
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA FIVE-STACK, sec:five-stack)\begin{lstlisting}[language=csl]
+\section{FIVE-STACK}\label{sec:five-stack}
+\begin{lstlisting}[language=csl]
 transmit.prog.may.poss.loc : bool
 \end{lstlisting}
 

@@ -4,17 +4,17 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{xunicode}
 \usepackage{xltxtra}
-\title%!(MISSING CLOSE BRACE)s}
-%!(EXTRA C5\_bridge\_mode)\author{CSLv3 auto-emit}
+\title{C5\_bridge\_mode}
+\author{CSLv3 auto-emit}
 \date{\today}
 
 \begin{document}
 \maketitle
 \tableofcontents
 
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA bridge.example, sec:bridgeexample)\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA GOAL, sec:goal)\begin{lstlisting}[language=csl]
+\section{bridge.example}\label{sec:bridgeexample}
+\section{GOAL}\label{sec:goal}
+\begin{lstlisting}[language=csl]
 # tests: mixed EN prose + CSL fragments (§09 bridge mode)
 # glyph-class: Comment preservation, ident-heavy lines, embedded structured blocks
 # features: prose coexisting with parseable CSLv3 in the same document
@@ -25,8 +25,8 @@
 # treats comment lines as prose and ignores them.
 summary : str
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA STRUCTURED, sec:structured)\begin{lstlisting}[language=csl]
+\section{STRUCTURED}\label{sec:structured}
+\begin{lstlisting}[language=csl]
 def Request't ⟨
   method : str
   path : str
@@ -39,14 +39,14 @@ def Response't ⟨
   body : str
 ⟩
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA OPS, sec:ops)\begin{lstlisting}[language=csl]
+\section{OPS}\label{sec:ops}
+\begin{lstlisting}[language=csl]
 # Inline explanation: the next function's contract is that any valid
 # Request must map to exactly one Response. English above; CSL below.
 fn handle (req : &Request't) -> Response't = Response't
 \end{lstlisting}
-\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
-%!(EXTRA INVARIANTS, sec:invariants)\begin{lstlisting}[language=csl]
+\section{INVARIANTS}\label{sec:invariants}
+\begin{lstlisting}[language=csl]
 ⌈determinism⌉
 \end{lstlisting}
 \begin{lstlisting}[language=csl]
