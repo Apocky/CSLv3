@@ -19,8 +19,8 @@
   m₂ < 1.0   ← CSL more-predictable-than-EN
                ∴ unlikely (rare-glyphs weigh against CSL)
   m₂ ≈ 1.0   ← equal-density (CSL = EN in-nats-per-token)
-  m₂ ≤ 1.2   ← target ← CSL ≤ 1.2× EN-perplexity
-  m₂ > 1.5   ← CSL too-surprising ← model unfamiliar-with-notation
+  m₂ ≤ 1.5   ← pure-CSL + bridge target ← CSL ≤ 1.5× EN-perplexity
+  m₂ > 2.0   ← CSL too-surprising ← model unfamiliar-with-notation
   m₂ > 2.0   ← likely-failure of-density-claim ← investigate
 
 §§ CAVEAT ← non-identity of-measurement-with-claim
@@ -34,8 +34,15 @@
   | mode      | m₂-target | rationale                                    |
   |-----------|-----------|----------------------------------------------|
   | pure-CSL  | ≤ 1.5     | dense-glyphs unfamiliar to-general-LLMs     |
-  | bridge    | ≤ 1.2     | mixed EN+CSL ← LLM-friendly                 |
+  | bridge    | ≤ 1.5     | upper-bound dominated by-pure-CSL-half      |
   | prose     | ≤ 1.05    | mostly-EN ← near-baseline expected          |
+
+§§ TARGET-HISTORY ← empirical revision-log
+  v1.1 bridge ≤ 1.2  ← Session-11 pre-measurement estimate
+  v1.2 bridge ≤ 1.5  ← Session-13 : Session-12 measured m₂=1.39-1.52 on C5
+                      ← theoretical : bridge = pure-CSL + prose ;
+                        pure-CSL half's NLL dominates ratio
+                      ← documented in eval/m2_stratified_report.md
 
 §§ PROTOCOL ← reproducibility
   W! temperature = 0

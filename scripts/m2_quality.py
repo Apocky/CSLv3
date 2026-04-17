@@ -206,13 +206,17 @@ def score_pair(name: str, csl_path: Path, en_path: Path,
 # ---------- Corpus ----------
 
 CSL_TO_EN = [
-    ("C1_sort",            "eval/C1_sort_CSL.csl",           "eval/paraphrases/C1.en"),
-    ("C2_nested_scopes",   "eval/C2_nested_scopes_CSL.csl",  "eval/paraphrases/C2.en"),
-    ("C3_dependent_types", "eval/C3_dependent_types_CSL.csl","eval/paraphrases/C3.en"),
-    ("C4_reason_block",    "eval/C4_reason_block_CSL.csl",   "eval/paraphrases/C4.en"),
-    ("C5_bridge_mode",     "eval/C5_bridge_mode_CSL.csl",    "eval/paraphrases/C5.en"),
-    ("C6_slot_grammar",    "eval/C6_slot_grammar_CSL.csl",   "eval/paraphrases/C6.en"),
-    ("C7_morpheme_stack",  "eval/C7_morpheme_stack_CSL.csl", "eval/paraphrases/C7.en"),
+    ("C1_sort",                "eval/C1_sort_CSL.csl",                "eval/paraphrases/C1.en"),
+    ("C2_nested_scopes",       "eval/C2_nested_scopes_CSL.csl",       "eval/paraphrases/C2.en"),
+    ("C3_dependent_types",     "eval/C3_dependent_types_CSL.csl",     "eval/paraphrases/C3.en"),
+    ("C4_reason_block",        "eval/C4_reason_block_CSL.csl",        "eval/paraphrases/C4.en"),
+    ("C5_bridge_mode",         "eval/C5_bridge_mode_CSL.csl",         "eval/paraphrases/C5.en"),
+    ("C6_slot_grammar",        "eval/C6_slot_grammar_CSL.csl",        "eval/paraphrases/C6.en"),
+    ("C7_morpheme_stack",      "eval/C7_morpheme_stack_CSL.csl",      "eval/paraphrases/C7.en"),
+    # Session-13 prose-mode additions :
+    ("C8_design_retrospective","eval/C8_design_retrospective_CSL.csl","eval/paraphrases/C8.en"),
+    ("C9_tutorial_style",      "eval/C9_tutorial_style_CSL.csl",      "eval/paraphrases/C9.en"),
+    ("C10_changelog_narrative","eval/C10_changelog_narrative_CSL.csl","eval/paraphrases/C10.en"),
 ]
 
 

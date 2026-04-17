@@ -57,6 +57,78 @@ main :: proc() {
         emit_selftest_main()
         return
     }
+    // Session-13 P2.1 : `--distance <a> <b>` prints Levenshtein distance.
+    if len(args) >= 4 && args[1] == "--distance" {
+        d := levenshtein(args[2], args[3])
+        fmt.printf("%d\n", d)
+        os.exit(0)
+    }
+    // Session-13 P2.2 : `--sha256 <file>` prints SHA-256 hex digest.
+    if len(args) >= 3 && args[1] == "--sha256" {
+        ok, hex := sha256_file(args[2])
+        if !ok {
+            fmt.eprintf("sha256: cannot read %s\n", args[2])
+            os.exit(1)
+        }
+        fmt.printf("%s  %s\n", hex, args[2])
+        os.exit(0)
+    }
+    // Session-13 P2.2 : `--sha256-selftest` runs NIST test-vectors.
+    if len(args) >= 2 && args[1] == "--sha256-selftest" {
+        sha256_selftest()
+        return
+    }
+    // Session-13 P2.3 : `--ed25519-selftest` runs RFC-8032 test-vectors.
+    if len(args) >= 2 && args[1] == "--ed25519-selftest" {
+        ed25519_selftest()
+        return
+    }
+    // Session-13 P2.3 : `--sign <file> --key=<priv>` emits hex signature.
+    if len(args) >= 3 && args[1] == "--sign" {
+        key_path := ""
+        for a in args[2:] {
+            if len(a) > 6 && a[:6] == "--key=" do key_path = a[6:]
+        }
+        // positional file is first non-flag arg after --sign
+        file_path := ""
+        for a in args[2:] {
+            if len(a) > 0 && a[0] != '-' { file_path = a; break }
+        }
+        if file_path == "" || key_path == "" {
+            fmt.eprintln("usage: parser --sign <file> --key=<priv32.bin>")
+            os.exit(2)
+        }
+        sig, ok := ed25519_sign_file(file_path, key_path)
+        if !ok {
+            fmt.eprintf("sign: failed for %s (key=%s)\n", file_path, key_path)
+            os.exit(1)
+        }
+        fmt.println(sig)
+        os.exit(0)
+    }
+    // Session-13 P2.3 : `--verify <file> --sig=<hex-or-bin> --key=<pub>`.
+    if len(args) >= 4 && args[1] == "--verify" {
+        sig_path := ""
+        key_path := ""
+        file_path := ""
+        for a in args[2:] {
+            if len(a) > 6 && a[:6] == "--sig=" do sig_path = a[6:]
+            else if len(a) > 6 && a[:6] == "--key=" do key_path = a[6:]
+            else if len(a) > 0 && a[0] != '-' && file_path == "" do file_path = a
+        }
+        if file_path == "" || sig_path == "" || key_path == "" {
+            fmt.eprintln("usage: parser --verify <file> --sig=<64.bin> --key=<pub32.bin>")
+            os.exit(2)
+        }
+        ok := ed25519_verify_file(file_path, sig_path, key_path)
+        if ok {
+            fmt.println("OK")
+            os.exit(0)
+        } else {
+            fmt.println("FAIL")
+            os.exit(1)
+        }
+    }
     // T26.1 : `--smt-audit-verify [dir]` walks chain.jsonl + verifies sigs
     if len(args) >= 2 && args[1] == "--smt-audit-verify" {
         dir := ".proof"

@@ -100,6 +100,13 @@ class AuditEntry:
     m2_ci_high:       float
     seed:             int
     backend:          str
+    # Schema v2 (Session-13 P2.4) : binary_hash pins the subprocess
+    # that produced this measurement (e.g. llama-perplexity.exe). v1
+    # entries omit binary_hash from canonical_bytes so they still
+    # verify byte-identically under the original signing. Unknown-
+    # future fields use schema_version > 2.
+    schema_version:   int = 1
+    binary_hash:      str = ""
     signature:        str = ""
 
 
@@ -121,6 +128,11 @@ def canonical_bytes(e: AuditEntry) -> bytes:
         f"{e.m2_value:.6f}", f"{e.m2_ci_low:.6f}", f"{e.m2_ci_high:.6f}",
         str(e.seed), e.backend,
     ]
+    # Session-13 P2.4 : v2 entries append binary_hash. v1 entries stay
+    # byte-identical so the 22-entry pre-v1.2 chain continues to verify.
+    if getattr(e, "schema_version", 1) >= 2:
+        fields.append(f"v{e.schema_version}")
+        fields.append(e.binary_hash or "")
     return "|".join(fields).encode("utf-8")
 
 
@@ -200,12 +212,16 @@ def append_measurement(
     model_hash: str,
     m2: float, lo: float, hi: float,
     seed: int, backend: str,
+    binary_hash: str = "",
 ) -> AuditEntry:
     ensure_keypair()
     if not CHAIN_FILE.exists():
         write_genesis()
 
     seq, prev = chain_tail()
+    # P2.4 : populate schema v2 when binary_hash provided ; keeps v1
+    # genesis + historical entries byte-identical under signing.
+    sv = 2 if binary_hash else 1
     e = AuditEntry(
         seq=seq + 1,
         prev_hash=prev,
@@ -223,6 +239,8 @@ def append_measurement(
         m2_ci_high=hi,
         seed=seed,
         backend=backend,
+        schema_version=sv,
+        binary_hash=binary_hash,
     )
     sign_entry(e)
     with CHAIN_FILE.open("a", encoding="utf-8") as f:

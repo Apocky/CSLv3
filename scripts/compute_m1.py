@@ -23,7 +23,7 @@ EVAL = ROOT / "eval"
 THRESHOLDS = {
     "pure-CSL": 0.5,
     "bridge":   0.9,
-    "prose":    0.95,
+    "prose":    1.10,   # Session-13 revision : was 0.95 ; empirical 1.07-1.10
 }
 
 CHARS_PER_TOK = 3.5

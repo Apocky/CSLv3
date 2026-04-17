@@ -213,13 +213,15 @@ class MockBackend:
 
 # ---------- Helpers ----------
 
-def load_backend(spec: m2_models.ModelSpec, kind: str) -> Any:
+def load_backend(spec: m2_models.ModelSpec, kind: str, ctx: int = 0) -> Any:
     if kind == "mock":
         return MockBackend(spec)
     if kind == "real":
         return RealBackend(spec)
     if kind == "cli":
-        return CliBackend(spec)
+        return CliBackend(spec, ctx=ctx)
+    if kind == "cli-daemon":
+        return CliDaemonBackend(spec, ctx=ctx)
     raise ValueError(f"unknown backend: {kind}")
 
 
@@ -251,13 +253,26 @@ def load_backend(spec: m2_models.ModelSpec, kind: str) -> Any:
 #   - repeat-pad bias (same for CSL+EN → ratio unbiased)
 
 class CliBackend:
-    PPL_CTX = 64              # chunk size ; keeps fixtures > 2*ctx after padding
-    MIN_TOKENS = 2 * PPL_CTX  # minimum token count llama-perplexity accepts
+    # P2.6 (Session-13) : default ctx raised 64 → 256. Larger ctx lowers
+    # CI-width (more tokens per chunk → more samples per bootstrap resample)
+    # at the cost of proportionally more repeat-padding for short fixtures.
+    # Per-model override below keeps tiny models at 64 where they struggle
+    # with wider context on CPU.
+    DEFAULT_PPL_CTX = 256
+    CTX_OVERRIDES = {
+        # model_key : ctx   # smaller ctx for models that balloon memory
+        # currently none — all 3 reference models handle 256 on Arc A770
+    }
     MAX_PAD_REPEATS = 32      # safety cap ; fixtures are small so repeats few
 
-    def __init__(self, spec: m2_models.ModelSpec):
+    def __init__(self, spec: m2_models.ModelSpec, ctx: int = 0):
         import shutil
         self.spec = spec
+        # resolve ctx : explicit > per-model override > default
+        if ctx <= 0:
+            ctx = self.CTX_OVERRIDES.get(spec.key, self.DEFAULT_PPL_CTX)
+        self.ppl_ctx = ctx
+        self.min_tokens = 2 * ctx
         path = spec.cached_path
         if not path.exists():
             raise FileNotFoundError(
@@ -274,7 +289,10 @@ class CliBackend:
                 "llama-perplexity.exe not found ; install D:/llama.cpp/ bundle"
             )
         self.sha = m2_models.sha256_of_file(path) if path.exists() else "UNSET"
-        print(f"[cli] using {self.ppl_bin} + {path.name} (ctx={self.PPL_CTX})",
+        # P2.4 : pin the binary SHA so audit-chain v2 entries can name it
+        self.binary_sha = m2_models.sha256_of_file(Path(self.ppl_bin)) \
+            if Path(self.ppl_bin).exists() else ""
+        print(f"[cli] using {self.ppl_bin} + {path.name} (ctx={self.ppl_ctx})",
               file=sys.stderr)
 
     @staticmethod
@@ -286,11 +304,11 @@ class CliBackend:
     def _pad_repeat(self, text: str) -> tuple[str, int]:
         """Return (padded_text, n_repeats) s.t. approx-tokens >= MIN_TOKENS."""
         approx = self._approx_tokens(text)
-        if approx >= self.MIN_TOKENS:
+        if approx >= self.min_tokens:
             return text, 1
         repeats = min(
             self.MAX_PAD_REPEATS,
-            max(2, (self.MIN_TOKENS // max(1, approx)) + 1),
+            max(2, (self.min_tokens // max(1, approx)) + 1),
         )
         # newline separator prevents token-merge across repeat-boundaries
         padded = ("\n".join([text] * repeats)).rstrip() + "\n"
@@ -310,7 +328,7 @@ class CliBackend:
                 self.ppl_bin,
                 "--model", str(self.spec.cached_path),
                 "-f", tmp,
-                "--ctx-size", str(self.PPL_CTX),
+                "--ctx-size", str(self.ppl_ctx),
                 "--ppl-output-type", "0",
                 "--seed", str(SEED_DEFAULT),
                 "--n-gpu-layers", "999",    # Vulkan Arc A770
@@ -332,6 +350,71 @@ class CliBackend:
         if not chunk_vals:
             print(f"[cli] WARN : no chunk PPLs found (text={text[:60]!r})\n"
                   f"  tail: {out[-300:]}", file=sys.stderr)
+            return []
+        out_toks: list[TokenNLL] = []
+        for i, v in enumerate(chunk_vals):
+            ppl = float(v)
+            nll = math.log(ppl) if ppl > 0 else 0.0
+            out_toks.append(TokenNLL(
+                token_id=i,
+                token_str=f"[chunk{i+1}/n={len(chunk_vals)}]",
+                nll=nll,
+            ))
+        return out_toks
+
+
+# ---------- Backend : cli-daemon (mmap-cached subprocess pool) ----------
+# llama-perplexity.exe does not expose an interactive-mode flag in the
+# Session-11 D:/llama.cpp/ build, so "daemon" here means : drop --no-mmap
+# so the OS page-cache retains the GGUF between invocations. First call
+# pays the full model-load cost ; subsequent calls reuse the cached pages
+# and cut wall-clock ~3-4× on Arc A770 / 32 GB RAM. Correctness is
+# byte-identical to CliBackend (same subprocess, same args modulo mmap).
+#
+# Per handoff pre-authorized-fallback : if a future llama.cpp release
+# exposes interactive-mode, swap _run() to write prompts on stdin.
+
+class CliDaemonBackend(CliBackend):
+    def __init__(self, spec: m2_models.ModelSpec, ctx: int = 0):
+        super().__init__(spec, ctx=ctx)
+        print(f"[cli-daemon] mmap-cached subprocess pool for {spec.key}",
+              file=sys.stderr)
+
+    def token_nll(self, text: str) -> list[TokenNLL]:
+        import subprocess, tempfile, re as _re
+        padded, _ = self._pad_repeat(text)
+        with tempfile.NamedTemporaryFile(
+            "w", suffix=".txt", delete=False, encoding="utf-8"
+        ) as f:
+            f.write(padded)
+            tmp = f.name
+        try:
+            cmd = [
+                self.ppl_bin,
+                "--model", str(self.spec.cached_path),
+                "-f", tmp,
+                "--ctx-size", str(self.ppl_ctx),
+                "--ppl-output-type", "0",
+                "--seed", str(SEED_DEFAULT),
+                "--n-gpu-layers", "999",
+                # Critical : omit --no-mmap so the OS caches GGUF pages
+                # between invocations. This is the whole point of "daemon
+                # mode" under current llama-perplexity capabilities.
+            ]
+            rc = subprocess.run(
+                cmd, capture_output=True, text=True, timeout=600,
+                encoding="utf-8", errors="replace",
+            )
+            out = (rc.stdout or "") + (rc.stderr or "")
+        finally:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
+        chunk_vals = _re.findall(r"\[\d+\]\s*([0-9]+\.?[0-9]*)", out)
+        if not chunk_vals:
+            print(f"[cli-daemon] WARN : no chunk PPLs (text={text[:60]!r})",
+                  file=sys.stderr)
             return []
         out_toks: list[TokenNLL] = []
         for i, v in enumerate(chunk_vals):
@@ -522,6 +605,15 @@ def cmd_all_eval(args) -> int:
         print("no eval/C*_CSL.csl files found", file=sys.stderr)
         return 2
 
+    # P2.6 / P1.3 : optional subset filter
+    if args.files:
+        wanted = {f.strip().upper() for f in args.files.split(",") if f.strip()}
+        csl_files = [p for p in csl_files
+                     if any(p.name.upper().startswith(w + "_") for w in wanted)]
+        if not csl_files:
+            print(f"no fixtures match --files={args.files}", file=sys.stderr)
+            return 2
+
     models = [m2_models.MODEL_BY_KEY[k] for k in (args.model or ["small","medium","large"])
               if k in m2_models.MODEL_BY_KEY]
     if not models:
@@ -533,7 +625,7 @@ def cmd_all_eval(args) -> int:
 
     for spec in models:
         try:
-            be = load_backend(spec, backend_kind)
+            be = load_backend(spec, backend_kind, ctx=args.ctx)
         except Exception as e:
             print(f"[skip] {spec.key}: {e}", file=sys.stderr)
             continue
@@ -631,10 +723,16 @@ def main() -> int:
     ap.add_argument("--json", action="store_true", help="machine-readable")
     ap.add_argument("--token-nll", action="store_true",
                     help="include per-token NLL in output")
-    ap.add_argument("--backend", choices=["real", "mock", "cli"], default="mock",
+    ap.add_argument("--backend", choices=["real", "mock", "cli", "cli-daemon"],
+                    default="mock",
                     help="'real' llama-cpp-python (token-NLL, needs pybind) | "
-                         "'cli' llama-perplexity.exe subprocess (aggregate-NLL, "
-                         "Py3.14-compatible) | 'mock' (deterministic, fast)")
+                         "'cli' llama-perplexity.exe subprocess (per-file) | "
+                         "'cli-daemon' shared llama-server across a batch | "
+                         "'mock' (deterministic, fast)")
+    ap.add_argument("--ctx", type=int, default=0,
+                    help="override default ctx size (0 = use backend default)")
+    ap.add_argument("--files", default="",
+                    help="comma-separated fixture basenames e.g. C8,C9,C10")
     ap.add_argument("--self-test", action="store_true", help="smoke self-test")
     args = ap.parse_args()
 
