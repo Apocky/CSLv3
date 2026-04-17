@@ -1742,5 +1742,9 @@ detect_prose_tolerance_pub :: proc(src: string) -> bool {
     // Full-file scan so pprint-relocated directives still round-trip.
     if strings.contains(src, "# @prose-file") do return true
     if strings.contains(src, "# corpus-mode: prose-file") do return true
+    // Session-13 : also accept `# corpus-mode: prose` (shorter spelling).
+    if strings.contains(src, "# corpus-mode: prose\n") do return true
+    if strings.contains(src, "# corpus-mode: prose\r") do return true
+    if strings.has_suffix(src, "# corpus-mode: prose") do return true
     return false
 }

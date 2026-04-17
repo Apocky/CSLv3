@@ -75,7 +75,11 @@ emit_latex :: proc(ctx: ^Emit_Context) -> string {
         strings.write_string(&sb, "\\usepackage{xunicode}\n")
         strings.write_string(&sb, "\\usepackage{xltxtra}\n")
         title := derive_title_tex(ctx.source_file)
-        strings.write_string(&sb, fmt.tprintf("\\title{%s}\n", tex_escape(title)))
+        // Note : Odin's fmt.tprintf treats `{...}` as verb syntax, so we
+        // cannot use `\title{%s}` as a format string. Write in parts.
+        strings.write_string(&sb, "\\title{")
+        strings.write_string(&sb, tex_escape(title))
+        strings.write_string(&sb, "}\n")
         strings.write_string(&sb, "\\author{CSLv3 auto-emit}\n")
         strings.write_string(&sb, "\\date{\\today}\n\n")
         strings.write_string(&sb, "\\begin{document}\n")
@@ -116,12 +120,19 @@ emit_tex_node :: proc(sb: ^strings.Builder, n: ^Node, level: int) {
         case:   cmd = "paragraph"
         }
         label := tex_label(n.text)
-        strings.write_string(sb, fmt.tprintf(
-            "\\%s{%s}\\label{%s}\n", cmd, tex_escape(n.text), label))
+        // Odin fmt treats `{...}` as verb braces ; emit in parts.
+        strings.write_byte(sb, '\\')
+        strings.write_string(sb, cmd)
+        strings.write_byte(sb, '{')
+        strings.write_string(sb, tex_escape(n.text))
+        strings.write_string(sb, "}\\label{")
+        strings.write_string(sb, label)
+        strings.write_string(sb, "}\n")
         for c in n.children do emit_tex_node(sb, c, level + 1)
     case .Comment:
-        strings.write_string(sb, fmt.tprintf(
-            "\\begin{quote}\\textit{\\# %s}\\end{quote}\n", tex_escape(n.text)))
+        strings.write_string(sb, "\\begin{quote}\\textit{\\# ")
+        strings.write_string(sb, tex_escape(n.text))
+        strings.write_string(sb, "}\\end{quote}\n")
     case .Document:
         for c in n.children do emit_tex_node(sb, c, level)
     case:

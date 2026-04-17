@@ -69,6 +69,12 @@ detect_prose_tolerance :: proc(src: string) -> bool {
     // pprint relocates the directive into a section body.
     if strings.contains(src, "# @prose-file") do return true
     if strings.contains(src, "# corpus-mode: prose-file") do return true
+    // Session-13 addition : the shorter `# corpus-mode: prose` spelling used
+    // by Apocky's C8-C10 prose-mode fixtures. Match only when followed by a
+    // line boundary so we don't accidentally match `prose-file` prefix-style.
+    if strings.contains(src, "# corpus-mode: prose\n") do return true
+    if strings.contains(src, "# corpus-mode: prose\r") do return true
+    if strings.has_suffix(src, "# corpus-mode: prose") do return true
     return false
 }
 
