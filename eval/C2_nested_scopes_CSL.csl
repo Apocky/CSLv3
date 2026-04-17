@@ -2,26 +2,101 @@
 # tests: deep indent + §§ subsection nesting + indent-as-cut (Peirce)
 # glyph-class: Section, Indent, Dedent
 # features: multiple `§` depth, nested indent blocks, sibling sections
+# note: Session-13 expansion ← natural content ≥ 2·ctx_256 = 512 tokens
+#       so the m₂ harness does not need repeat-pad, eliminating the
+#       KV-cache over-collapse artefact that dominated the C2 anomaly
+#       in the v1.2.0 baseline.
 
 § outer
 
 §§ first-sub
   name : str
   active : bool
+  id : u64
+  created : timestamp
 
 §§ second-sub
 
 §§§ deep-sub
   nested : i32
   inner : u8
+  flags : u16 ⊗ (read + write + execute)
+  parent-id : u32
 
 §§§ another-deep
   item : f32
+  ratio : f64
+  scaling : f32
+
+§§§ triple-peer
+  tag : sym
+  value : i64
+  owner-id : u32
 
 §§ sibling-after-deep
   reset : bool
+  cleared-at : timestamp
+  reason : str
+
+§§ config-sub
+
+§§§ tunable-depth
+  max-nest : u8 = 16
+  stride : u8 = 4
+
+§§§ default-depth
+  min-nest : u8 = 1
+  optional : bool = false
 
 § next-top
   flat : i32
+  label : str
+
+§§ attached
+  hp : i32
+  hp.max : i32
+
+§§ detached
+  visible : bool
+
+§ middle-top
+
+§§ owner-path
+  path-len : u32
+  leaf-id : u32
+  grandchild-id : u32
+
+§§§ owner-deep
+  handle : i64
+  state : sym
+
+§ math-top
+
+§§ vec-fields
+  position : vec3'p
+  velocity : vec3'p
+  acceleration : vec3'p
+
+§§ scalars
+  mass : f32
+  charge : f32
+  temperature : f32
+
+§§§ units
+  distance : f32 @ m
+  time : f32 @ s
+  angle : f32 @ rad
+
+§ rule-top
+
+§§ invariants
+  W! active → id > 0
+  W! ∀ sub : sub.owner ≠ ∅
+  N! circular-parent
+
+§§ flow
+  create → active = true
+  destroy → active = false
+  reset → hp = hp.max
 
 § final

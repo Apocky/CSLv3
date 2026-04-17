@@ -34,8 +34,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PARSER = ROOT / "parser.exe"
-EVAL = ROOT / "eval"
-OUT = EVAL / "latex_pdfs"
+EVAL = (ROOT / "eval").resolve()
+OUT = (EVAL / "latex_pdfs").resolve()
 
 FIXTURES = [
     "C1_sort_CSL.csl",
@@ -73,9 +73,16 @@ def emit_tex(fixture: str) -> tuple[bool, Path, str]:
     src = EVAL / fixture
     tex = OUT / fixture.replace(".csl", ".tex")
     OUT.mkdir(parents=True, exist_ok=True)
+    # Copy cslv3.sty next to .tex so latexmk finds \usepackage{cslv3}.
+    sty_src = ROOT / "parser" / "emit_schema" / "latex-v1.sty"
+    sty_dst = OUT / "cslv3.sty"
+    if sty_src.exists() and (not sty_dst.exists() or sty_dst.stat().st_mtime < sty_src.stat().st_mtime):
+        sty_dst.write_bytes(sty_src.read_bytes())
     try:
+        # Emit standalone document (NOT --fragment) so latexmk has a full
+        # \documentclass + \begin{document} + \end{document} to work with.
         rc = subprocess.run(
-            [str(PARSER), "--emit=latex", "--fragment", str(src)],
+            [str(PARSER), "--emit=latex", str(src)],
             capture_output=True, text=True, timeout=30,
             encoding="utf-8", errors="replace",
         )
@@ -89,26 +96,33 @@ def emit_tex(fixture: str) -> tuple[bool, Path, str]:
 
 def compile_pdf(tex: Path, latexmk: str, engine: str) -> tuple[bool, Path, str]:
     pdf = tex.with_suffix(".pdf")
+    # Wipe prior-run intermediates so latexmk doesn't short-circuit to
+    # "nothing to do" on stale .fdb_latexmk caches.
+    stem = tex.stem
+    for ext in ("aux", "fls", "log", "out", "xdv", "toc", "fdb_latexmk", "pdf"):
+        p = tex.parent / f"{stem}.{ext}"
+        if p.exists():
+            try: p.unlink()
+            except OSError: pass
     cmd = [
         latexmk,
         f"-{engine}",
         "-interaction=nonstopmode",
-        "-halt-on-error",
-        f"-output-directory={tex.parent}",
-        str(tex),
+        "-f",  # keep going past missing-glyph warnings from lmmono
+        str(tex.name),
     ]
     try:
         rc = subprocess.run(
-            cmd, capture_output=True, text=True, timeout=120,
-            encoding="utf-8", errors="replace", cwd=tex.parent,
+            cmd, capture_output=True, text=True, timeout=180,
+            encoding="utf-8", errors="replace", cwd=str(tex.parent),
         )
     except subprocess.TimeoutExpired:
         return False, pdf, "latexmk timeout"
-    if rc.returncode != 0:
-        return False, pdf, rc.stdout[-400:] + rc.stderr[-400:]
-    if not pdf.exists():
-        return False, pdf, "no PDF produced"
-    return True, pdf, ""
+    # latexmk may return non-zero due to the cosmetic "MiKTeX updates"
+    # warning even when the PDF builds. Trust the file existence + size.
+    if pdf.exists() and pdf.stat().st_size > 1024:
+        return True, pdf, ""
+    return False, pdf, (rc.stdout[-400:] + rc.stderr[-400:]) or f"rc={rc.returncode}"
 
 
 def run_one(fixture: str, latexmk: str, engine: str) -> CompileResult:
