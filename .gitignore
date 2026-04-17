@@ -54,3 +54,6 @@ Thumbs.db
 *.tmp
 *.bak
 /diag/*_temp.md
+
+# Private claude memory (auto-memory)
+/.claude/

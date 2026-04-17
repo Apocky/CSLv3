@@ -1,0 +1,3 @@
+# no prose-file directive here — unknown glyphs should still fail
+§ STRICT
+  bullet • and box ═ characters must emit lex errors in default mode

@@ -32,7 +32,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 import m2_models  # noqa: E402
-from compute_m2 import MockBackend  # noqa: E402
+from compute_m2 import MockBackend, CliBackend, load_backend  # noqa: E402
 
 ROOT = SCRIPT_DIR.parent
 BENCH = ROOT / "benchmarks" / "m2_comparison.md"
@@ -154,6 +154,7 @@ NOTATIONS = ["csl", "apl", "lojban", "prose"]
 class ComparisonRow:
     topic:              str
     notation:           str
+    model_key:          str
     char_count:         int
     mock_token_count:   int
     mean_nll:           float
@@ -161,10 +162,7 @@ class ComparisonRow:
     density_ratio:      float  # tokens / prose-tokens
 
 
-def measure(passage: dict) -> list[ComparisonRow]:
-    spec = m2_models.MODELS[0]   # small-model metadata for backend
-    be = MockBackend(spec)
-
+def measure(passage: dict, be, model_key: str) -> list[ComparisonRow]:
     prose_chars = len(passage["prose"])
     prose_tokens_list = be.token_nll(passage["prose"])
     prose_tokens = max(1, len(prose_tokens_list))
@@ -177,6 +175,7 @@ def measure(passage: dict) -> list[ComparisonRow]:
         rows.append(ComparisonRow(
             topic=passage["topic"],
             notation=n,
+            model_key=model_key,
             char_count=len(text),
             mock_token_count=len(nll_list),
             mean_nll=round(mean_nll, 4),
@@ -186,13 +185,13 @@ def measure(passage: dict) -> list[ComparisonRow]:
     return rows
 
 
-def render_markdown(all_rows: list[ComparisonRow]) -> str:
+def render_markdown(all_rows: list[ComparisonRow], backend_kind: str) -> str:
+    model_keys = sorted({r.model_key for r in all_rows})
     lines = [
         "# CSLv3 Notation Comparison (T25.7)",
         "",
-        "Comparing **density** across notation systems on identical content. "
-        "Measurements use the deterministic mock-backend (character-class "
-        "pseudo-NLL) from `scripts/compute_m2.py`.",
+        f"Comparing **density** across notation systems on identical content.",
+        f"Backend : `{backend_kind}` ; models : {', '.join(model_keys)}",
         "",
         "## Caveat (read-first)",
         "",
@@ -210,26 +209,42 @@ def render_markdown(all_rows: list[ComparisonRow]) -> str:
         "",
         "Ratios < 1.0 are denser than prose ; ratios > 1.0 are less dense.",
         "",
-        "| topic | notation | char-count | tokens | NLL/token | chars/prose | tokens/prose |",
-        "|-------|----------|-----------:|-------:|----------:|------------:|-------------:|",
+        "| topic | notation | model | char-count | tokens | NLL/token | chars/prose | tokens/prose |",
+        "|-------|----------|-------|-----------:|-------:|----------:|------------:|-------------:|",
     ]
     for r in all_rows:
         lines.append(
-            f"| {r.topic} | {r.notation} | {r.char_count} | {r.mock_token_count} | "
-            f"{r.mean_nll} | {r.compression_ratio} | {r.density_ratio} |"
+            f"| {r.topic} | {r.notation} | {r.model_key} | {r.char_count} | "
+            f"{r.mock_token_count} | {r.mean_nll} | {r.compression_ratio} | "
+            f"{r.density_ratio} |"
         )
 
-    # Summary : average compression per notation
-    lines += ["", "## Summary: average compression vs prose", ""]
-    lines.append("| notation | avg char-compression | avg token-compression |")
-    lines.append("|----------|---------------------:|----------------------:|")
+    # Summary : average compression per notation (char-only — model-independent)
+    lines += ["", "## Summary: average compression vs prose (char-based)", ""]
+    lines.append("| notation | avg char-compression |")
+    lines.append("|----------|---------------------:|")
     for n in NOTATIONS:
         rows = [r for r in all_rows if r.notation == n]
         if not rows:
             continue
         cc = sum(r.compression_ratio for r in rows) / len(rows)
-        dt = sum(r.density_ratio for r in rows) / len(rows)
-        lines.append(f"| {n} | {cc:.3f} | {dt:.3f} |")
+        lines.append(f"| {n} | {cc:.3f} |")
+
+    # Per-model NLL summary
+    lines += ["", "## Mean NLL/token by notation + model", ""]
+    header = "| notation | " + " | ".join(model_keys) + " |"
+    sep    = "|----------|" + "|".join(["---:"] * len(model_keys)) + "|"
+    lines += [header, sep]
+    for n in NOTATIONS:
+        cells = [f"{n}"]
+        for mk in model_keys:
+            rows = [r for r in all_rows if r.notation == n and r.model_key == mk]
+            if rows:
+                avg = sum(r.mean_nll for r in rows) / len(rows)
+                cells.append(f"{avg:.3f}")
+            else:
+                cells.append("—")
+        lines.append("| " + " | ".join(cells) + " |")
 
     lines += [
         "",
@@ -253,6 +268,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     ap.add_argument("--topic", help="restrict to one topic")
+    ap.add_argument("--backend", choices=["real", "mock", "cli"], default="mock",
+                    help="backend (mock=default ; cli=llama-perplexity subprocess)")
+    ap.add_argument("--models", default="small",
+                    help="comma-separated model keys : small | medium | large | "
+                         "'all' for all three (default : small)")
     args = ap.parse_args()
 
     passages = PASSAGES
@@ -262,15 +282,32 @@ def main() -> int:
             print(f"no passage with topic '{args.topic}'", file=sys.stderr)
             return 2
 
+    if args.models == "all":
+        model_keys = [m.key for m in m2_models.MODELS]
+    else:
+        model_keys = [k.strip() for k in args.models.split(",") if k.strip()]
+
     all_rows: list[ComparisonRow] = []
-    for p in passages:
-        all_rows.extend(measure(p))
+    for mk in model_keys:
+        spec = m2_models.MODEL_BY_KEY.get(mk)
+        if spec is None:
+            print(f"unknown model key: {mk}", file=sys.stderr)
+            return 2
+        be = load_backend(spec, args.backend)
+        print(f"[compare] model={mk} backend={args.backend}", file=sys.stderr)
+        try:
+            for p in passages:
+                all_rows.extend(measure(p, be, mk))
+        finally:
+            close = getattr(be, "close", None)
+            if callable(close):
+                close()
 
     if args.json:
         print(json.dumps([asdict(r) for r in all_rows], indent=2, ensure_ascii=False))
         return 0
 
-    md = render_markdown(all_rows)
+    md = render_markdown(all_rows, args.backend)
     BENCH.parent.mkdir(parents=True, exist_ok=True)
     BENCH.write_text(md, encoding="utf-8")
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")

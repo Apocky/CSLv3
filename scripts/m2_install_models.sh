@@ -27,11 +27,13 @@ if ! python -c "import huggingface_hub" 2>/dev/null; then
 fi
 
 if ! python -c "import llama_cpp" 2>/dev/null; then
-    echo "[install] llama-cpp-python (may take a few minutes ; builds natively)"
-    echo "  tip : on Intel Arc use CMAKE_ARGS='-DGGML_VULKAN=ON' for GPU"
-    python -m pip install --quiet llama-cpp-python || {
-        echo "[warn] llama-cpp-python install failed ; T25 harness will use mock-model fallback only"
-    }
+    echo "[note] llama-cpp-python NOT installed."
+    echo "  T25 harness will use subprocess backend (llama-perplexity.exe) if"
+    echo "  available at D:/llama.cpp/ (installed during Session-11 Qwen3"
+    echo "  bootstrap). Token-level NLL requires llama-cpp-python ; aggregate"
+    echo "  NLL via subprocess is sufficient for m₂ ratio computation."
+    echo "  To enable llama-cpp-python later: pip install llama-cpp-python"
+    echo "  (Python 3.14 needs MSVC + CMake + ~10 minutes native build)."
 fi
 
 # 2. Download models via the registry

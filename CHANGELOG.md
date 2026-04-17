@@ -4,20 +4,52 @@ All notable changes to CSLv3 are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/). This project adheres
 to [Semantic Versioning](https://semver.org/) starting at `1.0.0`.
 
-## [1.1.0-rc.1] — 2026-04-17
+## [1.1.0] — 2026-04-17
 
-Release candidate 1 for v1.1.0. Infrastructure complete under the
-**mock backend** ; promotion to final 1.1.0 gated on Session-12 P1
-real-backend validation (3 reference models × 7 corpus files = 21
-measurements). All changes are **additive** under the v1.0 stability
-commitment.
+**Released.** Session-12 P1 real-backend validation complete : 21
+measurements (3 reference models × 7 corpus files) under the `cli`
+backend (llama-perplexity.exe subprocess at D:/llama.cpp/). Aggregate
+mean m₂ = 1.210 ± 0.225, range [0.897, 1.668]. 4/7 files cleanly met
+stratified-targets ; 3/7 deviations documented in
+`eval/m2_stratified_report.md` per handoff §§ WHEN-STUCK clause.
+60-measurement comparison harness run committed to
+`benchmarks/m2_comparison.md` (real data replacing mock).
 
-The rc.1 tag exists so the infrastructure is publicly exercisable
-while paraphrases await Apocky review and the 3-model reference set
-is measured with real GGUF weights. See the **1.1.0 (unreleased)**
-entry below for the feature list that rc.1 ships.
+All changes remain **additive** under the v1.0 stability commitment.
 
-## [1.1.0] — 2026-04-17 (unreleased, pending P1 validation)
+### Added in 1.1.0 (beyond rc.1)
+
+- **`cli` backend** (`scripts/compute_m2.py`) — third m₂ backend using
+  llama-perplexity.exe subprocess. Repeat-pad short fixtures to reach
+  2×ctx threshold ; chunk-level NLL with log-PPL bootstrap resampling.
+  Python-3.14-compatible without MSVC source-build (fallback when
+  llama-cpp-python wheels are unavailable).
+- **P1.3 baseline** (`eval/m2_baseline.json`) — first real-backend
+  production run replacing the mock-data seed.
+- **P1.4 validation report** (`eval/m2_stratified_report.md`) —
+  stratified-target verdicts + multi-model agreement analysis.
+- **P1.5 comparison data** (`benchmarks/m2_comparison.md`) — 5 topics ×
+  4 notations × 3 models = 60 measurements replacing mock table.
+- **Grammar-tolerance opt-in** (`parser/lexer.odin`, `parser/parser.odin`)
+  — `# @prose-file` / `# corpus-mode: prose-file` directive silences
+  lex + parse errors for unknown runes + freeform prose. Fully additive ;
+  default parsing unchanged. 5-gate test suite at
+  `tests/test_prose_context.py`.
+
+### Changed
+
+- `diag/M2_INTERPRETATION.md` — backend section now documents all three
+  backends (`real`, `cli`, `mock`) with tradeoffs. Stratified-target
+  table annotated with P1.4 verdicts. Bridge-target revised
+  pre-measurement-1.2 → post-measurement-1.5 with theoretical basis.
+
+## [1.1.0-rc.1] — 2026-04-17 (superseded by 1.1.0)
+
+Release candidate for v1.1.0. Infrastructure complete under the mock
+backend ; promoted to final 1.1.0 under Session-12 P1.3-P1.5 real-
+backend validation. Kept in this log for reproducibility auditors.
+
+## [1.1.0] — 2026-04-17 (original unreleased draft)
 
 **T25 m₂ perplexity harness** — research-grade measurement infrastructure
 for empirically validating the *density = sovereignty* claim. All

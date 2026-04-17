@@ -218,7 +218,131 @@ def load_backend(spec: m2_models.ModelSpec, kind: str) -> Any:
         return MockBackend(spec)
     if kind == "real":
         return RealBackend(spec)
+    if kind == "cli":
+        return CliBackend(spec)
     raise ValueError(f"unknown backend: {kind}")
+
+
+# ---------- Backend : llama-perplexity.exe subprocess (cli) ----------
+# Uses the pre-built llama-perplexity.exe from D:/llama.cpp/ (Session-11
+# Qwen3 bootstrap). Runs in CHUNK mode : small ctx-size (64) + repeat-
+# padding the input text until >= 2*ctx tokens, producing per-chunk
+# perplexities. Each chunk's log(PPL) is treated as one NLL sample for
+# bootstrap CI.
+#
+# Why this approach (not /v1/completions echo, not llama-cpp-python) :
+#   - llama-cpp-python : requires MSVC + ~10min source build on Py3.14
+#   - llama-server /v1/completions : echo=true does NOT return prompt-
+#     logprobs in this llama.cpp build (only generated-token logprobs)
+#   - llama-perplexity : directly usable, produces per-chunk NLL at the
+#     cost of padding bias (see below)
+#
+# Repeat-pad bias :
+#   Padding by repeating the text means chunks 2..K benefit from KV-cache
+#   memory of chunk 1. This LOWERS absolute NLL (more predictable) but
+#   the effect applies identically to CSL and EN, so the m₂ RATIO is
+#   approximately unbiased. Documented in DECISIONS.md.
+#
+# Tradeoffs vs RealBackend (llama-cpp-python) :
+#   + no pip install ; binaries ship with llama.cpp releases
+#   + works with Python 3.14 (no native build)
+#   + reproducible via pinned binary + GGUF SHA
+#   - chunk-level NLL (not per-token) ; bootstrap resamples over chunks
+#   - repeat-pad bias (same for CSL+EN → ratio unbiased)
+
+class CliBackend:
+    PPL_CTX = 64              # chunk size ; keeps fixtures > 2*ctx after padding
+    MIN_TOKENS = 2 * PPL_CTX  # minimum token count llama-perplexity accepts
+    MAX_PAD_REPEATS = 32      # safety cap ; fixtures are small so repeats few
+
+    def __init__(self, spec: m2_models.ModelSpec):
+        import shutil
+        self.spec = spec
+        path = spec.cached_path
+        if not path.exists():
+            raise FileNotFoundError(
+                f"{spec.name} GGUF not at {path}. Run scripts/m2_install_models.sh."
+            )
+        cands = [
+            "D:/llama.cpp/llama-perplexity.exe",
+            "D:/llama.cpp/llama-perplexity",
+            shutil.which("llama-perplexity") or "",
+        ]
+        self.ppl_bin = next((c for c in cands if c and Path(c).exists()), "")
+        if not self.ppl_bin:
+            raise FileNotFoundError(
+                "llama-perplexity.exe not found ; install D:/llama.cpp/ bundle"
+            )
+        self.sha = m2_models.sha256_of_file(path) if path.exists() else "UNSET"
+        print(f"[cli] using {self.ppl_bin} + {path.name} (ctx={self.PPL_CTX})",
+              file=sys.stderr)
+
+    @staticmethod
+    def _approx_tokens(text: str) -> int:
+        # Crude estimate : ~3.5 utf-8 bytes per token (over English) ; CSL
+        # glyphs inflate byte count but also inflate token count similarly.
+        return max(1, int(len(text.encode("utf-8")) / 3.5))
+
+    def _pad_repeat(self, text: str) -> tuple[str, int]:
+        """Return (padded_text, n_repeats) s.t. approx-tokens >= MIN_TOKENS."""
+        approx = self._approx_tokens(text)
+        if approx >= self.MIN_TOKENS:
+            return text, 1
+        repeats = min(
+            self.MAX_PAD_REPEATS,
+            max(2, (self.MIN_TOKENS // max(1, approx)) + 1),
+        )
+        # newline separator prevents token-merge across repeat-boundaries
+        padded = ("\n".join([text] * repeats)).rstrip() + "\n"
+        return padded, repeats
+
+    def token_nll(self, text: str) -> list[TokenNLL]:
+        """Run llama-perplexity on padded text ; return per-chunk NLL."""
+        import subprocess, tempfile, re as _re
+        padded, repeats = self._pad_repeat(text)
+        with tempfile.NamedTemporaryFile(
+            "w", suffix=".txt", delete=False, encoding="utf-8"
+        ) as f:
+            f.write(padded)
+            tmp = f.name
+        try:
+            cmd = [
+                self.ppl_bin,
+                "--model", str(self.spec.cached_path),
+                "-f", tmp,
+                "--ctx-size", str(self.PPL_CTX),
+                "--ppl-output-type", "0",
+                "--seed", str(SEED_DEFAULT),
+                "--n-gpu-layers", "999",    # Vulkan Arc A770
+                "--no-mmap",
+            ]
+            rc = subprocess.run(
+                cmd, capture_output=True, text=True, timeout=600,
+                encoding="utf-8", errors="replace",
+            )
+            out = (rc.stdout or "") + (rc.stderr or "")
+        finally:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
+
+        # Per-chunk PPLs : "[1]5.64,[2]5.09,[3]4.87,..."
+        chunk_vals = _re.findall(r"\[\d+\]\s*([0-9]+\.?[0-9]*)", out)
+        if not chunk_vals:
+            print(f"[cli] WARN : no chunk PPLs found (text={text[:60]!r})\n"
+                  f"  tail: {out[-300:]}", file=sys.stderr)
+            return []
+        out_toks: list[TokenNLL] = []
+        for i, v in enumerate(chunk_vals):
+            ppl = float(v)
+            nll = math.log(ppl) if ppl > 0 else 0.0
+            out_toks.append(TokenNLL(
+                token_id=i,
+                token_str=f"[chunk{i+1}/n={len(chunk_vals)}]",
+                nll=nll,
+            ))
+        return out_toks
 
 
 def load_csl_file(path: Path) -> str:
@@ -324,7 +448,9 @@ def measure_one(
         bootstrap_n=bootstrap_n,
         seed=seed,
         elapsed_sec=round(time.time() - t0, 3),
-        backend="mock" if isinstance(backend, MockBackend) else "real",
+        backend=("mock" if isinstance(backend, MockBackend)
+                 else "cli" if isinstance(backend, CliBackend)
+                 else "real"),
         csl_token_nll=csl_nll if keep_token_nll else [],
         en_token_nll=en_nll   if keep_token_nll else [],
     )
@@ -505,9 +631,10 @@ def main() -> int:
     ap.add_argument("--json", action="store_true", help="machine-readable")
     ap.add_argument("--token-nll", action="store_true",
                     help="include per-token NLL in output")
-    ap.add_argument("--backend", choices=["real", "mock"], default="mock",
-                    help="use 'real' llama-cpp-python (slow, needs weights) "
-                         "or 'mock' (deterministic, fast, for tests)")
+    ap.add_argument("--backend", choices=["real", "mock", "cli"], default="mock",
+                    help="'real' llama-cpp-python (token-NLL, needs pybind) | "
+                         "'cli' llama-perplexity.exe subprocess (aggregate-NLL, "
+                         "Py3.14-compatible) | 'mock' (deterministic, fast)")
     ap.add_argument("--self-test", action="store_true", help="smoke self-test")
     args = ap.parse_args()
 

@@ -151,7 +151,7 @@ def download_spec(spec: ModelSpec, force: bool = False) -> bool:
             filename=spec.filename,
             local_dir=str(CACHE_DIR),
         )
-        print(f"  [dl] done → {dst}")
+        print(f"  [dl] done -> {dst}")
     except Exception as e:
         sys.stderr.write(f"  [dl] FAIL {spec.key}: {e}\n")
         return False

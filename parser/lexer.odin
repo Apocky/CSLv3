@@ -30,6 +30,18 @@ Lexer :: struct {
     paren_depth:    int,      // inside (), [], {} etc → suppress indent tracking
     pending_line_for_cont: int, // line we were on when last real token emitted
     emit_comments:  bool,
+    // P2.2 (Session-12) : ADDITIVE prose-file tolerance.
+    // When a file's header (first 1024 bytes) contains '# @prose-file'
+    // OR '# corpus-mode: prose-file', the lexer silently skips runes it
+    // doesn't recognize instead of emitting a lex-error. This lets
+    // free-form handoff.csl files round-trip-parse without promoting
+    // arbitrary Unicode to the 74-glyph master set (which would require
+    // a v1.0 grammar change = MAJOR bump).
+    // Narrow semantic : unknown runes are DROPPED, not preserved. The
+    // round-trip invariant checks AST-shape + comment-position, both of
+    // which remain stable under drop. Use only for prose documents that
+    // are never read back programmatically.
+    prose_tolerance: bool,
 }
 
 lexer_init :: proc(l: ^Lexer, src: string, file: string) {
@@ -45,6 +57,19 @@ lexer_init :: proc(l: ^Lexer, src: string, file: string) {
     l.at_line_start = true
     l.paren_depth = 0
     l.emit_comments = true   // T23 default : preserve comments for round-trip
+    l.prose_tolerance = detect_prose_tolerance(src)
+}
+
+@(private="file")
+detect_prose_tolerance :: proc(src: string) -> bool {
+    // P2.2 (Session-12) : scan the whole file for an opt-in directive.
+    // Two spellings accepted for compatibility with the §§10 corpus-mode
+    // convention already used by m₁ fixtures.
+    // Full-file scan (not head-only) so round-trip stays stable even when
+    // pprint relocates the directive into a section body.
+    if strings.contains(src, "# @prose-file") do return true
+    if strings.contains(src, "# corpus-mode: prose-file") do return true
+    return false
 }
 
 lexer_destroy :: proc(l: ^Lexer) {
@@ -114,6 +139,10 @@ emit :: proc(l: ^Lexer, kind: Token_Kind, text: string, pos: Source_Pos) {
 
 @(private="file")
 add_error :: proc(l: ^Lexer, msg: string, pos: Source_Pos) {
+    // P2.2 : silence lex errors in prose-file mode.
+    // All lex-error paths (unknown-char, inconsistent-indent, etc.) flow
+    // through here, so a single guard gives uniform tolerance semantics.
+    if l.prose_tolerance do return
     append(&l.errors, Lex_Error{msg = msg, pos = pos, snippet = line_snippet(l.src, pos.line)})
 }
 
@@ -880,10 +909,18 @@ tokenize :: proc(l: ^Lexer) {
             continue
         }
 
-        // Unknown rune — skip and flag
-        add_error(l, fmt.tprintf("unrecognized character '%r' (U+%04X)", r, r), p)
-        advance_rune(l)
-        emit(l, .Invalid, text, p)
+        // Unknown rune — either flag (default) or silently-skip (prose-file).
+        // P2.2 (Session-12) : when the file opts into prose-tolerance, drop
+        // the rune without emitting either a lex-error or an Invalid token.
+        // The AST-shape round-trip still holds because both directions drop
+        // the same runes.
+        if l.prose_tolerance {
+            advance_rune(l)
+        } else {
+            add_error(l, fmt.tprintf("unrecognized character '%r' (U+%04X)", r, r), p)
+            advance_rune(l)
+            emit(l, .Invalid, text, p)
+        }
     }
 
     // drain remaining DEDENTs

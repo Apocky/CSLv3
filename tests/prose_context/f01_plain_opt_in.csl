@@ -1,0 +1,7 @@
+# @prose-file
+§ PLAIN
+  • bullet uses U+2022 bullet
+  ═ box-drawing U+2550
+  m₂ uses subscript U+2082
+  factor ×2 uses multiplication sign
+  arrow → pipe |> prose all OK

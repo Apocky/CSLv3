@@ -25,9 +25,11 @@ within a MINOR bump with deprecation notice.
 | emit-latex (T28.4)       | experimental  | `latex-v1` ; requires `latexmk`/XeLaTeX        |
 | emit-json (T28.5)        | stable        | `json-v1` unified schema                       |
 | cssllint JSON            | stable        | Contract frozen in `specs/14_CSSLv3_BRIDGE.csl`|
-| m₂ metric (T25)          | experimental  | v1.1.0-introduced ; promotes to stable on acceptance review |
+| m₂ metric (T25)          | experimental  | v1.1.0-introduced ; 21-measurement real-backend baseline recorded ; promotes to stable in v1.2 |
 | m₂ harness scripts       | experimental  | `scripts/compute_m2.py` + friends ; additive-only post-v1.0 |
+| m₂ `cli` backend         | experimental  | Session-12 addition ; repeat-pad llama-perplexity subprocess ; ratio-unbiased ; absolute-NLL biased |
 | m₂ audit-chain           | experimental  | `.m2-chain/` Ed25519 JSONL ; shares key-mgmt with T26 |
+| prose-file directive     | experimental  | `# @prose-file` opt-in ; Session-12 P2.2 ; silences lex+parse errors for freeform fixtures |
 
 ## Diagnostic code namespace (frozen)
 

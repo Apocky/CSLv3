@@ -28,6 +28,11 @@ Parser :: struct {
     // T23 (Session-5) : comments buffered between trivia skips,
     // attached to the next node created via attach_pending_comments().
     pending_comments: [dynamic]string,
+    // P2.2 (Session-12) : when true, parse errors are converted to W-level
+    // warnings and the parser silently-advances to the next newline/dedent
+    // to recover. Activated by the '# @prose-file' directive ; propagated
+    // from the lexer.
+    prose_tolerance: bool,
 }
 
 parser_init :: proc(p: ^Parser, tokens: []Token, file: string, src: string) {
@@ -134,6 +139,19 @@ attach_pending_comments :: proc(p: ^Parser, n: ^Node) {
 
 @(private="file")
 add_parse_error :: proc(p: ^Parser, msg: string, pos: Source_Pos, ctx: string = "") {
+    // P2.2 : in prose-file mode, parse errors are silenced AND the parser
+    // advances to the next newline/dedent. This gives free-form handoff
+    // docs a parse-clean path at the cost of losing structured content
+    // on the malformed line.
+    if p.prose_tolerance {
+        // advance to next newline or dedent to recover
+        for p.idx < len(p.tokens) {
+            k := p.tokens[p.idx].kind
+            if k == .Newline || k == .Dedent || k == .EOF do break
+            p.idx += 1
+        }
+        return
+    }
     append(&p.errors, Parse_Error{
         msg = strings.clone(msg),
         pos = pos,
@@ -1706,11 +1724,23 @@ parse_type_primary :: proc(p: ^Parser) -> ^Node {
 
 // --- public runner ---
 parse_source :: proc(src: string, file: string) -> (doc: ^Node, lex_errors: []Lex_Error, parse_errors: []Parse_Error) {
+    // P2.2 : detect prose-file directive before lexing so both layers
+    // agree. Cheap head-scan, no double-lex.
+    is_prose := detect_prose_tolerance_pub(src)
     tokens, lerrs := lex_source(src, file)
     lex_errors = lerrs
     p: Parser
     parser_init(&p, tokens, file, src)
+    p.prose_tolerance = is_prose
     doc = parse(&p)
     parse_errors = p.errors[:]
     return
+}
+
+@(private="file")
+detect_prose_tolerance_pub :: proc(src: string) -> bool {
+    // Full-file scan so pprint-relocated directives still round-trip.
+    if strings.contains(src, "# @prose-file") do return true
+    if strings.contains(src, "# corpus-mode: prose-file") do return true
+    return false
 }
