@@ -1,4 +1,4 @@
-# Stability Matrix — CSLv3 v1.2.0
+# Stability Matrix — CSLv3 v1.3.0
 
 Post-v1.0 contract: components marked **stable** require a MAJOR version
 bump for breaking changes. Components marked **experimental** may change
@@ -37,6 +37,11 @@ within a MINOR bump with deprecation notice.
 | Levenshtein Odin         | stable        | `parser/levenshtein.odin` Wagner-Fischer ; `--distance` CLI |
 | audit-chain schema v2    | stable        | `binary_hash` + `schema_version` fields ; v1 entries verify byte-identical |
 | cli-daemon backend       | experimental  | `scripts/compute_m2.py --backend=cli-daemon` ; mmap-retained GGUF |
+| BLAKE3 Odin              | stable        | `parser/blake3.odin` reference v0.3.7 ; 11/11 test vectors ; `--blake3` CLI |
+| JSON parser+emitter Odin | stable        | `parser/json_codec.odin` RFC 8259 ; 20/20 round-trip ; `--json-validate` CLI |
+| JSON-Schema Odin         | experimental  | `parser/json_schema.odin` Draft-07 subset ; 28/28 vectors ; pattern awaits A8 regex |
+| URI parser Odin          | stable        | `parser/uri.odin` RFC 3986 ; 13/13 vectors ; ASCII host only (IDNA deferred) |
+| LSP server Odin          | experimental  | `parser/lsp_server.odin` MVP ; initialize + didOpen/Change/Close + publishDiagnostics |
 
 ## Diagnostic code namespace (frozen)
 

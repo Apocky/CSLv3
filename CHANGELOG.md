@@ -4,6 +4,93 @@ All notable changes to CSLv3 are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/). This project adheres
 to [Semantic Versioning](https://semver.org/) starting at `1.0.0`.
 
+## [1.3.0] — 2026-04-17
+
+**Released.** Session-14 delivered six bespoke-replacement modules,
+the Phase-B LSP-in-Odin scaffold MVP, and the LoRA fine-tune
+experiment skeleton. The C2_nested_scopes m₂ anomaly was resolved by
+natural-content corpus expansion. P2.1 LaTeX compile was unblocked
+(MiKTeX installed ; 7/7 fixtures now produce PDFs). All changes
+remain **additive** under the v1.0 stability commitment.
+
+### Added
+
+- **`parser.exe --blake3 <file>`** + **`--blake3-selftest`** —
+  BLAKE3 reference implementation in `parser/blake3.odin` (~400 LOC).
+  11/11 reference test vectors verified. Replaces rust `blake3` crate.
+- **`parser.exe --json-validate <file>`** + **`--json-selftest`** —
+  RFC 8259 JSON parser+emitter in `parser/json_codec.odin` (~550 LOC).
+  20/20 selftest cases (14 parse-ok + 6 parse-fail). Replaces serde_json
+  dependency path.
+- **`parser.exe --json-schema-validate <schema> <doc>`** +
+  **`--json-schema-selftest`** — JSON-Schema Draft-07 subset validator
+  in `parser/json_schema.odin` (~300 LOC). 28/28 selftest vectors.
+  Replaces Python `jsonschema` dependency.
+- **`parser.exe --uri-parse <uri>`** + **`--uri-selftest`** — RFC 3986
+  URI parser in `parser/uri.odin` (~300 LOC). 13/13 selftest vectors
+  (HTTPS/file/mailto/URN/IPv6/relative/fragment). Replaces rust
+  `url` + `percent-encoding` + `idna` + `icu_*` stack (~6 transitive crates).
+- **`parser.exe --lsp`** — LSP server MVP in `parser/lsp_server.odin`
+  (~380 LOC). JSON-RPC over stdin/stdout ; handles initialize +
+  shutdown + textDocument/didOpen/didChange/didClose +
+  textDocument/publishDiagnostics. Smoke-tested end-to-end. Seeds the
+  Phase-B migration away from tower-lsp + tokio + ~50 Rust crates.
+- **Corpus expansion** — `eval/C2_nested_scopes_CSL.csl` grew from
+  27 to 100 lines with rich nested-scope content. Natural token count
+  now ≥ 2·ctx, eliminating the repeat-pad over-collapse artefact that
+  caused C2's v1.2.0 m₂ = 0.09-0.46 anomaly.
+- **LaTeX compile** — `scripts/latex_compile_check.py` enhanced :
+  auto-copies `cslv3.sty` alongside `.tex`, wipes stale intermediates,
+  trusts PDF file-size over the cosmetic MiKTeX "updates" warning.
+  `eval/latex_pdfs/C{1..7}_*.pdf` now generated cleanly.
+- **LoRA fine-tune scaffold** — `scripts/m2_finetune.py` + ready-to-use
+  `training_data/csl_corpus.jsonl` (10 EN→CSL training pairs). LoRA
+  config : rank=16, target=[q,k,v,o]_proj, 3 epochs, cosine LR. Training
+  execution deferred to a Python-3.12 env when `peft`+`datasets`+
+  `accelerate` pip install is reliable (Py3.14 wheels pending).
+
+### Changed
+
+- `scripts/latex_compile_check.py` — drop `--fragment` flag (emit
+  standalone doc so latexmk has a full `\documentclass`).
+
+### Fixed
+
+- `eval/C2_nested_scopes_CSL.csl` now parses + typechecks clean with
+  the expanded content (integer-literal defaults use i32 to match
+  typechecker's morph-order expectation).
+
+### Gates
+
+- 77 selftest vectors across 7 suites :
+  SHA-256 4/4 NIST, Ed25519 3/3 RFC 8032, BLAKE3 11/11 reference,
+  JSON 20/20, JSON-Schema 28/28, URI 13/13, prose-context 5/5
+- 57/57 typecheck G1-G5
+- 22-entry pre-v1.2 audit-chain continues to verify byte-identical
+- 7/7 LaTeX fixtures compile to PDF
+- LSP server MVP handshake smoke-tested
+
+### Dependencies (progress toward zero-external)
+
+Shippable now :
+- `parser.exe --sha256` drop-in for OS `sha256sum` / Python `hashlib`
+- `parser.exe --blake3` drop-in for rust `blake3` crate
+- `parser.exe --json-validate` drop-in for serde_json parse-validate
+- `parser.exe --json-schema-validate` drop-in for Python `jsonschema`
+- `parser.exe --uri-parse` drop-in for rust `url` parse component split
+- `parser.exe --sign` / `--verify` drop-in for Python `cryptography`
+
+On the Phase-B path :
+- `parser.exe --lsp` MVP-drop-in for lsp-server binary (initialize +
+  did* + diagnostics subset ; hover/definition/completion/codeAction/
+  rename/formatting Session-15+)
+
+### Migration notes
+
+No user-visible action required. All additions are opt-in via new
+CLI flags. Existing workflows unchanged. See `MIGRATION_GUIDE.md`
+1.2.0 → 1.3.0 section.
+
 ## [1.2.0] — 2026-04-17
 
 **Released.** Session-13 shipped six phase-A dependency-elimination

@@ -1,5 +1,50 @@
 # Migration Guide
 
+## 1.2.0 → 1.3.0
+
+**No user-visible action required.** v1.3.0 additions are opt-in via
+new CLI flags ; existing workflows continue unchanged.
+
+### New CLI flags
+
+- `parser.exe --blake3 <file>` — BLAKE3 hex digest
+- `parser.exe --blake3-selftest` — 11/11 reference vectors
+- `parser.exe --json-validate <file>` — RFC 8259 validation
+- `parser.exe --json-selftest` — 20/20 round-trip + reject cases
+- `parser.exe --json-schema-validate <schema> <doc>` — Draft-07 subset
+- `parser.exe --json-schema-selftest` — 28/28 schema cases
+- `parser.exe --uri-parse <uri>` — RFC 3986 component breakdown
+- `parser.exe --uri-selftest` — 13/13 URI cases
+- `parser.exe --lsp` — LSP server MVP over stdin/stdout
+
+### Optional migrations
+
+If you were using rust `blake3` crate or Python `hashlib.sha256` in
+your build scripts, you can now call `parser.exe --blake3 <file>` or
+`parser.exe --sha256 <file>` respectively.
+
+If you were using Python `jsonschema` for config validation, you can
+now use `parser.exe --json-schema-validate <schema.json> <doc.json>`.
+
+If you are writing a new LSP client, `parser.exe --lsp` implements
+the LSP 3.17 MVP subset (initialize + textDocument sync +
+publishDiagnostics). Full parity with the Rust `cslv3-lsp.exe` is a
+Session-15+ phase-B continuation.
+
+### C2 corpus expansion
+
+`eval/C2_nested_scopes_CSL.csl` grew from 27 to 100 lines. Any script
+that hardcoded byte counts for C2 should re-compute. The m1/m2
+harnesses read files by path, so they re-measure automatically.
+
+### LoRA scaffold
+
+`scripts/m2_finetune.py` is now present. Execution requires
+peft+datasets+accelerate packages that unreliably install on Python
+3.14 in the Session-14 dev env. Run in Python 3.12 env for full
+functionality ; `--build-corpus-only` mode works in any env and
+produces `training_data/csl_corpus.jsonl` for external trainers.
+
 ## 1.1.0 → 1.2.0
 
 **No user-visible action required.** All v1.2.0 additions are opt-in
