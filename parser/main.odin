@@ -98,6 +98,27 @@ main :: proc() {
         uri_selftest()
         return
     }
+    // Session-14 A5 : `--json-schema-selftest` runs Draft-07 subset vectors.
+    if len(args) >= 2 && args[1] == "--json-schema-selftest" {
+        schema_selftest()
+        return
+    }
+    // Session-14 A5 : `--json-schema-validate <schema> <doc>`.
+    if len(args) >= 4 && args[1] == "--json-schema-validate" {
+        sch, se := os.read_entire_file_from_path(args[2], context.allocator)
+        if se != nil { fmt.eprintf("cannot read %s\n", args[2]); os.exit(2) }
+        doc, de := os.read_entire_file_from_path(args[3], context.allocator)
+        if de != nil { fmt.eprintf("cannot read %s\n", args[3]); os.exit(2) }
+        r := schema_validate(string(sch), string(doc))
+        if r.ok {
+            fmt.printf("OK %s validates against %s\n", args[3], args[2])
+            os.exit(0)
+        } else {
+            fmt.printf("FAIL %s against %s (%d errors)\n", args[3], args[2], len(r.errors))
+            for e in r.errors do fmt.printf("  %s: %s\n", e.path, e.msg)
+            os.exit(1)
+        }
+    }
     // Session-14 A7 : `--uri-parse <uri>` prints component breakdown.
     if len(args) >= 3 && args[1] == "--uri-parse" {
         u, _ := uri_parse(args[2])

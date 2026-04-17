@@ -586,7 +586,7 @@ json_selftest :: proc() {
     os.exit(0)
 }
 
-@(private="file")
+// Public : also used by json_schema.odin for enum/const deep equality.
 values_eq :: proc(a, b: ^J_Value) -> bool {
     if a == nil && b == nil do return true
     if a == nil || b == nil do return false
