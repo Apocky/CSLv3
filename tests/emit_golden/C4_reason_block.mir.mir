@@ -1,0 +1,7 @@
+// schema: mir-v1
+// dialect: cssl
+// source: parser/tests/C4_reason_block.csl
+// emittedAt: 2026-04-17T06:39:26Z
+
+cssl.module @"parser/tests/C4_reason_block.csl" {
+}

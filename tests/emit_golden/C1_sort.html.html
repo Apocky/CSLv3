@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- schema: html-v1 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>C1_sort — CSLv3</title>
+  <style>
+/* CSLv3 HTML Emit — CSS Taxonomy (html-v1) */
+:root {
+  --bg:        #0f0f14;
+  --fg:        #e0e0e6;
+  --keyword:   #c6c;
+  --morpheme:  #6cc;
+  --operator:  #fc6;
+  --modal:     #f8a;
+  --evidence:  #9c6;
+  --glyph:     #ff8;
+  --type:      #8cf;
+  --string:    #caa;
+  --number:    #a8d;
+  --comment:   #666;
+}
+body.cslv3 { background: var(--bg); color: var(--fg); font-family: "JetBrains Mono", "Fira Code", monospace; }
+h1, h2, h3 { color: var(--glyph); }
+.csl-section { border-left: 3px solid var(--keyword); padding-left: 1em; margin: 1em 0; }
+.csl-morpheme { color: var(--morpheme); font-weight: 600; }
+.csl-modal    { color: var(--modal);    font-weight: 600; }
+.csl-evidence { color: var(--evidence); }
+.csl-glyph    { color: var(--glyph);    }
+.csl-operator { color: var(--operator); }
+.csl-type     { color: var(--type);     }
+.csl-string   { color: var(--string);   }
+.csl-number   { color: var(--number);   }
+.csl-comment  { color: var(--comment);  font-style: italic; }
+.csl-keyword  { color: var(--keyword);  font-weight: 600; }
+pre.csl-block { background: rgba(255,255,255,0.03); padding: 1em; overflow-x: auto; border-radius: 4px; }
+nav.csl-toc   { position: sticky; top: 1em; }
+nav.csl-toc a { color: var(--glyph); text-decoration: none; }
+nav.csl-toc a:hover { text-decoration: underline; }
+
+  </style>
+</head>
+<body class="cslv3">
+  <h1>C1_sort</h1>
+  <nav class="csl-toc">
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#sortspec">sort.spec</a></li>
+      <li><a href="#goal">GOAL</a></li>
+      <li><a href="#data">DATA</a></li>
+      <li><a href="#ops">OPS</a></li>
+      <li><a href="#invariants">INVARIANTS</a></li>
+      <li><a href="#tests">TESTS</a></li>
+      <li><a href="#anti-patterns">ANTI-PATTERNS</a></li>
+    </ul>
+  </nav>
+  <main>
+  <section class="csl-section">
+    <h2 id="sortspec">sort.spec</h2>
+  </section>
+  <section class="csl-section">
+    <h2 id="goal">GOAL</h2>
+  </section>
+  <section class="csl-section">
+    <h2 id="data">DATA</h2>
+    <pre class="csl-block"># what<span class="csl-operator">:</span> in<span class="csl-operator">-</span>place comparison sort
+# why<span class="csl-operator">:</span>  predictable worst<span class="csl-operator">-</span>case, zero allocations
+def Arr't <span class="csl-operator">=</span> [i<span class="csl-number">3</span><span class="csl-number">2</span>; _]</pre>
+    <pre class="csl-block">def Cmp't <span class="csl-operator">=</span> i<span class="csl-number">3</span><span class="csl-number">2</span> <span class="csl-operator">-</span>> i<span class="csl-number">3</span><span class="csl-number">2</span> <span class="csl-operator">-</span>> bool</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="ops">OPS</h2>
+    <pre class="csl-block">fn sort (a <span class="csl-operator">:</span> &Arr't, cmp <span class="csl-operator">:</span> Cmp't) <span class="csl-operator">-</span>> bool <span class="csl-operator">=</span> true</pre>
+    <pre class="csl-block">fn merge<span class="csl-operator">-</span>sort (a <span class="csl-operator">:</span> &Arr't, lo <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span>, hi <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span>, cmp <span class="csl-operator">:</span> Cmp't) <span class="csl-operator">-</span>> bool <span class="csl-operator">=</span> true</pre>
+    <pre class="csl-block">fn merge (a <span class="csl-operator">:</span> &Arr't, lo <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span>, mid <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span>, hi <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span>, cmp <span class="csl-operator">:</span> Cmp't) <span class="csl-operator">-</span>> bool <span class="csl-operator">=</span> true</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="invariants">INVARIANTS</h2>
+    <pre class="csl-block"><span class="csl-operator">⌈</span>time <<span class="csl-operator">=</span> n<span class="csl-operator">⌉</span></pre>
+    <pre class="csl-block"><span class="csl-operator">⌈</span>extra<span class="csl-operator">-</span>space <span class="csl-operator">=</span> n<span class="csl-operator">⌉</span></pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="tests">TESTS</h2>
+    <pre class="csl-block">[x] case<span class="csl-number">1</span> <span class="csl-operator">:</span> sort<span class="csl-operator">-</span>empty<span class="csl-operator">-</span>returns<span class="csl-operator">-</span>true</pre>
+    <pre class="csl-block">[x] case<span class="csl-number">2</span> <span class="csl-operator">:</span> sort<span class="csl-operator">-</span>one<span class="csl-operator">-</span>returns<span class="csl-operator">-</span>true</pre>
+    <pre class="csl-block">[x] edge <span class="csl-operator">:</span> sort<span class="csl-operator">-</span>reversed<span class="csl-operator">-</span>returns<span class="csl-operator">-</span>true</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="anti-patterns">ANTI-PATTERNS</h2>
+    <pre class="csl-block">[!] recursion<span class="csl-operator">-</span>on<span class="csl-operator">-</span>tiny<span class="csl-operator">-</span>subarrays</pre>
+    <pre class="csl-block">[x] insertion<span class="csl-operator">-</span>sort<span class="csl-operator">-</span>at<span class="csl-operator">-</span>small<span class="csl-operator">-</span>n</pre>
+  </section>
+  </main>
+</body>
+</html>

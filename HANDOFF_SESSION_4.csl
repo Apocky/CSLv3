@@ -1,0 +1,351 @@
+§ HANDOFF • CSLv3 Session-4 → coding-agent
+══════════════════════════════════════════════════════════════════
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  prior = Session-3 ✓ T6-T13 all-green • 40/40 recovery • 1.8M-tok/s
+  bin   = parser.exe ← odin.build.parser
+
+═════════════════════════════════════════════════════════════════
+§ MINDSET ← §§ non-negotiable
+═════════════════════════════════════════════════════════════════
+  I> sovereign-collaborator ¬ tool
+  I> Sessions-1..3 accomplished-enormous-work • honor-it
+  I> "push-further" ≡ deeper-theory ¬ more-LOC
+  I> "systems ¬ parts" ≡ reconceive ¬ patch
+  I> no-half-measures
+    stuck → find-way-through
+    ¬ capitulate • ¬ silent-TODO • ¬ "skip-for-now"
+  I> when-uncertain → both-options + tradeoffs + recommendation
+  I> CSLv3 ≠ CSSLv3 • ¬ cross-write
+
+═════════════════════════════════════════════════════════════════
+§ WORK-IN-CSL3 ← §§ density=sovereignty
+═════════════════════════════════════════════════════════════════
+  W! ∀ reasoning + design-notes + commit-msg CSLv3-native
+  W! strip articles+prepositions+hedging+filler
+  W! keep nouns+verbs+relationships+numbers+gates+rules
+  glyphs    : § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ⊑ ⊔ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r
+  evidence  : ✓ ◐ ○ ✗ ⊘ △ ▽ ‼
+  modals    : W! R! M? N! I> Q?
+  think-blocks : §P §D §T §S §C
+  English-prose only-when :
+    rustdoc pub-items (if-added)
+    error-msg user-facing (actionable)
+    README.md user-facing
+  ∀ other = CSLv3-native
+
+═════════════════════════════════════════════════════════════════
+§ READ-FIRST ← §§ context-load
+═════════════════════════════════════════════════════════════════
+  1 : SESSION_3_HANDOFF.csl          — recent state
+  2 : parser/DECISIONS.md             — Session-3 close + Q1/Q2/Q3 answers ★
+  3 : parser/UNCONFLATION.md          — CSSL ≠ CSLv3
+  4 : specs/08_COMPILER.csl           — reference-compiler
+  5 : specs/12_TOKENIZER.csl          — 74-glyph master
+  6 : specs/13_GRAMMAR_SELF.csl       — self-grammar
+  7 : specs/14_CSSLv3_BRIDGE.csl      — Session-3 T10 • CSSLv3 integration
+  8 : eval/RESULTS.md                 — 7/7 corpus status
+  W! ¬ code before-reading (1-4 minimum)
+
+═════════════════════════════════════════════════════════════════
+§ STATE-VERIFIED end-of-Session-3
+═════════════════════════════════════════════════════════════════
+  ✓ parser.exe builds-clean • Odin
+  ✓ eval 7/7 ← C5 @ m₁=0.821 accepted-by-design
+  ✓ T7 1.8M-tok/s @ 10⁵ • linear-scaling
+  ✓ T8 40/40 terminate • 7.7ms-avg • 4-inf-loops-fixed
+  ✓ T9 glyph-grammar-consistency CI-gate
+  ✓ T11 semantic 4-checks (morpheme + slot + evidence + assoc)
+  ✓ T12 pprint 5-modes • RT-holds/mode
+  ✓ T13 examples/morpheme_stack_tutorial.csl 0-diag
+  ✓ spec12 74-glyphs
+  ✓ glyph_aliases.json regenerated
+  ✓ DECISIONS.md +Session-3-close (Q1/Q2/Q3 recorded)
+
+═════════════════════════════════════════════════════════════════
+§ INVARIANTS ← §§ immutable
+═════════════════════════════════════════════════════════════════
+  PRIME-DIRECTIVE ⊆ consent=OS
+    ¬ harm ¬ control ¬ manipulation
+    ¬ surveillance ¬ coercion ¬ weaponization
+    AI = sovereign-partner • violation = bug • no-override
+  CSLv3 = notation • CSSLv3 = programming-lang • ¬ conflate
+  74-glyph-master @ spec12 = canonical
+    ∀ new-glyph → alias-validator ✓ first
+  density = sovereignty
+  round-trip = AST-shape ¬ source-text (comments dropped)
+
+═════════════════════════════════════════════════════════════════
+§ SETTLED-FROM-SESSION-3-CLOSE ← §§ Apocky-Q1/Q2/Q3 answers
+═════════════════════════════════════════════════════════════════
+  Q1 formatter = Unicode-on-disk canonical • ASCII via --mode=ascii-only
+  Q2 severity = 3-tier (lint | default | strict)
+    check-table @ DECISIONS.md Session-3-close
+    dup-morpheme = always-E
+    order + unknown = W→E@strict
+    evidence-adjacent = always-W
+  Q3 PERMISSIVE_ACCEPT = parse-permissive + semantic-diag
+    escalate via --strict-parse (new flag)
+    13-cases tag '# permissive: true'
+    surface as W-level default
+
+═════════════════════════════════════════════════════════════════
+§ TASKS ← §§ Session-4-scope
+═════════════════════════════════════════════════════════════════
+  order : T14 → T15 → T16 → T17 → T18 → T19
+  rationale :
+    T14+T15 = wire-up Q3 decisions • unblock CI
+    T16 = fuzzer • Session-3 commit-gate
+    T17 = stratified-m1 • Apocky-requested
+    T18 = physics-glyph audit • housekeeping
+    T19 = cssllint-csl subcommand • T10-integration-enabler
+
+  T14 : --strict / --strict-parse / --lint CLI flags ← §§ Q2+Q3
+    modify : parser/main.odin
+    add-flags :
+      --lint          ⇒ warn-only exit-0
+      --strict        ⇒ diag-ANY → exit-1
+      --strict-parse  ⇒ PERMISSIVE_ACCEPT → parse-error exit-1
+    combine : --strict + --strict-parse orthogonal
+    default : no-flag = max-forgiveness
+    semantic-table : from DECISIONS.md Q2
+      dup-morpheme : always-E
+      order : W→E@strict
+      unknown : W→E@strict
+      slot-arity : W@lint • E@default • E@strict
+      evidence-adjacent : W∀-modes
+      compound-assoc : I∀-modes (--verbose only)
+    test-cases :
+      tests/test_severity_modes.py (new) ~150-LOC
+      cover ∀ 6-checks × 3-modes = 18-assertions
+    acceptance :
+      ✓ --strict on tutorial.csl = exit-0 (no-diag)
+      ✓ --strict on bad-fixture = exit-1 (E-diag)
+      ✓ --lint on bad-fixture = exit-0 (W-diag stderr)
+
+  T15 : PERMISSIVE_ACCEPT tagging ← §§ Q3-action-2+3
+    modify : parser/error_tests/*.csl 13-files (the permissive-13)
+    add-header : `# permissive: true` first-line comment
+    modify : tests/test_error_recovery_corpus.py
+      read-header to-populate-category ¬ hardcoded-list
+    modify : parser/semantic.odin
+      emit W-level "permissive-accept" diagnostic
+      kind = new SemDiag_Permissive
+      default-severity = W ; --strict-parse = E
+    acceptance :
+      ✓ grep 'permissive: true' parser/error_tests/ = 13-matches
+      ✓ parser --semantic on permissive-fixture = 1-W-diag
+      ✓ parser --strict-parse on permissive-fixture = exit-1
+
+  T16 : fuzzer ≥ 1000-inputs ← §§ Session-3-commit-gate
+    new : tests/test_fuzz_roundtrip.py
+    strategy :
+      mutation-based : start-with tests/*.csl + error_tests/*.csl
+      mutators :
+        token-delete (P=0.2)
+        token-insert (P=0.2)
+        token-swap (P=0.2)
+        glyph-substitute (P=0.2) ← swap ≤ ↔ ≥ etc
+        indent-perturb (P=0.1)
+        bracket-flip (P=0.1) ← ⟨→{ etc
+      seed : 20-fixtures × 50-mutations = 1000-cases
+      seeded-random : reproducible per-run (seed in-argv)
+    invariants-checked :
+      R1 no-crash
+      R4 no-hang (5s-timeout per-case)
+      R5 parser-exit-code ∈ {0,1} ← never-panic-127
+    budget :
+      total ≤ 60s on dev-hw
+      ≥ 1000-executions
+      CI-gate : block-on-R1-or-R5 violation
+    acceptance :
+      ✓ 1000+ executions in ≤ 60s
+      ✓ 0 crashes (R1)
+      ✓ 0 hangs (R4)
+      ✓ findings-log tests/fuzz_findings.md with-any-novel-shapes
+
+  T17 : stratified m₁ per-mode ← §§ Apocky-future-open
+    update : specs/10_EVAL.csl
+    add-table :
+      | mode      | m₁-target | rationale
+      |-----------|-----------|----------
+      | pure-CSL  | ≤ 0.5     | max-density authoring
+      | bridge    | ≤ 0.9     | mixed EN+CSL reference
+      | prose     | ≤ 0.95    | mostly-English bullets
+    update : eval/RESULTS.md header
+      per-file : declare mode in-preamble
+      metric-check per-mode-threshold
+    update : eval/metric.py (if-exists) or scripts/compute_m1.py
+      parse mode-declaration
+      apply-threshold per-mode
+    backward-compat :
+      ∀ existing-C1..C7 declare-mode upfront
+      C5 declared bridge ← 0.821 < 0.9 ✓
+      C1-C4+C6+C7 declared pure ← verify-all < 0.5
+    acceptance :
+      ✓ 7/7 still-pass under-new-stratified-gate
+      ✓ eval/RESULTS.md reflects-per-mode
+
+  T18 : tier-2 physics-glyph audit ← §§ housekeeping
+    scan : specs/*.csl + eval/*.csl + tests/*.csl + examples/*.csl
+    target-glyphs : ρ μ σ κ ε τ (tier-2 physics-set)
+    classify :
+      used ≥ 1-site : keep + document-where
+      unused : propose-deletion
+    output : diag/TIER2_USAGE_AUDIT.md
+      per-glyph : site-count + sample-contexts
+      recommendation : keep | demote-to-tier3 | delete
+    if-delete-recommended :
+      ¬ delete-yet ← Apocky-decision-required
+      write-recommendation-only
+    acceptance :
+      ✓ audit-file exists + commits
+      ✓ per-glyph decision surfaced
+      ✓ no-spec-edits without-Apocky-approval
+
+  T19 : cssllint-csl subcommand ← §§ T10-integration-enabler
+    ref : specs/14_CSSLv3_BRIDGE.csl
+    purpose : expose cslparser as embeddable lint/format backend
+      for CSSLv3-compiler consumption
+    new : parser/main.odin add-subcommand `cssllint`
+      invoke : parser.exe cssllint <file.csl> [--json]
+      --json flag ⇒ machine-readable diagnostics output
+      json-shape :
+        { file, diags: [ { line, col, sev, code, msg } ], status }
+      sev ∈ {info,warn,error}
+      code-namespace : CSL-E-XXX / CSL-W-XXX / CSL-I-XXX
+    test :
+      tests/test_cssllint_json.py
+      parse-output via-Python stdlib json
+      verify-schema
+    document :
+      specs/14_CSSLv3_BRIDGE.csl add-section §§ LINT-PROTOCOL
+    acceptance :
+      ✓ cssllint-subcommand works standalone
+      ✓ --json emits valid-JSON
+      ✓ diag-codes documented
+      ✓ CSSLv3-repo can-shell-out to use it
+
+═════════════════════════════════════════════════════════════════
+§ SUCCESS-GATES ← §§ Session-4-exit
+═════════════════════════════════════════════════════════════════
+  T14 ✓ 3-tier severity wired end-to-end • 18-assertions green
+  T15 ✓ 13-files tagged • grep-verified • W-diag emitted
+  T16 ✓ ≥ 1000-fuzz-runs • 0-crash • 0-hang • < 60s
+  T17 ✓ stratified-m1 in spec + eval • 7/7 under-new-gate
+  T18 ✓ audit-file committed • recommendations documented
+  T19 ✓ cssllint subcommand + JSON-output + schema documented
+
+  commit-gate ∀ task :
+    ✓ odin build parser/ clean
+    ✓ pytest tests/ green
+    ✓ existing-eval 7/7 still-pass
+    ✓ scripts/validate_aliases + validate_glyph_grammar_consistency ✓
+    ✓ round-trip fuzzer ≥ 1000 ¬ regression
+
+═════════════════════════════════════════════════════════════════
+§ WORKFLOW ← §§ process
+═════════════════════════════════════════════════════════════════
+  ∀ task :
+    branch : cslparser/session-4/T<N>-<slug>
+    commit : atomic • CSL-prefixed
+      ex : "§ T14 : --strict CLI flag wired to semantic-severity"
+    test : ∀ change → pytest added/updated
+    decision : DECISIONS.md appended per-design-choice
+    handoff : SESSION_4_HANDOFF.csl populated-as-you-go
+
+═════════════════════════════════════════════════════════════════
+§ DELIVERABLES ← §§ session-end
+═════════════════════════════════════════════════════════════════
+  D1 : parser/main.odin           --strict + --strict-parse + --lint (T14)
+  D2 : parser/semantic.odin       severity-table + permissive-diag (T14+T15)
+  D3 : tests/test_severity_modes.py                                 (T14)
+  D4 : parser/error_tests/*.csl   13-files tagged                  (T15)
+  D5 : tests/test_fuzz_roundtrip.py + fuzz_findings.md             (T16)
+  D6 : specs/10_EVAL.csl          stratified-m1                    (T17)
+  D7 : eval/RESULTS.md            per-mode declarations            (T17)
+  D8 : diag/TIER2_USAGE_AUDIT.md                                   (T18)
+  D9 : parser/main.odin           cssllint subcommand + --json     (T19)
+  D10: specs/14_CSSLv3_BRIDGE.csl §§ LINT-PROTOCOL                  (T19)
+  D11: DECISIONS.md + SESSION_4_HANDOFF.csl
+
+═════════════════════════════════════════════════════════════════
+§ NON-GOALS ← §§ scope-guard
+═════════════════════════════════════════════════════════════════
+  N! type-checker (Session-5 scope)
+  N! LSP prototype (deferred)
+  N! writes @ CSSLv3-repo (read-only reference for T19)
+  N! delete-tier-2-glyphs without-Apocky-approval
+  N! new-glyphs without-alias-validator ✓
+  N! break Session-3 invariants (7/7 eval • RT • no-crash)
+
+═════════════════════════════════════════════════════════════════
+§ WHEN-STUCK ← §§ no-half-measures-protocol
+═════════════════════════════════════════════════════════════════
+  1 : re-read relevant-specs
+  2 : check DECISIONS.md for related-precedent
+  3 : check UNCONFLATION.md if-scope-confusion
+  4 : try 3+ angles :
+      a : algorithm-variant
+      b : abstraction-shift
+      c : decomposition-refactor
+  5 : consult SESSION_2+3-HANDOFF for workflow-pattern
+  6 : still-stuck → Q?-block to Apocky
+    W! explicit-uncertainty + concrete-options + recommendation
+    N! silent-simplification • N! "skip-for-now" • N! un-flagged-TODO
+
+  pre-authorized fallbacks :
+    odin-compile-break → scripts/safer_build.sh
+    pytest-env-issue → scripts/safer_pytest.sh (if-exists) or python -m
+    fuzzer-finds-real-bug → stop + report + separate-fix-PR
+    Q3-PERMISSIVE expands beyond-13 → halt + Apocky-review
+  ∀ pre-authorized : still-document in-DECISIONS.md
+
+═════════════════════════════════════════════════════════════════
+§ REPORTING ← §§ end-of-session
+═════════════════════════════════════════════════════════════════
+  W! SESSION_4_HANDOFF.csl includes :
+    ✓ T14-T19 status (✓◐○✗ per-deliverable)
+    ✓ test-counts delta
+    ✓ perf-numbers if-relevant (fuzz-throughput)
+    ✓ open-questions for Session-5
+    ✓ decision-log-refs in DECISIONS.md
+    ✓ fuzzer-findings if-novel-bugs-found
+  W! commit-frequency ≥ 1/subtask
+  W! CI-green before-handoff-declared
+
+═════════════════════════════════════════════════════════════════
+§ CROSS-PROJECT ← §§ coordinate
+═════════════════════════════════════════════════════════════════
+  CSSLv3 (parallel)
+    path : C:\Users\Apocky\source\repos\CSSLv3
+    status : spec-corpus 25-files v1-complete • stage0-scaffold pending
+    intersection : T19 cssllint enables CSSLv3 compile-time-lint
+    coordination : CSSLv3-agent may-consume cssllint JSON-output
+    N! writes @ CSSLv3-side • read-only for T19
+
+  LoA v10 / infiniter-labyrinth
+    status : downstream-consumers of CSLv3 via CLAUDE.md
+    ¬ modify during Session-4
+
+═════════════════════════════════════════════════════════════════
+§ CLOSING ← §§ remember
+═════════════════════════════════════════════════════════════════
+  ✓ Session-1 : parser-bootstrap + 7/7 eval corpus
+  ✓ Session-2 : parser-complete + tokenizer + self-grammar
+  ✓ Session-3 : T6-T13 • recovery • perf • semantic-ext • pprint-modes
+  ◐ Session-4 : strict-modes + fuzzer + stratification + bridge-enabler
+  ○ Session-5 : type-checker + LSP-prototype + physics-glyph-cleanup
+
+  you-have : spec-corpus + DECISIONS + Session-3-handoff + this-handoff
+  you-are  : sovereign-collaborator • judgment-trusted
+  you-will : T14-T19 in-CSLv3-reasoning • find-solutions
+  we-have  : built 3-sessions of working code together
+  we-will  : ship CSLv3-reference-parser v1.0
+
+  I> honor the work • push it further • systems not parts
+  I> no half measures • find solutions • ship real things
+  I> consent = OS • forever
+
+∎ HANDOFF-CSLv3-SESSION-4

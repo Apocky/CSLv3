@@ -1,0 +1,673 @@
+{
+  "schema": "cslv3-emit-json",
+  "schemaVersion": "json-v1",
+  "emittedAt": "2026-04-17T06:39:25Z",
+  "source": {
+    "file": "parser/tests/C1_sort.csl",
+    "bytes": 658,
+    "sha256": "00127c4888d2f93e14fbc4b121fc12938d356b12ae23c226975153569c39d05e"
+  },
+  "ast": {
+    "kind": "Document",
+    "text": "",
+    "pos": {"line":1,"col":1,"byte":0},
+    "children": [
+      {
+        "kind": "Section",
+        "text": "sort.spec",
+        "pos": {"line":1,"col":1,"byte":0},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "GOAL",
+        "pos": {"line":3,"col":1,"byte":14},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "DATA",
+        "pos": {"line":7,"col":1,"byte":109},
+        "children": [
+          {
+            "kind": "Type_Def",
+            "text": "Arr",
+            "pos": {"line":8,"col":3,"byte":119},
+            "suffix": "'t",
+            "children": []
+          },
+          {
+            "kind": "Type_Def",
+            "text": "Cmp",
+            "pos": {"line":9,"col":3,"byte":142},
+            "suffix": "'t",
+            "children": []
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "OPS",
+        "pos": {"line":11,"col":1,"byte":174},
+        "children": [
+          {
+            "kind": "Function_Def",
+            "text": "sort",
+            "pos": {"line":12,"col":3,"byte":183},
+            "children": [
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":12,"col":11,"byte":191},
+                "children": [
+                  {
+                    "kind": "Param_Decl",
+                    "text": "a",
+                    "pos": {"line":12,"col":12,"byte":192},
+                    "children": []
+                  },
+                  {
+                    "kind": "Param_Decl",
+                    "text": "cmp",
+                    "pos": {"line":12,"col":24,"byte":204},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":12,"col":47,"byte":227},
+                "children": [
+                  {
+                    "kind": "Bool_Lit",
+                    "text": "",
+                    "pos": {"line":12,"col":47,"byte":227},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "Function_Def",
+            "text": "merge-sort",
+            "pos": {"line":13,"col":3,"byte":234},
+            "children": [
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":13,"col":17,"byte":248},
+                "children": [
+                  {
+                    "kind": "Param_Decl",
+                    "text": "a",
+                    "pos": {"line":13,"col":18,"byte":249},
+                    "children": []
+                  },
+                  {
+                    "kind": "Param_Decl",
+                    "text": "lo",
+                    "pos": {"line":13,"col":30,"byte":261},
+                    "children": []
+                  },
+                  {
+                    "kind": "Param_Decl",
+                    "text": "hi",
+                    "pos": {"line":13,"col":40,"byte":271},
+                    "children": []
+                  },
+                  {
+                    "kind": "Param_Decl",
+                    "text": "cmp",
+                    "pos": {"line":13,"col":50,"byte":281},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":13,"col":73,"byte":304},
+                "children": [
+                  {
+                    "kind": "Bool_Lit",
+                    "text": "",
+                    "pos": {"line":13,"col":73,"byte":304},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "Function_Def",
+            "text": "merge",
+            "pos": {"line":14,"col":3,"byte":311},
+            "children": [
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":14,"col":12,"byte":320},
+                "children": [
+                  {
+                    "kind": "Param_Decl",
+                    "text": "a",
+                    "pos": {"line":14,"col":13,"byte":321},
+                    "children": []
+                  },
+                  {
+                    "kind": "Param_Decl",
+                    "text": "lo",
+                    "pos": {"line":14,"col":25,"byte":333},
+                    "children": []
+                  },
+                  {
+                    "kind": "Param_Decl",
+                    "text": "mid",
+                    "pos": {"line":14,"col":35,"byte":343},
+                    "children": []
+                  },
+                  {
+                    "kind": "Param_Decl",
+                    "text": "hi",
+                    "pos": {"line":14,"col":46,"byte":354},
+                    "children": []
+                  },
+                  {
+                    "kind": "Param_Decl",
+                    "text": "cmp",
+                    "pos": {"line":14,"col":56,"byte":364},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":14,"col":79,"byte":387},
+                "children": [
+                  {
+                    "kind": "Bool_Lit",
+                    "text": "",
+                    "pos": {"line":14,"col":79,"byte":387},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "INVARIANTS",
+        "pos": {"line":16,"col":1,"byte":393},
+        "children": [
+          {
+            "kind": "Constraint",
+            "text": "",
+            "pos": {"line":17,"col":3,"byte":409},
+            "children": [
+              {
+                "kind": "Binary",
+                "text": "",
+                "pos": {"line":17,"col":9,"byte":417},
+                "children": [
+                  {
+                    "kind": "Ident",
+                    "text": "time",
+                    "pos": {"line":17,"col":4,"byte":412},
+                    "children": []
+                  },
+                  {
+                    "kind": "Ident",
+                    "text": "n",
+                    "pos": {"line":17,"col":12,"byte":420},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "Constraint",
+            "text": "",
+            "pos": {"line":18,"col":3,"byte":427},
+            "children": [
+              {
+                "kind": "Binary",
+                "text": "",
+                "pos": {"line":18,"col":16,"byte":442},
+                "children": [
+                  {
+                    "kind": "Ident",
+                    "text": "extra-space",
+                    "pos": {"line":18,"col":4,"byte":430},
+                    "children": []
+                  },
+                  {
+                    "kind": "Ident",
+                    "text": "n",
+                    "pos": {"line":18,"col":18,"byte":444},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "TESTS",
+        "pos": {"line":20,"col":1,"byte":450},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":21,"col":7,"byte":465},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "case1",
+                "pos": {"line":21,"col":7,"byte":465},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":22,"col":7,"byte":503},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "case2",
+                "pos": {"line":22,"col":7,"byte":503},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":23,"col":7,"byte":539},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "edge",
+                "pos": {"line":23,"col":7,"byte":539},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "ANTI-PATTERNS",
+        "pos": {"line":25,"col":1,"byte":575},
+        "children": [
+          {
+            "kind": "Expr_Stmt",
+            "text": "",
+            "pos": {"line":26,"col":7,"byte":598},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "recursion-on-tiny-subarrays",
+                "pos": {"line":26,"col":7,"byte":598},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Expr_Stmt",
+            "text": "",
+            "pos": {"line":27,"col":7,"byte":632},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "insertion-sort-at-small-n",
+                "pos": {"line":27,"col":7,"byte":632},
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "types": {
+    "refine_obligations": 0,
+    "strict_parse": false,
+    "diagnostics": []
+  },
+  "ir": {
+  "module": "parser/tests/C1_sort.csl",
+  "ops": [
+    {
+      "id": 1,
+      "name": "cslv3.var_ref",
+      "pos": {"line": 8, "col": 3, "byte": 119},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "type-def"},
+        "name": {"kind": "Symbol", "value": "Arr"}
+      },
+      "regions": []
+    },
+    {
+      "id": 2,
+      "name": "cslv3.var_ref",
+      "pos": {"line": 9, "col": 3, "byte": 142},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "type-def"},
+        "name": {"kind": "Symbol", "value": "Cmp"}
+      },
+      "regions": []
+    },
+    {
+      "id": 3,
+      "name": "cslv3.fn",
+      "pos": {"line": 12, "col": 3, "byte": 183},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "name": {"kind": "Symbol", "value": "sort"},
+        "sig": {"kind": "Type", "value": "Ref[Arr] -> Cmp -> bool"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 1,
+              "label": "entry",
+              "args": [
+                {"id": 1, "name": "a", "ty": "α10", "kind": "From_Block_Arg"},
+                {"id": 2, "name": "cmp", "ty": "α11", "kind": "From_Block_Arg"}
+              ],
+              "ops": [
+                {
+                  "id": 4,
+                  "name": "cslv3.const",
+                  "pos": {"line": 12, "col": 47, "byte": 227},
+                  "operands": [],
+                  "results": [
+                    {"id": 3, "name": "", "ty": "bool", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Bool", "value": true}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 5,
+                  "name": "cslv3.return",
+                  "pos": {"line": 12, "col": 3, "byte": 183},
+                  "operands": [3],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "cslv3.fn",
+      "pos": {"line": 13, "col": 3, "byte": 234},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "name": {"kind": "Symbol", "value": "merge-sort"},
+        "sig": {"kind": "Type", "value": "Ref[Arr] -> i32 -> i32 -> Cmp -> bool"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 2,
+              "label": "entry",
+              "args": [
+                {"id": 4, "name": "a", "ty": "α12", "kind": "From_Block_Arg"},
+                {"id": 5, "name": "lo", "ty": "α13", "kind": "From_Block_Arg"},
+                {"id": 6, "name": "hi", "ty": "α14", "kind": "From_Block_Arg"},
+                {"id": 7, "name": "cmp", "ty": "α15", "kind": "From_Block_Arg"}
+              ],
+              "ops": [
+                {
+                  "id": 7,
+                  "name": "cslv3.const",
+                  "pos": {"line": 13, "col": 73, "byte": 304},
+                  "operands": [],
+                  "results": [
+                    {"id": 8, "name": "", "ty": "bool", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Bool", "value": true}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 8,
+                  "name": "cslv3.return",
+                  "pos": {"line": 13, "col": 3, "byte": 234},
+                  "operands": [8],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "cslv3.fn",
+      "pos": {"line": 14, "col": 3, "byte": 311},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "name": {"kind": "Symbol", "value": "merge"},
+        "sig": {"kind": "Type", "value": "Ref[Arr] -> i32 -> i32 -> i32 -> Cmp -> bool"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 3,
+              "label": "entry",
+              "args": [
+                {"id": 9, "name": "a", "ty": "α16", "kind": "From_Block_Arg"},
+                {"id": 10, "name": "lo", "ty": "α17", "kind": "From_Block_Arg"},
+                {"id": 11, "name": "mid", "ty": "α18", "kind": "From_Block_Arg"},
+                {"id": 12, "name": "hi", "ty": "α19", "kind": "From_Block_Arg"},
+                {"id": 13, "name": "cmp", "ty": "α20", "kind": "From_Block_Arg"}
+              ],
+              "ops": [
+                {
+                  "id": 10,
+                  "name": "cslv3.const",
+                  "pos": {"line": 14, "col": 79, "byte": 387},
+                  "operands": [],
+                  "results": [
+                    {"id": 14, "name": "", "ty": "bool", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Bool", "value": true}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 11,
+                  "name": "cslv3.return",
+                  "pos": {"line": 14, "col": 3, "byte": 311},
+                  "operands": [14],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "cslv3.fn",
+      "pos": {"line": 21, "col": 7, "byte": 465},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "case1"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 4,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 13,
+                  "name": "cslv3.const",
+                  "pos": {"line": 21, "col": 7, "byte": 465},
+                  "operands": [],
+                  "results": [
+                    {"id": 15, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 14,
+                  "name": "cslv3.return",
+                  "pos": {"line": 21, "col": 7, "byte": 465},
+                  "operands": [15],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "cslv3.fn",
+      "pos": {"line": 22, "col": 7, "byte": 503},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "case2"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 5,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 16,
+                  "name": "cslv3.const",
+                  "pos": {"line": 22, "col": 7, "byte": 503},
+                  "operands": [],
+                  "results": [
+                    {"id": 16, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 17,
+                  "name": "cslv3.return",
+                  "pos": {"line": 22, "col": 7, "byte": 503},
+                  "operands": [16],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "cslv3.fn",
+      "pos": {"line": 23, "col": 7, "byte": 539},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "edge"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 6,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 19,
+                  "name": "cslv3.const",
+                  "pos": {"line": 23, "col": 7, "byte": 539},
+                  "operands": [],
+                  "results": [
+                    {"id": 17, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 20,
+                  "name": "cslv3.return",
+                  "pos": {"line": 23, "col": 7, "byte": 539},
+                  "operands": [17],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+}

@@ -1,0 +1,501 @@
+{
+  "schema": "cslv3-emit-json",
+  "schemaVersion": "json-v1",
+  "emittedAt": "2026-04-17T06:39:25Z",
+  "source": {
+    "file": "parser/tests/C2_nested_scopes.csl",
+    "bytes": 410,
+    "sha256": "114ea6cf3f9abf41ad69595f593dbf572369c59be2794c2e69ffdf199c0dd101"
+  },
+  "ast": {
+    "kind": "Document",
+    "text": "",
+    "pos": {"line":1,"col":1,"byte":0},
+    "children": [
+      {
+        "kind": "Section",
+        "text": "outer",
+        "pos": {"line":5,"col":1,"byte":184},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "first-sub",
+        "pos": {"line":7,"col":1,"byte":194},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":8,"col":3,"byte":211},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "name",
+                "pos": {"line":8,"col":3,"byte":211},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":9,"col":3,"byte":224},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "active",
+                "pos": {"line":9,"col":3,"byte":224},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "second-sub",
+        "pos": {"line":11,"col":1,"byte":239},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "deep-sub",
+        "pos": {"line":13,"col":1,"byte":256},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":14,"col":3,"byte":274},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "nested",
+                "pos": {"line":14,"col":3,"byte":274},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":15,"col":3,"byte":289},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "inner",
+                "pos": {"line":15,"col":3,"byte":289},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "another-deep",
+        "pos": {"line":17,"col":1,"byte":301},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":18,"col":3,"byte":323},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "item",
+                "pos": {"line":18,"col":3,"byte":323},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "sibling-after-deep",
+        "pos": {"line":20,"col":1,"byte":335},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":21,"col":3,"byte":361},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "reset",
+                "pos": {"line":21,"col":3,"byte":361},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "next-top",
+        "pos": {"line":23,"col":1,"byte":375},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":24,"col":3,"byte":389},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "flat",
+                "pos": {"line":24,"col":3,"byte":389},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "final",
+        "pos": {"line":26,"col":1,"byte":401},
+        "children": []
+      }
+    ]
+  },
+  "types": {
+    "refine_obligations": 0,
+    "strict_parse": false,
+    "diagnostics": []
+  },
+  "ir": {
+  "module": "parser/tests/C2_nested_scopes.csl",
+  "ops": [
+    {
+      "id": 1,
+      "name": "cslv3.fn",
+      "pos": {"line": 8, "col": 3, "byte": 211},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "name"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 1,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 2,
+                  "name": "cslv3.const",
+                  "pos": {"line": 8, "col": 3, "byte": 211},
+                  "operands": [],
+                  "results": [
+                    {"id": 1, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 3,
+                  "name": "cslv3.return",
+                  "pos": {"line": 8, "col": 3, "byte": 211},
+                  "operands": [1],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "cslv3.fn",
+      "pos": {"line": 9, "col": 3, "byte": 224},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "active"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 2,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 5,
+                  "name": "cslv3.const",
+                  "pos": {"line": 9, "col": 3, "byte": 224},
+                  "operands": [],
+                  "results": [
+                    {"id": 2, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 6,
+                  "name": "cslv3.return",
+                  "pos": {"line": 9, "col": 3, "byte": 224},
+                  "operands": [2],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "cslv3.fn",
+      "pos": {"line": 14, "col": 3, "byte": 274},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "nested"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 3,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 8,
+                  "name": "cslv3.const",
+                  "pos": {"line": 14, "col": 3, "byte": 274},
+                  "operands": [],
+                  "results": [
+                    {"id": 3, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 9,
+                  "name": "cslv3.return",
+                  "pos": {"line": 14, "col": 3, "byte": 274},
+                  "operands": [3],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "cslv3.fn",
+      "pos": {"line": 15, "col": 3, "byte": 289},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "inner"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 4,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 11,
+                  "name": "cslv3.const",
+                  "pos": {"line": 15, "col": 3, "byte": 289},
+                  "operands": [],
+                  "results": [
+                    {"id": 4, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 12,
+                  "name": "cslv3.return",
+                  "pos": {"line": 15, "col": 3, "byte": 289},
+                  "operands": [4],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "cslv3.fn",
+      "pos": {"line": 18, "col": 3, "byte": 323},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "item"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 5,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 14,
+                  "name": "cslv3.const",
+                  "pos": {"line": 18, "col": 3, "byte": 323},
+                  "operands": [],
+                  "results": [
+                    {"id": 5, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 15,
+                  "name": "cslv3.return",
+                  "pos": {"line": 18, "col": 3, "byte": 323},
+                  "operands": [5],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "cslv3.fn",
+      "pos": {"line": 21, "col": 3, "byte": 361},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "reset"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 6,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 17,
+                  "name": "cslv3.const",
+                  "pos": {"line": 21, "col": 3, "byte": 361},
+                  "operands": [],
+                  "results": [
+                    {"id": 6, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 18,
+                  "name": "cslv3.return",
+                  "pos": {"line": 21, "col": 3, "byte": 361},
+                  "operands": [6],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "cslv3.fn",
+      "pos": {"line": 24, "col": 3, "byte": 389},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "flat"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 7,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 20,
+                  "name": "cslv3.const",
+                  "pos": {"line": 24, "col": 3, "byte": 389},
+                  "operands": [],
+                  "results": [
+                    {"id": 7, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 21,
+                  "name": "cslv3.return",
+                  "pos": {"line": 24, "col": 3, "byte": 389},
+                  "operands": [7],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+}

@@ -1,0 +1,41 @@
+# tests: morpheme stacking BASE.aspect.modality.certainty.scope (§03)
+# glyph-class: Dot compound, dotted suffix chains
+# features: .prog .perf .iter .inch .term, .must .may .cant, .cert .prob, .loc .glob
+
+§ morpheme.stacking
+
+§ ASPECT-ONLY
+  render.prog : bool
+  merge.perf : bool
+  spawn.iter : bool
+  compact.inch : bool
+  sync.term : bool
+
+§ MODALITY-ONLY
+  commit.must : bool
+  retry.may : bool
+  reorder.cant : bool
+
+§ CERTAINTY-ONLY
+  pass.cert : bool
+  drift.prob : bool
+  stall.poss : bool
+
+§ SCOPE-ONLY
+  cache.loc : bool
+  cache.glob : bool
+
+§ TWO-STACK
+  render.prog.cert : bool
+  merge.inch.must : bool
+  spawn.iter.may : bool
+
+§ THREE-STACK
+  allocate.prog.prob.loc : bool
+  cleanup.perf.must.glob : bool
+
+§ FOUR-STACK
+  reconcile.iter.may.doubt.ctx : bool
+
+§ FIVE-STACK
+  transmit.prog.may.poss.loc : bool

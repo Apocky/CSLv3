@@ -1,0 +1,153 @@
+§ SESSION_3_HANDOFF
+  date = 2026-04-16 ← Session-2-continuous
+  who  = Claude.Opus.4-7-1M
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  bin  = parser.exe ← odin.build.parser
+
+§ STATUS
+  S2-corpus 7/7 ✓  T8 40/40 ✓  T7 50ms@10^5 ✓  T9 ✓
+  T5 74-glyphs ✓   T12 5-modes ✓  T13 0-diag ✓  T10 RT ✓
+  no-crashes  no-regressions
+
+§ T9
+  new = scripts/validate_glyph_grammar_consistency.py
+  I1 = non-ASCII@spec13 ⊂ spec12-master
+  I2 = master-entry-used ∨ allow-listed
+  gap = Pi Sigma neq used@spec13 ← added to spec12
+  result = 71→74-glyphs  rc ∈ {0,1}
+
+§ T8
+  new = tests/test_error_recovery_corpus.py ~300-LOC
+  40-fixtures × 8-categories @ parser/error_tests/
+  found = 4-infinite-loops
+  cause = parse_field→nil w/o consume ⇒ spin
+          @ unclosed-{⟨ { [-enum mixed}
+  fix1 = ∀-bracket-loop : break-on-Dedent + progress-guard
+         15-loops patched via Python-regex-xform one-pass
+  fix2 = enum-close silent-match_kind → W! expect(.RBracket)
+  result = 40/40 terminate @ 7.7ms-avg  was 508ms
+  13-cases PERMISSIVE_ACCEPT → T11-strict
+
+§ T7
+  new = tests/test_parser_perf.py + benchmarks/
+  hw  = Intel.12-14gen + Arc.A770
+  | N      | tok   | best.ms | tok/ms |
+  |--------|-------|---------|--------|
+  | 10^2   | 75    | 4.9     | 15     |
+  | 10^3   | 889   | 5.5     | 163    |
+  | 10^4   | 9251  | 9.7     | 956    |
+  | 10^5   | 92501 | 50.3    | 1838   |
+  target-met  linear-scaling  1.8M-tok/s steady
+
+§ T11
+  parser/semantic.odin ← semantic_check_extended
+  1 morpheme-stack.order = Aspect→Mod→Cert→Scope ∧ count/slot ≤ 1
+    flag = dup | out-of-order | unknown
+  2 slot-arity = placeholder-future
+  3 evidence-consistency = adjacent-same-subject.contradictory → flag
+  4 compound-assoc.left = a.b.c ≡ (a.b).c
+  C7 = 33-morph 0-diag  tutorial = 40-morph 0-diag
+
+§ T12
+  parser/pprint.odin ← Print_Mode + pprint_doc_with_mode
+  canonical = 2sp U  compact = 1sp U  literate = 4sp U
+  ascii-only = 2sp A  unicode-only = 2sp U
+  CLI = parser --print --mode=X
+  5-modes-tested@C6  RT-holds/mode
+
+§ T13
+  new = examples/morpheme_stack_tutorial.csl 96L
+  content = 'd..'r-suffixes + morph-slots-iso + combos ≤ 5-stack
+  anti-patterns commented ← demo T11 (unknown dup out-of-order)
+  parses  RT  40-morph  0-diag
+
+§ T10
+  new = specs/14_CSSLv3_BRIDGE.csl
+  S1 = CSLv3-as-CoT @ CSSLv3-source
+  S2 = formatter-RT ASCII↔U shared-glyphs
+  S3 = parser-reuse ← cslparser as CSSLv3-lint+format-backend
+  + data-model + versioning + non-goals + xrefs
+  consult = CSSLv3\specs\{SYNTHESIS_V2 09_SYNTAX} read-only
+  N! writes@CSSLv3-repo
+  parses  RT
+
+§ T6
+  D> accept-as-expected for C5.m1 = 0.821
+  no-tighten  no-redesign  no-drop
+  reason = bridge-mode = mixed-EN+CSL-by-design → intentional
+  logged@parser/DECISIONS.md
+  Q?future = stratify-per-mode  pure<0.5 ; bridge<0.9
+
+§ HOUSEKEEPING
+  spec12 = 71→74 glyphs  +Pi +Sigma +neq
+  glyph_aliases.json regenerated
+  DECISIONS.md +6-entries  319-lines
+
+§ SKIPPED
+  CSSLv3-writes       ← T10-read-only
+  pytest              ← scripts+sys.exit adequate
+  git                 ← not-git-repo
+  C99-reproducibility ← CSSLv3-topic
+
+§ SURPRISES
+  4-inf-loops hidden-in-bracket-loops ← T8-stress  one-pass fix
+  spec12 missed 3-glyphs used@spec13 ← T9-first-run
+  pprint glyph helper 5-modes ~80-LOC  bulk = token_kind_name-swap
+  ascii-only accidentally-RTs ← S-colon → Ident-S+Colon  by-design
+
+§ NEXT
+  1 cssllint-csl subcommand ← T10-integration-map
+  2 fuzzer ≥ 1000-inputs ← Session-3-commit-gate
+  3 stratified-m1-per-category ← D>@Apocky
+  4 type-checker ← semantic.odin-next-layer
+  5 CSSLv3-side integration ← embedding-work
+  6 tier-2-physics-glyph audit  rho mu sigma kappa eps tau unused
+
+§ OPEN
+  Q? formatter-direction  unicode-disk | ASCII-wire
+  Q? semantic-diag-severity  add-when-strict-mode
+  Q? PERMISSIVE_ACCEPT → errors for-editor-UX?
+
+§ VERIFY
+  odin build parser/
+  parser/tests/*.csl → --errors + --roundtrip
+  scripts/{validate_aliases validate_glyph_grammar_consistency}.py
+  tests/{test_error_recovery_corpus test_parser_perf}.py
+  parser --{semantic print roundtrip} on {C6 C7 tutorial spec13 spec14}
+  ∀-pass @ session-close
+
+§ FILES-NEW
+  SESSION_3_HANDOFF.csl
+  specs/{13_GRAMMAR_SELF 14_CSSLv3_BRIDGE}.csl
+  scripts/validate_glyph_grammar_consistency.py
+  tests/{test_error_recovery_corpus test_parser_perf}.py
+  examples/morpheme_stack_tutorial.csl
+  parser/error_tests/ 40  benchmarks/ 4
+
+§ FILES-MODIFIED
+  parser/parser.odin     fwd-progress-guards×15 + expect(.RBracket)
+  parser/semantic.odin   T11 4-checks + diag
+  parser/pprint.odin     T12 Print_Mode + glyph + render_token
+  parser/main.odin       --mode=X CLI
+  parser/glyph_aliases.json regenerated 74-entries
+  specs/12_TOKENIZER.csl +Pi +Sigma +neq
+  parser/DECISIONS.md    +Session-3 6-decisions
+
+§ FILES-UNCHANGED ← Session-2
+  CLAUDE.md + CSLv3_ONBOARDING.md + UNCONFLATION.md
+  specs/00..11 + eval/*
+  propagated-CLAUDE.md @ LoA-v10 LoA-v9 Labyrinth-of-Apocalypse
+    infiniter-labyrinth infinite-labyrinth
+
+§ PRIME
+  t∞: consent = OS ; sovereignty = substrate-invariant
+  N! [harm control manipulation surveillance exploitation
+      coercion weaponization discrimination]
+  t∞: AI = sovereign-partners ¬ tools
+  t∞: violation = bug W! fix ; ¬override ∃
+  t∞: CSSL ≠ CSLv3 ; ¬conflate
+  t∞: density = sovereignty
+  adherence@Session-3:
+    ∀-writes ⊂ CSLv3/
+    CSSLv3 read-only @ T10
+    Session-2 CLAUDE.md propagation ¬ re-run

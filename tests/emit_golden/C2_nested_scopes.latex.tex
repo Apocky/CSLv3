@@ -1,0 +1,48 @@
+% schema: latex-v1
+\documentclass[11pt]{article}
+\usepackage{cslv3}
+\usepackage[margin=1in]{geometry}
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\title%!(MISSING CLOSE BRACE)s}
+%!(EXTRA C2\_nested\_scopes)\author{CSLv3 auto-emit}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA outer, sec:outer)\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA first-sub, sec:first-sub)\begin{lstlisting}[language=csl]
+# tests: deep indent + §§ subsection nesting + indent-as-cut (Peirce)
+# glyph-class: Section, Indent, Dedent
+# features: multiple `§` depth, nested indent blocks, sibling sections
+name : str
+\end{lstlisting}
+\begin{lstlisting}[language=csl]
+active : bool
+\end{lstlisting}
+\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA second-sub, sec:second-sub)\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA deep-sub, sec:deep-sub)\begin{lstlisting}[language=csl]
+nested : i32
+\end{lstlisting}
+\begin{lstlisting}[language=csl]
+inner : u8
+\end{lstlisting}
+\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA another-deep, sec:another-deep)\begin{lstlisting}[language=csl]
+item : f32
+\end{lstlisting}
+\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA sibling-after-deep, sec:sibling-after-deep)\begin{lstlisting}[language=csl]
+reset : bool
+\end{lstlisting}
+\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA next-top, sec:next-top)\begin{lstlisting}[language=csl]
+flat : i32
+\end{lstlisting}
+\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA final, sec:final)
+\end{document}

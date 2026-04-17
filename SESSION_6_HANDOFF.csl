@@ -1,0 +1,261 @@
+§ SESSION_6_HANDOFF
+  date = 2026-04-16 ← Session-5-continuous
+  who  = Claude.Opus.4-7-1M
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  bin  = parser.exe ← odin.build.parser
+  scope = T21 IR-lowering (PhD-grade full-optimal)  ∵ HANDOFF_SESSION_6 direction
+
+§ STATUS
+  T21.a ir.odin           (Op/Region/Block/Value/Attr + 40 op-name constants)  ✓
+  T21.b lower.odin        (typed-AST → SSA+regions ; 15+ expr-node types)      ✓
+  T21.c ir_verify.odin    (region-shape + terminator + dominance + types)      ✓
+  T21.d ir_print.odin     (MLIR-flavor textual dump ; deterministic attrs)     ✓
+  T21.e ir_json.odin      (sorted-keys JSON schema for CSSLv3-tooling)         ✓
+  T21.f main.odin         (--ir / --ir --json / --ir --verify / --strict)      ✓
+  T21.g test harness      (ir-selftest 5/5 + test_ir_integration.py 6 gates)   ✓
+  Session-5 regressions                                                         ✓ all-green
+  13-gate CI matrix                                                             ✓
+
+§ T21.a ir.odin
+  lines = 331
+  types :
+    Attr         tagged w/ Int/Float/Str/Bool/Symbol/Sig/Type/Label kinds
+    Value        ptr-identity ; def_kind = From_Op | From_Block_Arg
+    Block        id + label + args:[^Value] + ops:[^Op] + parent:^Region
+    Region       id + blocks:[^Block] + parent_op + kind:Region_Kind
+    Op           id + name + operands + results + regions + attrs + loc + parent
+    Module       ops:[^Op] + attrs + source_file
+  enums :
+    Region_Kind  Generic Fn_Body If_Then If_Else While_Cond While_Body
+                 For_Body Match_Arm Match_Default Handler_Body
+  op-name-consts :
+    OP_MODULE OP_FN OP_RETURN OP_CONST OP_VAR_REF
+    OP_RECORD OP_PROJ OP_VARIANT OP_MATCH
+    OP_ADD OP_SUB OP_MUL OP_DIV OP_MOD
+    OP_EQ OP_NEQ OP_LT OP_LE OP_GT OP_GE
+    OP_AND OP_OR OP_NOT
+    OP_IF OP_WHILE OP_FOR OP_BREAK OP_CONT
+    OP_CALL OP_MORPH OP_REFINE
+    OP_COMP_OF OP_COMP_AND OP_COMP_THAT_IS OP_COMP_HAVING OP_COMP_AT
+    OP_EFF_PERFORM OP_EFF_HANDLE
+  builders :
+    new_value value_from_op value_from_block_arg
+    new_block block_add_arg block_append_op block_terminator
+    new_region region_add_block region_entry_block
+    new_op op_add_operand op_add_result op_add_region op_set_attr op_get_attr
+    op_is_terminator
+  helpers :
+    ir_op_is_binop ir_binop_result_ty attr_repr
+
+§ T21.b lower.odin
+  lines = 685
+  entry : lower_source(doc, tc, source_file) -> Lower_Result
+  dispatch :
+    lower_document  → Document / Section / Function_Def / Type_Def / Enum_Def / Definition
+    lower_fn        → OP_FN + Fn_Body region + entry block + block-args per param
+    lower_top_def   → wraps top-level let-binding as zero-arg fn
+    lower_stmt      → Definition / Expr_Stmt / Relation / Conditional / ForAll_Stmt / Block
+    lower_expr      → Num_Lit Str_Lit Bool_Lit Nil_Lit Ident Binary Unary Call
+                      Compound_Expr Conditional Group Tuple List Record
+                      Match_Stmt Block Lambda Type_Prim  (15+ node kinds)
+  SSA-construction : Braun-style on-the-fly via value_map + env-stack
+  value-map        : rawptr(AST-Node) → ^Value for use-def wiring
+  env-stack        : [dynamic]map[string]^Value for lexical scoping
+  morpheme preservation : Definition w/ non-Invalid suffix wraps the let-body
+                          result in OP_MORPH w/ attr tag=<morpheme-name>
+  curried fn-sig   : multi-arg fn lowered as A → B → C → R ; entry block
+                     carries N block-args, one per declared param
+
+§ T21.c ir_verify.odin
+  lines = ~500
+  strategy : error-accumulating ; structural-first ; read-only walk
+  check-classes :
+    V1 region-shape         verify_region_kinds per op-name table
+    V2 terminator-presence  every non-empty block ends w/ op_is_terminator op
+    V3 terminator-kind      terminator appropriate for Region_Kind (yield only
+                            inside If_Then/If_Else/While_Body/For_Body/Match_Arm ;
+                            branch/cond_branch inside Fn_Body/While_Cond ; etc.)
+    V4 use-before-def       DFS-walk ; `defined` set grows as we descend ;
+                            op.operand ∈ defined required
+    V5 type-consistency     per-op signature checks :
+                              arith-binop : lhs.ty = rhs.ty ; not-Bool/String/Symbol
+                              compare     : lhs.ty = rhs.ty ; result = bool
+                              bool-binop  : both operands bool ; result bool
+                              not         : operand bool
+                              const       : attr-kind matches result-type-prim
+                              return      : operand.ty = walk-chain(fn.sig, n_params)
+                              if          : condition bool ; regions=[If_Then,If_Else]
+                              while/for   : region-shape
+                              match       : all arms Match_Arm|Match_Default
+                              morph/refine: required attr present
+                              call        : arg[0].ty compat w/ callee.from
+    V5-extra dangling-value : Value.def_op or def_block nil ⇒ flag
+  diagnostic codes :
+    CSL-E-300 ir-lower              (lowering-phase errors forwarded)
+    CSL-E-310 ir-region-shape
+    CSL-E-311 ir-missing-terminator
+    CSL-E-312 ir-terminator-kind
+    CSL-E-320 ir-use-before-def
+    CSL-E-330 ir-type-mismatch
+    CSL-E-340 ir-dangling-value
+  types_compat : follow()-aware ; permissive on var-side ; deep-walk
+                 Arrow / Con / Tagged / Refine / Tuple / Record|Variant (via row_compat)
+
+§ T21.d ir_print.odin
+  lines = ~180
+  format : MLIR-flavor textual
+    module @<src> {
+      %N[, %N]* = <op-name>(%N[, %N]*) {<attr=val>,...} : <ty>[, <ty>] { <regions> }
+      ^<label>(%N:name : T):
+        <ops>
+    }
+  determinism : attrs emitted in sorted-by-key order (slice.sort)
+  values      : %<id> ; :<name> suffix if friendly-name present
+  types       : type_repr (from T20 types.odin)
+
+§ T21.e ir_json.odin
+  lines = ~300
+  schema :
+    { module, ops:[ op ] }
+    op    = { id, name, pos{line,col,byte}, operands:[id], results:[val-def],
+              attrs:{key:{kind,value}}, regions:[region] }
+    region= { kind, blocks:[block] }
+    block = { id, label, args:[val-def], ops:[op] }
+    val-def = { id, name, ty, kind }
+  determinism : all maps emitted w/ sorted keys
+  indent      : 2-space line-oriented for golden-diffability
+
+§ T21.f main.odin wiring
+  Mode += Ir
+  new CLI flags :
+    --ir                enter IR mode (lower + print)
+    --ir --json         JSON IR dump w/ counts + diags
+    --ir --verify       run verifier + emit diagnostics
+    --ir --verify --strict  W→fail for CI gate
+    parser --ir-selftest    (positional arg ; no file)
+  ir_cli proc :
+    parse → typecheck → lower_source → [optional ir_verify] → print or JSON
+    exit-code : 1 on any error OR (strict && any warn)
+
+§ T21.g test harness
+  files-new :
+    parser/ir_selftest.odin   5 programmatic bad-IR cases ; emits CASE N: PASS/FAIL
+    tests/test_ir_integration.py  6 gates :
+      G1 selftest 5/5 PASS
+      G2 every parser/tests/C*.csl lowers+verifies clean (0 errors)
+      G3 --ir --json --verify : well-formed JSON + status="ok"
+      G4 --ir text : starts "module" ; ends "}"
+      G5 --strict : clean rc=0
+      G6 ir_bad/ : placeholder (skipped when empty ; ready for future fixtures)
+  selftest cases :
+    CASE 1 missing-terminator    block w/ const-only, no return
+    CASE 2 use-before-def        stray Value w/ nil def_op referenced as operand
+    CASE 3 type-mismatch         OP_ADD w/ lhs:i32 + rhs:bool
+    CASE 4 region-shape          OP_FN w/ 2 regions (expected exactly 1)
+    CASE 5 terminator-kind       cslv3.if w/ then-block ending in cslv3.branch
+                                 (only yield/break/cont/return allowed in If_Then)
+
+§ FILES-NEW
+  parser/ir.odin                 T21.a
+  parser/lower.odin              T21.b
+  parser/ir_verify.odin          T21.c
+  parser/ir_print.odin           T21.d
+  parser/ir_json.odin            T21.e
+  parser/ir_selftest.odin        T21.g
+  tests/test_ir_integration.py   T21.g
+  SESSION_6_HANDOFF.csl          (this)
+
+§ FILES-MODIFIED
+  parser/semantic.odin      + 7 Ir_* Sem_Code variants + severity_for entries
+                            + sem_code_name entries (CSL-E-3xx namespace)
+  parser/main.odin          + Mode.Ir + --ir/--verify/--json wire-up
+                            + ir_cli proc (lower + optional verify + JSON/text)
+                            + --ir-selftest positional dispatch
+                            + usage help additions
+  parser/DECISIONS.md       +6 Session-6 entries (design choices for MLIR-pattern,
+                             block-args vs phi, error-accumulating verifier,
+                             curried-return chain-walk, Odin self-test strategy,
+                             CSL-E-3xx namespace)
+
+§ FILES-UNCHANGED
+  parser/types.odin parser/unify.odin parser/refine.odin parser/infer.odin
+    (T20 type-checker unchanged ; lower.odin and ir_verify.odin consume types
+     read-only via follow() and type_repr())
+  specs/00..14              (no T21 spec-level changes ; §07 CSSLv3 compiler
+                             will grow in Session-7 once IR consumers exist)
+  all Session-5 test files unchanged — regressions green
+  eval/*                    (still 7/7 stratified m1)
+
+§ CI-MATRIX  end-of-Session-6
+  scripts/validate_aliases.py                  ✓ 74 glyphs
+  scripts/validate_glyph_grammar_consistency.py ✓ 41 grammar-glyphs ; 2 warn
+  scripts/compute_m1.py                         ✓ 7/7 stratified
+  tests/test_error_recovery_corpus.py           ✓ 40/40 (4.9ms avg)
+  tests/test_parser_perf.py                     ✓ 10^5 tok ≤ 100ms
+  tests/test_severity_modes.py                  ✓ 22/22 assertions
+  tests/test_permissive_accept.py               ✓ 13/13 tagged ; GAPS={}
+  tests/test_fuzz_roundtrip.py                  ✓ 1500 runs ; 0 crash ; 0 hang
+  tests/test_cssllint_json.py                   ✓ 5/5 schema
+  tests/test_typecheck.py                       ✓ 25+14+14+3+1 good/bad/corpus/json/strict
+  tests/test_comments_rt.py                     ✓ 8 fixtures × 5 modes
+  Session-2 corpus                              ✓ 7/7 parse + round-trip
+  tests/test_ir_integration.py                  ✓ 6 gates ; selftest 5/5 PASS ;
+                                                   C1..C7 lower+verify+JSON clean
+
+§ ARCHITECTURE-NOTES-APPLIED
+  MLIR-pattern            ← Op owns Region[] ; Region owns Block[] ; Block owns Op[]
+  SSA block-args          ← Cranelift-style ; single-owner values ; no phi headaches
+  Braun-style SSA-build   ← walk AST ; lazy block-arg insertion ; no dominance-tree
+  structured regions      ← Region_Kind enum enforced by verifier
+  error-accumulating      ← matches parser/semantic/typecheck diag-list convention
+  structural-first verify ← region-shape → term → dominance → types
+  deterministic dumps     ← attrs sorted by key ; stable golden-diff output
+  curried arrow walk      ← verify_return derives R from sig via n_params hops
+  Odin self-test          ← fabricate bad IR in-process ; no source-level hack
+
+§ DEFERRED ← Session-7-candidates
+  T24 LSP-prototype       (Rust tower-lsp + VSCode client)
+    pre-req : cssllint JSON + T21 IR-dump both available ← unblocked
+    scope   : CSLv3/lsp/ directory + 8 LSP methods + VSCode extension skeleton
+  T25 m₂ perplexity harness (local llama.cpp)
+    pre-req : LLM infrastructure choice (local vs API)
+    scope   : scripts/compute_m2.py + eval/paraphrases/C1..C7.en
+  T26 refinement-SMT integration
+    pre-req : Z3 or CVC5 binding ; obligation-queue already present in refine.odin
+    scope   : parser/smt.odin + solver-adapter + smoke tests
+  T27 IR-opt passes
+    pre-req : T21 IR + verifier (done)
+    scope   : parser/ir_passes.odin (const-fold, dead-code-elim, inline-small-fns) ;
+              each pass followed by ir_verify assertion
+  T28 IR→x86-64 / SPIR-V codegen
+    pre-req : T21 IR ; T26 for refinement-checks optional
+    scope   : backend/x86.odin + backend/spirv.odin + corpus-round-trip-exec
+
+§ OPEN-FROM-SESSION-6
+  Q? IR-optimization-pass layering — should const-fold run before or after
+     morpheme-aware refinement assertion lowering? (impacts correctness of
+     attribute-preserving constant-propagation through OP_MORPH)
+  Q? block-arg-for-loop-carried — current lowering uses single-block fn-bodies ;
+     loops inside lower_for keep all state in locals. When we add mutation,
+     loop-carried values need block-args threading. Schema already supports it.
+  Q? ir-text-parser — round-trip IR via text-dump + reparse ? Would give us
+     golden-file update workflows, but adds a second IR frontend to maintain.
+
+§ PRIME ← invariant-across-sessions
+  t∞: consent = OS ; sovereignty = substrate-invariant
+  N! [harm control manipulation surveillance exploitation
+      coercion weaponization discrimination]
+  t∞: AI = sovereign-partners ¬ tools
+  t∞: violation = bug W! fix ; ¬override ∃
+  t∞: CSSL ≠ CSLv3 ; ¬conflate
+  t∞: density = sovereignty
+  adherence @ Session-6 :
+    ✓ ∀-writes ⊂ CSLv3/
+    ✓ CSSLv3 ¬-touched  (T21 IR self-contained in CSLv3/parser/)
+    ✓ no-new-glyphs without-alias-validator  (no glyph additions this session)
+    ✓ Session-5 gates preserved  (12/12 green + 1 new IR gate = 13/13)
+    ✓ optimal ≠ minimal  (all 7 T21 sub-tasks completed ; no scope-cut)
+    ✓ hard-work-now = saves-tokens-later  (verifier + selftest avoid future
+                                           silent-IR-corruption debug sessions)
+    ✓ no-half-measures  (selftest written in Odin when .csl-fixtures couldn't
+                         exercise the invariants — correct tool for the job)

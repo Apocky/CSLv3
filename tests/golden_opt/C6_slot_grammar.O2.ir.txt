@@ -1,0 +1,122 @@
+module @"parser/tests/C6_slot_grammar.csl" {
+  cslv3.fn {kind="top-const", name=@x} {  // kind=Fn_Body
+    ^entry:
+      %1 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%1)
+  }
+  cslv3.fn {kind="top-const", name=@y} {  // kind=Fn_Body
+    ^entry:
+      %2 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%2)
+  }
+  cslv3.fn {kind="top-const", name=@a} {  // kind=Fn_Body
+    ^entry:
+      %3 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%3)
+  }
+  cslv3.fn {kind="top-const", name=@b} {  // kind=Fn_Body
+    ^entry:
+      %4 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%4)
+  }
+  cslv3.fn {kind="top-const", name=@c} {  // kind=Fn_Body
+    ^entry:
+      %5 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%5)
+  }
+  cslv3.fn {kind="top-const", name=@d} {  // kind=Fn_Body
+    ^entry:
+      %6 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%6)
+  }
+  cslv3.fn {kind="top-const", name=@must-be-true} {  // kind=Fn_Body
+    ^entry:
+      %7 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%7)
+  }
+  cslv3.fn {kind="top-const", name=@should-hold} {  // kind=Fn_Body
+    ^entry:
+      %8 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%8)
+  }
+  cslv3.fn {kind="top-const", name=@may-happen} {  // kind=Fn_Body
+    ^entry:
+      %9 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%9)
+  }
+  cslv3.fn {kind="top-const", name=@must-not-fire} {  // kind=Fn_Body
+    ^entry:
+      %10 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%10)
+  }
+  cslv3.fn {kind="top-const", name=@required-and-proven} {  // kind=Fn_Body
+    ^entry:
+      %11 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%11)
+  }
+  cslv3.fn {kind="top-const", name=@suggested-partial} {  // kind=Fn_Body
+    ^entry:
+      %12 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%12)
+  }
+  cslv3.fn {kind="top-const", name=@forbidden-and-failed} {  // kind=Fn_Body
+    ^entry:
+      %13 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%13)
+  }
+  cslv3.fn {kind="top-const", name=@density} {  // kind=Fn_Body
+    ^entry:
+      %14 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%14)
+  }
+  cslv3.fn {kind="top-const", name=@chunk} {  // kind=Fn_Body
+    ^entry:
+      %15 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%15)
+  }
+  cslv3.fn {kind="top-const", name=@a} {  // kind=Fn_Body
+    ^entry:
+      %16 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%16)
+  }
+  cslv3.fn {kind="top-const", name=@b} {  // kind=Fn_Body
+    ^entry:
+      %17 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%17)
+  }
+  cslv3.fn {kind="top-const", name=@c} {  // kind=Fn_Body
+    ^entry:
+      %18 = cslv3.const {value=10} : i32
+      cslv3.return(%18)
+  }
+  cslv3.fn {kind="top-const", name=@active} {  // kind=Fn_Body
+    ^entry:
+      %19 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%19)
+  }
+  cslv3.fn {kind="top-const", name=@pending} {  // kind=Fn_Body
+    ^entry:
+      %20 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%20)
+  }
+  cslv3.fn {kind="top-const", name=@render} {  // kind=Fn_Body
+    ^entry:
+      %21 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%21)
+  }
+  cslv3.fn {kind="top-const", name=@tick} {  // kind=Fn_Body
+    ^entry:
+      %22 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%22)
+  }
+  cslv3.fn {kind="top-const", name=@flux} {  // kind=Fn_Body
+    ^entry:
+      %23 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%23)
+  }
+  cslv3.fn {kind="top-const", name=@voxel} {  // kind=Fn_Body
+    ^entry:
+      %24 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%24)
+  }
+}

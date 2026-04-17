@@ -1,0 +1,3 @@
+# smt_bad b12 — div-by-zero in tuple-element position
+§ T
+  fn pair (x : i32) -> i32 = x / 0

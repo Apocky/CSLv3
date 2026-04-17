@@ -1,0 +1,105 @@
+§ CSLv3 RESEARCH SYNTHESIS
+I> reconciled: pasted (436-source compact), on-disk (full comparative analysis)
+I> v3 merges both → actionable findings + design decisions
+
+§ KEY FINDINGS BY TRACK
+
+§§ T1: DENSE NOTATION SYSTEMS
+  I> Iverson (APL, 1979 Turing): notation shapes cognition, ¬ just records it ★
+  I> APL: 1 glyph = 1 op → dense but tokenizer-hostile in modern BPE ⚠
+  I> J: ASCII fallback solves tokenizer → ADOPTED (dual-mode glyphs §01)
+  I> Ithkuil: 96 morphological slots → too extreme for human
+     → took slot-system principle w/ bounded slots (§03 morpheme stacking)
+     → took silent-defaults principle (§02 slot omission)
+     → took multi-channel encoding (position + nesting + delimiters)
+  I> Lojban: unambiguous grammar via rigid word-classes → ADOPTED (§02 BNF)
+     → attitudinal system → confidence markers orthogonal to content
+  I> Sanskrit samasa: 4 compound types cover most composition → ADOPTED+1
+     → v3 has 5 types: TP DV KD BV AV (§03)
+     → Panini's Ashtadhyayi: grammar IS compression algorithm ★
+     → information geometry: compound formation = natural-parameter encoding ★
+  I> Egyptian determinatives: semantic type-markers w/o phonetics
+     → ADOPTED as postfix suffixes 'd 'f 's + domain prefixes § ∫ ⊞ (§01)
+  I> Peirce Existential Graphs: enclosure = negation, spatial = logical
+     → PARTIAL ADOPT: indent=cut, adjacency=AND (§04)
+     → full 2D impractical for text streams
+
+§§ T2: COMPRESSION THEORY
+  I> Shannon: EN ≈ 1.3 bpc; practice higher ∵ redundancy
+     → EN spec content ≈ 75% redundant
+  I> Kolmogorov: min-description-length uncomputable; BPE = usable proxy
+  I> rate-distortion: spec compression = near-lossless domain
+     → target d(x,x̂) = 0 on implementation-relevant info
+     → accept loss on stylistic redundancy only
+  I> information geometry (Amari): Fisher metric → optimal encoding follows
+     natural parameter structure → MATCHES samasa intuition ★
+  I> LLMLingua (Microsoft): 2-5× compression w/ minimal perplexity loss
+     → 20× achievable w/ 1.5% accuracy loss on GSM8K
+     → LLMs ¬ need EN grammar to reason; need semantic content
+     → CSLv3 target (5-6×) = plausible, conservative
+
+§§ T3: 2D/SPATIAL
+  I> Penrose tensor diagrams: 2D saves complex index notation → USE (§04)
+  I> Feynman: time-axis convention → USE in reason traces (§05)
+  I> Befunge etc: full 2D syntax = pedagogical dead-end for serious use ✗
+  I> structured editors (projectional): separate display from storage
+     → FUTURE consideration for CSLv4
+
+§§ T4: AI REASONING EFFICIENCY
+  I> CoT compression: models CAN reason in compressed forms when prompted ✓
+     → but drift toward verbose EN w/o reinforcement ⚠
+  I> tokenizer matters HUGELY: single unicode glyph may = 3-5 BPE tokens
+     → measure every glyph; ASCII aliases mandatory (§12)
+  I> "Let's think step by step" → equivalent gain from dense structured
+     reasoning (§05 trace format) ✓
+  I> context window freed by compression = more simultaneous reasoning ★
+
+§§ T5: PL THEORY
+  I> concatenative (Forth/Factor): stack = implicit context
+     → ADOPTED for pipeline ops |> <| (§01, §08)
+  I> rank polymorphism (APL/J/Futhark): one fn, many shapes
+     → ADOPTED (§07, §08)
+  I> dependent types (Agda/Idris): types-as-specs
+     → ADOPTED (§07)
+  I> term rewriting: spec = executable
+     → ASPIRATION for CSLv3 compiler v2
+
+§ DESIGN DECISIONS (v3 reconciled)
+  D1: dual-glyph-ASCII everywhere (J-style) ∵ tokenizer
+  D2: 5 compound types (Sanskrit + Karmadhāraya) ∵ coverage w/o overload
+  D3: postfix determinatives (Egyptian) ∵ optional annotation, low cost
+  D4: rigid precedence (Lojban) ∵ unambiguous parse
+  D5: morpheme-stack for modality (Ithkuil-lite) ∵ dense but bounded
+  D6: Peircean indent = scope ∵ text-stream friendly linearization
+  D7: 2D only for genuinely-2D data (tables, tensors, causal graphs)
+  D8: ASCII-aliases W! specified per glyph (§12) ∵ fallback, editor support
+  D9: tiered glyph inventory ∵ learnability (tier-0 < 2hr)
+  D10: evidence markers orthogonal to content (Lojban attitudinals)
+  D11: determinative suffixes as ASCII fallback for type markers
+  D12: slot grammar w/ silent defaults (Ithkuil principle)
+
+§ REJECTED (explored, ¬ adopted)
+  ✗ full Ithkuil morphology ∵ unlearnable in <2hr
+  ✗ pure 2D syntax (Befunge) ∵ incompatible w/ text streams
+  ✗ color-channel encoding ∵ accessibility, medium-dependent
+  ✗ >20 primitive glyphs for logic ∵ cognitive load
+  ✗ Peirce Gamma (modal graphs) ∵ complexity > value
+  ✗ Toki Pona minimalism ∵ extreme ambiguity = opposite of spec needs
+  ✗ de Bruijn beyond 3 levels ∵ human readability degrades fast
+  ✗ `>` for bahuvrihi (v2-specs) ∵ conflicts w/ comparison operator
+  ✗ `°` for avyayibhava (v2-pasted) ∵ `@` more intuitive + ASCII-native
+
+§ MULTI-CHANNEL ENCODING (from on-disk research §3)
+  available channels in text:
+  | channel            | capacity    | CSLv3 use                    |
+  |--------------------|-------------|------------------------------|
+  | glyph identity     | primary     | §01 glyph table              |
+  | position (horiz)   | indent=scope| Peircean cut linearized       |
+  | position (vert)    | sequence    | temporal/logical order        |
+  | adjacency          | co-present  | juxtaposition = conjunction   |
+  | nesting            | bracket depth| scope hierarchy              |
+  | delimiter type     | category    | Egyptian determinatives       |
+  | case               | UPPER/lower | ¬ used (reserved for future)  |
+  | unicode block      | domain      | math/symbol = domain markers  |
+  | whitespace pattern | binding     | dense = tight binding         |
+∎

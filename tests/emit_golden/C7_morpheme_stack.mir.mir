@@ -1,0 +1,107 @@
+// schema: mir-v1
+// dialect: cssl
+// source: parser/tests/C7_morpheme_stack.csl
+// emittedAt: 2026-04-17T06:39:27Z
+
+cssl.module @"parser/tests/C7_morpheme_stack.csl" {
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %1 = cssl.const {value=@nil} : Unit
+      cssl.return(%1)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %2 = cssl.const {value=@nil} : Unit
+      cssl.return(%2)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %3 = cssl.const {value=@nil} : Unit
+      cssl.return(%3)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %4 = cssl.const {value=@nil} : Unit
+      cssl.return(%4)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %5 = cssl.const {value=@nil} : Unit
+      cssl.return(%5)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %6 = cssl.const {value=@nil} : Unit
+      cssl.return(%6)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %7 = cssl.const {value=@nil} : Unit
+      cssl.return(%7)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %8 = cssl.const {value=@nil} : Unit
+      cssl.return(%8)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %9 = cssl.const {value=@nil} : Unit
+      cssl.return(%9)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %10 = cssl.const {value=@nil} : Unit
+      cssl.return(%10)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %11 = cssl.const {value=@nil} : Unit
+      cssl.return(%11)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %12 = cssl.const {value=@nil} : Unit
+      cssl.return(%12)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %13 = cssl.const {value=@nil} : Unit
+      cssl.return(%13)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %14 = cssl.const {value=@nil} : Unit
+      cssl.return(%14)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %15 = cssl.const {value=@nil} : Unit
+      cssl.return(%15)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %16 = cssl.const {value=@nil} : Unit
+      cssl.return(%16)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %17 = cssl.const {value=@nil} : Unit
+      cssl.return(%17)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %18 = cssl.const {value=@nil} : Unit
+      cssl.return(%18)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %19 = cssl.const {value=@nil} : Unit
+      cssl.return(%19)
+  }
+  cssl.fn {kind="top-const", name=@_anon} {
+    ^entry:
+      %20 = cssl.const {value=@nil} : Unit
+      cssl.return(%20)
+  }
+}

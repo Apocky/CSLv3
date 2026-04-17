@@ -1,0 +1,10 @@
+§ block_0
+  def Row0't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle0 (r : &Row0't) -> bool = true
+  fn process0 (r : &Row0't, dt : f32) -> bool = true
+  fn score0 (r : &Row0't) -> f32 = 0.0

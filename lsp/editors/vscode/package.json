@@ -1,0 +1,126 @@
+{
+  "name": "cslv3",
+  "displayName": "CSLv3 Language Support",
+  "description": "Syntax highlighting + LSP integration for Caveman Spec Language v3",
+  "version": "0.1.0",
+  "publisher": "apocky",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Formatters",
+    "Linters"
+  ],
+  "activationEvents": [
+    "onLanguage:cslv3"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "cslv3",
+        "aliases": [
+          "CSLv3",
+          "cslv3"
+        ],
+        "extensions": [
+          ".csl",
+          ".cslv3"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "cslv3",
+        "scopeName": "source.cslv3",
+        "path": "./syntaxes/cslv3.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "CSLv3",
+      "properties": {
+        "cslv3.server.path": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute path to cslv3-lsp.exe. If empty, searches PATH + cargo target."
+        },
+        "cslv3.parser.path": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute path to parser.exe. If empty, auto-detected."
+        },
+        "cslv3.server.logLevel": {
+          "type": "string",
+          "enum": [
+            "trace",
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ],
+          "default": "warn",
+          "description": "LSP server log verbosity"
+        },
+        "cslv3.smtOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Run SMT discharge on file save (slower; off by default)"
+        },
+        "cslv3.optLevel": {
+          "type": "number",
+          "default": -1,
+          "minimum": -1,
+          "maximum": 3,
+          "description": "IR-opt level for diagnostics (-1 = disabled)"
+        },
+        "cslv3.showOptStats": {
+          "type": "boolean",
+          "default": false,
+          "description": "Surface pass-statistics as Information diagnostics"
+        },
+        "cslv3.severity": {
+          "type": "string",
+          "enum": [
+            "lint",
+            "default",
+            "strict"
+          ],
+          "default": "default",
+          "description": "Diagnostic severity mode"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "cslv3.smt.discharge",
+        "title": "CSLv3: Discharge SMT obligations"
+      },
+      {
+        "command": "cslv3.opt.showStats",
+        "title": "CSLv3: Show opt-pass statistics"
+      },
+      {
+        "command": "cslv3.restartServer",
+        "title": "CSLv3: Restart language server"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.3.0"
+  }
+}

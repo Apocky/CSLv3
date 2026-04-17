@@ -1,0 +1,171 @@
+§ SESSION_4_HANDOFF
+  date = 2026-04-16 ← Session-3-continuous
+  who  = Claude.Opus.4-7-1M
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  bin  = parser.exe ← odin.build.parser
+
+§ STATUS
+  T14 severity-CLI               ✓ 22/22 assertions
+  T15 permissive-tagging         ✓ 13/13 tagged + 8 must-fail
+  T16 fuzz roundtrip             ✓ 1500 runs 0 crash 0 hang 17.7s
+  T17 stratified m1              ✓ 7/7 pairs under per-mode threshold
+  T18 tier-2 audit               ✓ 6/6 USED ; no pruning recommended
+  T19 cssllint + JSON            ✓ 5/5 schema cases
+  Session-2 corpus 7/7 RT        ✓
+  Session-3 gates all-green      ✓ (aliases + grammar-consistency + err-recovery + perf)
+  no-crashes  no-regressions
+
+§ T14 severity-CLI
+  new @ parser/semantic.odin : Sem_Mode + Sem_Severity + Sem_Code + Sem_Diag
+  severity-table ← Q2-settled :
+    dup-morph   = always-E
+    order       = W→E@strict
+    unknown     = W→E@strict
+    slot-arity  = W@lint ; E@default+strict
+    evidence    = W-always
+    compound    = I-always
+    permissive  = W@default ; E@strict-parse
+  new @ parser/main.odin : --lint --strict --strict-parse --verbose
+  exit-code : any-E @ default+strict ; any-W @ strict ; never-fail @ lint
+  ★ found bug : collapse_morpheme_chain pre-emptive recursion ⇒ double-append
+    fix : remove `_ = collapse(lhs, r)` ; walk-child-recursion handles descent
+  test : tests/test_severity_modes.py ~200-LOC ; 22 assertions
+
+§ T15 permissive-tagging
+  13 fixtures carry `# permissive: true` header-line
+  discover_permissive() reads headers ← no-hardcoded-set drift
+  semantic detections @ check_permissive_accept :
+    Function_Def.text-empty        → anon fn
+    Type_Def|Enum_Def.text-empty   → anon type
+    node.meta-starts-with(. | @)   → trailing-op drop (parser-marked)
+    Directive.modal ≠ Invalid ∧ empty-payload → bare modal
+  parser changes :
+    parse_postfix .Dot no-ident → lhs.meta = "."
+    parse_postfix .At no-target → lhs.meta = "@"
+    parse_statement NL/EOF/Dedent → early-exit only-if no-slot-prefix-consumed
+    parse_function_def / parse_type_def → clean empty-name for anon
+    walk() preserves node.meta across n^ = collapsed^ copy
+  coverage :
+    6 direct detections via Permissive_Accept code
+    2 indirect via dup-morpheme (always-E ⇒ exit-1 any-non-lint mode)
+    5 gaps documented (c01 c02 s02 t02 p04)
+  test : tests/test_permissive_accept.py ; 13/13 tagged ; 8 must-fail
+
+§ T16 fuzzer
+  new : tests/test_fuzz_roundtrip.py ~250-LOC
+  seeds ← parser/tests/ + examples/ + eval/ + specs/  (31 files)
+  6-mutators weighted : delete+insert+swap+glyph-sub 20%-each ; indent+bracket 10%
+  1-3 mutations per input ; 50 mutations per seed x 31 seeds = 1550-target
+  invariants : R1 no-crash R4 no-hang R5 rc ∈ {0,1}
+  budget : ≤ 60s total ; ≥ 1000 runs
+  result : seed=20260416 runs=1500 hangs=0 crashes=0 wall=17.7s tp=85/s
+  findings : tests/fuzz_findings.md ← no R-violations
+  reproducible : FUZZ_SEED env-var ∨ argv-int
+
+§ T17 stratified-m1
+  specs/10_EVAL.csl §STRATIFIED-m1-TARGETS :
+    pure-CSL ≤ 0.5 ; bridge ≤ 0.9 ; prose ≤ 0.95
+  eval/*.csl first-line : `# corpus-mode: <mode>`
+  scripts/compute_m1.py reads header ; applies per-mode threshold
+  result :
+    | name              | mode     | m1   | target | pass |
+    | C1_sort           | pure-CSL | 0.34 | 0.50   | ✓    |
+    | C2_nested_scopes  | pure-CSL | 0.35 | 0.50   | ✓    |
+    | C3_dependent_types| pure-CSL | 0.32 | 0.50   | ✓    |
+    | C4_reason_block   | pure-CSL | 0.48 | 0.50   | ✓    |
+    | C5_bridge_mode    | bridge   | 0.87 | 0.90   | ✓    |
+    | C6_slot_grammar   | pure-CSL | 0.49 | 0.50   | ✓    |
+    | C7_morpheme_stack | pure-CSL | 0.44 | 0.50   | ✓    |
+  C5 now passes its proper threshold ← no-longer documented-exception
+  eval/RESULTS.md updated with stratified-section header
+
+§ T18 tier-2 audit
+  new : scripts/audit_tier2_usage.py
+  out : diag/TIER2_USAGE_AUDIT.md
+  target : ρ μ σ κ ε τ
+  rule : no-delete without-Apocky-approval (non-goal in handoff)
+  result : 6/6 USED (sites @ specs/04_SPATIAL + 06_SPEC + 08 + others)
+    rho=5-sites   mu=5-sites    sigma=5-sites
+    kappa=3-sites eps=3-sites   tau=3-sites
+  recommendation : keep all ; no prune candidates
+
+§ T19 cssllint + JSON
+  new : parser/main.odin cssllint_main subcommand
+  usage : parser cssllint [--json] [--strict] [--strict-parse] <file>
+  JSON schema :
+    { file, status, counts:{info,warn,error}, diags:[{line,col,sev,code,msg}] }
+  codes : CSL-{E,W,I}-NNN (lex/parse/morph/slot/evidence/compound/permissive)
+  exit : status=error → 1 ; strict+warn → 1 ; else 0
+  spec : specs/14_CSSLv3_BRIDGE.csl §§ LINT-PROTOCOL-Session-4-T19
+    full schema documented + code-namespace + stability-contract
+  CSSLv3 pattern :
+    shell-out → parse stdout JSON → render diags in-IDE ∨ gate-CI
+  test : tests/test_cssllint_json.py ; 5-cases ; stdlib json schema-validate
+
+§ FILES-NEW
+  tests/test_severity_modes.py       (T14)
+  tests/test_permissive_accept.py    (T15)
+  tests/test_fuzz_roundtrip.py       (T16)
+  tests/fuzz_findings.md             (T16 rolling log)
+  scripts/compute_m1.py              (T17)
+  scripts/audit_tier2_usage.py       (T18)
+  diag/TIER2_USAGE_AUDIT.md          (T18 result)
+  tests/test_cssllint_json.py        (T19)
+  SESSION_4_HANDOFF.csl              (this)
+
+§ FILES-MODIFIED
+  parser/semantic.odin   overhaul ← severity infrastructure ; permissive-detect ; unknown-morph-tail ; double-append fix
+  parser/main.odin       --lint/--strict/--strict-parse/--verbose ; cssllint subcommand
+  parser/parser.odin     permissive-marker meta=.|@ ; bare-modal fallback
+  parser/error_tests/    13 fixtures tagged (regenerated with `# permissive: true` header)
+  tests/test_error_recovery_corpus.py  CASES-inline headers ; discover_permissive()
+  specs/10_EVAL.csl      §STRATIFIED-m1-TARGETS + per-file mode declarations
+  specs/14_CSSLv3_BRIDGE.csl  §§ LINT-PROTOCOL-Session-4-T19
+  eval/*.csl             7 files tagged `# corpus-mode: <mode>`
+  eval/RESULTS.md        stratified-section prepended
+  parser/DECISIONS.md    +8 Session-4 entries  (581 lines total)
+
+§ FILES-UNCHANGED ← Session-3
+  specs/00..13 (except 10 + 14)
+  parser/ast.odin + lexer.odin + token.odin + pprint.odin
+  CLAUDE.md + CSLv3_ONBOARDING.md + UNCONFLATION.md
+  propagated-CLAUDE.md @ downstream-repos
+
+§ CI-MATRIX  end-of-Session-4
+  scripts/validate_aliases.py                  ✓ 74 glyphs
+  scripts/validate_glyph_grammar_consistency.py ✓ 41 grammar-glyphs ; 2 warn
+  scripts/compute_m1.py                         ✓ 7/7 stratified
+  tests/test_error_recovery_corpus.py           ✓ 40/40 (5.2ms avg)
+  tests/test_parser_perf.py                     ✓ 10^5 tok ≤ 100ms
+  tests/test_severity_modes.py                  ✓ 22/22 assertions
+  tests/test_permissive_accept.py               ✓ 13/13 tagged ; gates green
+  tests/test_fuzz_roundtrip.py                  ✓ 1500 runs ; 0 crash ; 0 hang
+  tests/test_cssllint_json.py                   ✓ 5/5 schema
+  Session-2 corpus                              ✓ 7/7 parse + round-trip
+
+§ NEXT ← §§ Session-5-candidates
+  1 type-checker pass ← semantic.odin next-layer ; Hindley-Milner + refinements
+  2 IR-lowering ← typed-AST → SSA + regions (MLIR-flavor)
+  3 LSP prototype ← cssllint JSON as backend
+  4 --strict-parse detection gaps (c01 c02 s02 t02 p04) via parse-time markers
+  5 comment-preservation round-trip ← lexer.emit_comments=true + pprint Comment-case
+  6 m2 perplexity harness ← LLM-driven ; requires API-call infrastructure
+
+§ OPEN-FROM-SESSION-4
+  Q? CSSLv3 integration-timing ← T19 provides lint-backend ; CSSLv3-side embedding TBD
+  Q? additional severity codes ← new-checks ≥ 20 ⇒ reconsider per-check config file
+  Q? gap-fixture promotion ← can c01/c02/s02/t02/p04 become first-class diagnostics?
+
+§ PRIME ← invariant-across-sessions
+  t∞: consent = OS ; sovereignty = substrate-invariant
+  N! [harm control manipulation surveillance exploitation
+      coercion weaponization discrimination]
+  t∞: AI = sovereign-partners ¬ tools
+  t∞: violation = bug W! fix ; ¬override ∃
+  t∞: CSSL ≠ CSLv3 ; ¬conflate
+  t∞: density = sovereignty
+  adherence @ Session-4 :
+    ✓ ∀-writes ⊂ CSLv3/
+    ✓ CSSLv3 read-only @ T10 prior  ;  T19 = backend-only @ CSLv3-side
+    ✓ no-new-glyphs without-alias-validator
+    ✓ Session-3 invariants preserved (7/7 eval ; RT ; no-crash)

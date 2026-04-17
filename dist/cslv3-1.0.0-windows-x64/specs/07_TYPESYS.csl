@@ -1,0 +1,118 @@
+§ CSLv3 TYPE SYSTEM
+I> elevated to own file — was scattered across v2 sources
+I> reconciled: specs/ (practical primitives, determinatives), pasted (dependent, linear, algebraic)
+I> layered: primitives → compound → algebraic → dependent → linear
+
+§ PRIMITIVE TYPES
+  | type  | bits | semantics                    |
+  |-------|------|------------------------------|
+  | u8    | 8    | unsigned byte                |
+  | u16   | 16   | unsigned short               |
+  | u32   | 32   | unsigned int                 |
+  | u64   | 64   | unsigned long                |
+  | i8    | 8    | signed byte                  |
+  | i16   | 16   | signed short                 |
+  | i32   | 32   | signed int                   |
+  | i64   | 64   | signed long                  |
+  | f32   | 32   | IEEE 754 float               |
+  | f64   | 64   | IEEE 754 double              |
+  | bool  | 1    | true | false                 |
+  | str   | var  | UTF-8 string                 |
+
+§ SPATIAL TYPES (LoA domain)
+  | type  | layout          | semantics              |
+  |-------|-----------------|------------------------|
+  | vec2  | [f32;2]         | 2D vector              |
+  | vec3  | [f32;3]         | 3D vector              |
+  | vec4  | [f32;4]         | 4D vector / RGBA       |
+  | mat4  | [f32;4,4]       | 4×4 matrix             |
+  | quat  | [f32;4]         | unit quaternion         |
+  | rgba  | [f32;4]         | color (0..1 per channel)|
+
+§ COMPOUND TYPES
+  [T;N]         → fixed-length array of T, size N
+  [T;_]         → dynamic array / slice
+  T | U         → union / either / sum
+  T?            → optional (T | nil)
+  T!            → result (T | error)
+  (T, U, V)     → tuple (product, positional)
+  {K: V}        → map / associative
+  &T            → reference / borrow (shared)
+  *T            → collection / repeated
+
+§ ALGEBRAIC TYPES (from pasted v2 §07)
+  sum:     T₁ | T₂ | ...                   # tagged union
+  product: ⟨f₁: T₁, f₂: T₂, ...⟩          # struct / record
+  
+  def DamageType't = enum[
+    physical { slash, pierce, blunt }
+    elemental { fire, ice, lightning, earth, water, wind }
+    arcane { void, radiant, necrotic }
+  ]
+
+§ DEPENDENT TYPES (from pasted v2 §07, Agda lineage)
+  Π⟨x: T⟩ → U(x)        # pi-type (dependent function / for-all)
+  Σ⟨x: T, y: U(x)⟩      # sigma-type (dependent pair / exists)
+  
+  ex:
+    Π⟨n: ɴ⟩ → ᴠ⟨f32; n⟩   # fn returning vector whose length depends on input
+    Σ⟨n: ɴ, v: ᴠ⟨f32; n⟩⟩ # pair of length + vector of that length
+
+§ REFINEMENT TYPES
+  { x: T ⊢ P(x) }       # subset type: all x:T satisfying P
+  
+  ex:
+    { x: f32 ⊢ x > 0 }            # positive floats
+    { hp: u16 ⊢ hp ≤ max_hp }     # bounded health
+    { v: vec3 ⊢ |v| ≈ 1.0 }       # unit vectors
+
+§ LINEAR / AFFINE TYPES (from pasted v2 §07)
+  T!lin         → must-use-exactly-once (linear)
+  T&            → borrowed reference (shared, read-only)
+  T&mut         → borrowed reference (exclusive, read-write)
+  
+  I> critical for: GPU buffer ownership, resource lifecycle
+  I> prevents: use-after-free, double-free, leaked resources
+
+§ TYPE CLASS MARKERS (unicode, optional — see §01 tier-1)
+  ɴ             → numeric class (any numeric type)
+  ꜱ             → string/symbol class
+  ʙ             → bool class
+  ᴠ             → vector/array class
+  ᴍ             → map/associative class
+  ʈ             → trait/interface marker
+  
+  ex:
+    fn sum ⟨a: ᴠ⟨ɴ⟩⟩ → ɴ           # sum any numeric vector
+    ᴠ⟨ɴ32⟩ = [ɴ32;_]               # vector of 32-bit numerics
+
+§ DETERMINATIVE SUFFIXES (ASCII fallback — see §01 tier-1)
+  hp'd          → hp is a data value
+  render'f      → render is a function
+  physics's     → physics is a system
+  Material't    → Material is a type
+  player'e      → player is an entity
+  iron'm        → iron is a material
+  density'p     → density is a property
+  alive'g       → alive is a gate/bool
+  max_hp'r      → max_hp is a rule/constraint
+  
+  W! use when context ¬ disambiguates
+  R! omit when context makes category obvious (default=silent)
+
+§ TYPE INFERENCE RULES
+  bare number  → f32 (float default) or i32 (integer default)
+  bare string  → str
+  bare bool    → bool
+  undecorated noun @ top indent → module/system
+  undecorated noun @ property position → data field
+  undecorated verb → function/operation
+  colon w/o RHS → scope introduction (block follows)
+
+§ RANK POLYMORPHISM (APL lineage, from pasted §07)
+  scalar op: fn f (x: T) → T
+  elevated:  fn f (x: ᴠ⟨T⟩) → ᴠ⟨T⟩     # auto-lifted
+  rank-k:    fn f (x: ᴠᵏ⟨T⟩) → ᴠᵏ⟨T⟩   # k-dimensional lift
+  R! ops broadcast like numpy
+  W! explicit rank annotation when ambiguous
+∎

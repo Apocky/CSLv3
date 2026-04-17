@@ -1,0 +1,22 @@
+# corpus-mode: pure-CSL
+# tests: Π / Σ dependent types + refinement { x ⊢ P } + linear T!lin
+# glyph-class: LAngle/RAngle, LBrace/RBrace, Entails, Bang, Ampersand
+# features: type-level parameterization, pi/sigma records, refinements
+
+§ dependent.types
+
+§ DATA
+  def PosFloat't = f32
+  def UnitVec't  = vec3
+  def BoundHp't  = u16
+
+§ OPS
+  fn make-vector (n : u32) -> vec3 = vec3
+  fn pair-len-and-data (n : u32) -> vec3 = vec3
+  fn normalize (v : &vec3) -> bool = true
+  fn borrow-shared (r : &str) -> bool = true
+  fn borrow-mut (r : &str) -> bool = true
+
+§ INVARIANTS
+  ⌈refinement-sound⌉
+  ⌈linear-used-exactly-once⌉

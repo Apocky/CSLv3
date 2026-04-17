@@ -1,0 +1,42 @@
+// schema: mir-v1
+// dialect: cssl
+// source: parser/tests/C2_nested_scopes.csl
+// emittedAt: 2026-04-17T06:39:26Z
+
+cssl.module @"parser/tests/C2_nested_scopes.csl" {
+  cssl.fn {kind="top-const", name=@name} {
+    ^entry:
+      %1 = cssl.const {value=@nil} : Unit
+      cssl.return(%1)
+  }
+  cssl.fn {kind="top-const", name=@active} {
+    ^entry:
+      %2 = cssl.const {value=@nil} : Unit
+      cssl.return(%2)
+  }
+  cssl.fn {kind="top-const", name=@nested} {
+    ^entry:
+      %3 = cssl.const {value=@nil} : Unit
+      cssl.return(%3)
+  }
+  cssl.fn {kind="top-const", name=@inner} {
+    ^entry:
+      %4 = cssl.const {value=@nil} : Unit
+      cssl.return(%4)
+  }
+  cssl.fn {kind="top-const", name=@item} {
+    ^entry:
+      %5 = cssl.const {value=@nil} : Unit
+      cssl.return(%5)
+  }
+  cssl.fn {kind="top-const", name=@reset} {
+    ^entry:
+      %6 = cssl.const {value=@nil} : Unit
+      cssl.return(%6)
+  }
+  cssl.fn {kind="top-const", name=@flat} {
+    ^entry:
+      %7 = cssl.const {value=@nil} : Unit
+      cssl.return(%7)
+  }
+}

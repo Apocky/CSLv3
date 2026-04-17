@@ -1,0 +1,301 @@
+{
+  "schema": "cslv3-emit-json",
+  "schemaVersion": "json-v1",
+  "emittedAt": "2026-04-17T06:39:25Z",
+  "source": {
+    "file": "parser/tests/C5_bridge_mode.csl",
+    "bytes": 1030,
+    "sha256": "e640c341d48ebc725b2ca242e456d7b8a0dc86d3a91325d102d0b68438dc71ff"
+  },
+  "ast": {
+    "kind": "Document",
+    "text": "",
+    "pos": {"line":1,"col":1,"byte":0},
+    "children": [
+      {
+        "kind": "Section",
+        "text": "bridge.example",
+        "pos": {"line":5,"col":1,"byte":214},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "GOAL",
+        "pos": {"line":11,"col":1,"byte":450},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":14,"col":3,"byte":584},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "summary",
+                "pos": {"line":14,"col":3,"byte":584},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "STRUCTURED",
+        "pos": {"line":16,"col":1,"byte":599},
+        "children": [
+          {
+            "kind": "Type_Def",
+            "text": "Request",
+            "pos": {"line":17,"col":3,"byte":615},
+            "suffix": "'t",
+            "children": [
+              {
+                "kind": "Field_Decl",
+                "text": "method",
+                "pos": {"line":18,"col":5,"byte":637},
+                "children": []
+              },
+              {
+                "kind": "Field_Decl",
+                "text": "path",
+                "pos": {"line":19,"col":5,"byte":654},
+                "children": []
+              },
+              {
+                "kind": "Field_Decl",
+                "text": "body",
+                "pos": {"line":20,"col":5,"byte":671},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Type_Def",
+            "text": "Response",
+            "pos": {"line":23,"col":3,"byte":693},
+            "suffix": "'t",
+            "children": [
+              {
+                "kind": "Field_Decl",
+                "text": "status",
+                "pos": {"line":24,"col":5,"byte":716},
+                "children": []
+              },
+              {
+                "kind": "Field_Decl",
+                "text": "body",
+                "pos": {"line":25,"col":5,"byte":733},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "OPS",
+        "pos": {"line":31,"col":1,"byte":893},
+        "children": [
+          {
+            "kind": "Function_Def",
+            "text": "handle",
+            "pos": {"line":32,"col":3,"byte":902},
+            "children": [
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":32,"col":13,"byte":912},
+                "children": [
+                  {
+                    "kind": "Param_Decl",
+                    "text": "req",
+                    "pos": {"line":32,"col":14,"byte":913},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":32,"col":48,"byte":947},
+                "children": [
+                  {
+                    "kind": "Ident",
+                    "text": "Response",
+                    "pos": {"line":32,"col":48,"byte":947},
+                    "suffix": "'t",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "INVARIANTS",
+        "pos": {"line":34,"col":1,"byte":959},
+        "children": [
+          {
+            "kind": "Constraint",
+            "text": "",
+            "pos": {"line":35,"col":3,"byte":975},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "determinism",
+                "pos": {"line":35,"col":4,"byte":978},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Constraint",
+            "text": "",
+            "pos": {"line":36,"col":3,"byte":995},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "request-maps-to-one-response",
+                "pos": {"line":36,"col":4,"byte":998},
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "types": {
+    "refine_obligations": 0,
+    "strict_parse": false,
+    "diagnostics": []
+  },
+  "ir": {
+  "module": "parser/tests/C5_bridge_mode.csl",
+  "ops": [
+    {
+      "id": 1,
+      "name": "cslv3.fn",
+      "pos": {"line": 14, "col": 3, "byte": 584},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "summary"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 1,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 2,
+                  "name": "cslv3.const",
+                  "pos": {"line": 14, "col": 3, "byte": 584},
+                  "operands": [],
+                  "results": [
+                    {"id": 1, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 3,
+                  "name": "cslv3.return",
+                  "pos": {"line": 14, "col": 3, "byte": 584},
+                  "operands": [1],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "cslv3.var_ref",
+      "pos": {"line": 17, "col": 3, "byte": 615},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "type-def"},
+        "name": {"kind": "Symbol", "value": "Request"}
+      },
+      "regions": []
+    },
+    {
+      "id": 5,
+      "name": "cslv3.var_ref",
+      "pos": {"line": 23, "col": 3, "byte": 693},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "type-def"},
+        "name": {"kind": "Symbol", "value": "Response"}
+      },
+      "regions": []
+    },
+    {
+      "id": 6,
+      "name": "cslv3.fn",
+      "pos": {"line": 32, "col": 3, "byte": 902},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "name": {"kind": "Symbol", "value": "handle"},
+        "sig": {"kind": "Type", "value": "Ref[Request] -> Response"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 2,
+              "label": "entry",
+              "args": [
+                {"id": 2, "name": "req", "ty": "α4", "kind": "From_Block_Arg"}
+              ],
+              "ops": [
+                {
+                  "id": 7,
+                  "name": "cslv3.var_ref",
+                  "pos": {"line": 32, "col": 48, "byte": 947},
+                  "operands": [],
+                  "results": [
+                    {"id": 3, "name": "", "ty": "Response", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "name": {"kind": "Symbol", "value": "Response"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 8,
+                  "name": "cslv3.return",
+                  "pos": {"line": 32, "col": 3, "byte": 902},
+                  "operands": [3],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+}

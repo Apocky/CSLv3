@@ -1,0 +1,101 @@
+§ CSLv3 COMPRESSION BOUNDS + VALIDATION
+I> reconciled from v2 sources + rewritten 2026-04-16 for feature-coverage corpus
+I> old corpus was game-flavored (flora, damage, voxel); new corpus is domain-neutral
+I> each item exercises a specific notation feature for parser validation
+W! corpus ¬ mix notation-project + game-project content
+
+§ INFORMATION-THEORETIC TARGET
+  R! ← Shannon: H(EN prose) ≈ 1.3 bits/char
+  R! ← Kolmogorov: min description length = theoretical floor
+  I> EN specs avg 4.7 chars/token (BPE); 1.3 bpc × 4.7 = 6.1 bits/token semantic
+  I> EN ≈ 75% redundant for spec content (Shannon + structural predictability)
+
+  MEASURE: CSLv3 bits/token via same BPE tokenizer
+  TARGET:  ≥ 2× EN semantic density (≥ 12 bits/token effective info)
+  METHOD:  encode N test-specs in EN + CSL ; compare (token_count × perplexity)
+
+§ COMPRESSION BENCHMARKS (merged from root §9 + specs/ §8.3)
+| content type        | EN tokens | CSLv1 tokens | CSLv3 target |
+|---------------------|-----------|--------------|--------------|
+| simple constraint   | 15-20     | 6-8          | 3-4          |
+| struct definition   | 50-80     | 20-30        | 10-15        |
+| algorithm spec      | 200-400   | 80-150       | 40-75        |
+| 10K-word system spec| ~13000    | ~5000        | ~2000-2500   |
+
+| metric              | EN   | CSLv1 | CSLv3  |
+|---------------------|------|-------|--------|
+| compression ratio   | 1×   | ~2.5× | ~5-6×  |
+| context window equiv| 128K | 320K  | 640-768K |
+
+§ TEST CORPUS (FEATURE-COVERAGE, 2026-04-16 revision)
+I> domain-neutral test items ; each isolates one parser/notation dimension
+
+  C1 sort               § small algorithmic stub ; control case
+  C2 nested-scopes      § deep §§ nesting + indent-as-cut (Peirce)
+  C3 dependent-types    § Π / Σ / refinement { x ⊢ P } / linear T!lin
+  C4 reason-block       § §P/§D/§T/§S/§C thought-block structure
+  C5 bridge-mode        § EN prose + CSL fragments interleaved (§09)
+  C6 slot-grammar       § [EV][MOD][DET][SUBJ][REL][OBJ][GATE][SCOPE]
+  C7 morpheme-stack     § BASE.aspect.modality.certainty.scope
+
+§ RATIONALE PER TEST
+  C1 → baseline density ; neutral algorithm (sort) ; no exotic glyphs
+  C2 → parser's indent/dedent stack correctness at depth ≥ 3
+  C3 → type-expr parser : dependent, refinement, linear, ref, mut-ref
+  C4 → reasoning-substrate section recognition + evidence markers
+  C5 → parser robustness to prose-heavy input ; skip-to-structured
+  C6 → every slot-template position in isolation + in combination
+  C7 → morpheme chain lexing + AST morpheme list population
+
+§ METRICS
+  m₁: token_count(CSL) / token_count(EN)     § stratified per mode — see below
+  m₂: LLM perplexity Δ on CSL vs EN          W! Δ < 10% (reasoning preserved)
+  m₃: human parse time (trained reader)       R! < 1.5× EN
+  m₄: parse error rate                        W! < EN baseline
+  m₅: round-trip fidelity (EN→CSL→EN)         R! > 0.95 semantic-sim
+  m₆: glyph token cost (BPE)                  W! ≤ 2 tokens per glyph
+
+§ STRATIFIED m₁ TARGETS (Session-4 T17)
+  I> single cutoff does not fit all corpus-modes — bridge-mode carries
+     intentional EN prose and cannot compress to pure-CSL density.
+  I> per-mode thresholds agreed @ Session-3 Q2-close, ratified @ Session-4 T17.
+
+  | corpus-mode | m₁-target | rationale                                           |
+  |-------------|-----------|-----------------------------------------------------|
+  | pure-CSL    | ≤ 0.5     | maximum density ; algorithm/system/type specs        |
+  | bridge      | ≤ 0.9     | mixed EN+CSL per §09_BRIDGE ; prose drives content  |
+  | prose       | ≤ 0.95    | mostly-English bullets ; CSL sprinkled as annotation |
+
+  per-file declaration : eval/*.csl header line
+    # corpus-mode: pure-CSL   (or bridge | prose)
+
+  current assignments (Session-4 T17) :
+    C1_sort             = pure-CSL
+    C2_nested_scopes    = pure-CSL
+    C3_dependent_types  = pure-CSL
+    C4_reason_block     = pure-CSL
+    C5_bridge_mode      = bridge
+    C6_slot_grammar     = pure-CSL
+    C7_morpheme_stack   = pure-CSL
+
+  CI-gate : scripts/compute_m1.py reads per-file mode and applies
+  the stratified threshold. failure is a build-break under --strict.
+
+§ KNOWN RISKS
+  ⚠ tokenizer-hostile glyphs → some unicode = 3-5 BPE tokens
+    mitigation: ASCII-alias table (§12) ; measure per-glyph ; prune expensive
+  ⚠ agent-drift → LLM may translate-back to EN internally
+    mitigation: prompt R! "reason in CSL" ; reinforce via §P/§D/§T/§S/§C structure
+  ⚠ over-compression → lossy
+    mitigation: m₅ round-trip test ; flag semantic loss > 5%
+  ⚠ learnability wall (Ithkuil problem)
+    mitigation: tier system (§01) ; tier-0 = 50 glyphs learnable < 2hr
+  ⚠ compound ambiguity (TP vs KD boundary)
+    mitigation: convention: `.` = relational (of) , `-` = attributive (that-is)
+
+§ CONTINUOUS EVAL
+  every spec written in CSL → run m₁-m₆ → log
+  quarterly: prune glyphs w/ cost > benefit
+  per-glyph ROI: (frequency × semantic-bits) / BPE-token-cost
+  W! glyph w/ ROI < 1.0 → candidate for removal
+∎

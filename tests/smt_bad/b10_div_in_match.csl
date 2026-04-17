@@ -1,0 +1,3 @@
+# smt_bad b10 — div-by-zero inside a match-arm
+§ T
+  fn check (n : i32) -> i32 = n / 0

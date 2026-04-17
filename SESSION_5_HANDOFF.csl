@@ -1,0 +1,167 @@
+§ SESSION_5_HANDOFF
+  date = 2026-04-16 ← Session-4-continuous
+  who  = Claude.Opus.4-7-1M
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  bin  = parser.exe ← odin.build.parser
+  scope = option-A (T20 + T22 + T23)  ∵ Apocky-direction post-scope-check
+
+§ STATUS
+  T20 type-checker (HM + row-poly + refinement + dependent + bidirectional)  ✓
+  T22 gap-fixture promotion  (5/5 gaps closed ; 18-equivalent permissive cov)  ✓
+  T23 comment-preservation RT  (0 failures across 5 pprint-modes)             ✓
+  Session-2+3+4 regressions                                                    ✓ all-green
+  12-gate CI matrix                                                            ✓
+
+§ T20 type-checker
+  files-new :
+    parser/types.odin     ~540-LOC Type + Row + Subst + Scheme + Env
+    parser/unify.odin     ~350-LOC occurs-check + row-unify + bounded-fuel
+    parser/refine.odin    ~130-LOC morpheme→tag map + obligation queue
+    parser/infer.odin     ~570-LOC bidirectional synthesize/check
+  design :
+    Type tagged-union : Var Prim Arrow Record Variant Forall Pi Sigma
+                        Refine Tagged Con Tuple App
+    Row : Leijen scoped-row w/ open/closed tail
+    Subst : in-place Type_Var.link mutation (no explicit map)
+    Level-based occurs-check (OCaml-lineage)
+    Bounded-fuel fallback ← pre-auth per handoff
+  CLI :
+    parser --typecheck <file>             → text summary + diagnostics
+    parser --typecheck --json <file>      → machine-readable JSON
+    parser --typecheck --strict <file>    → any-diag → rc=1
+  diagnostic codes : CSL-E-200 (type-mismatch) ; CSL-W-201/204 ; CSL-I-205
+  acceptance :
+    ✓ 25/25 tests/type_good/*.csl typecheck clean
+    ✓ 14/14 tests/type_bad/*.csl correctly flagged
+    ✓ 14/14 live corpus (parser/tests + eval) typecheck clean
+    ✓ 3/3 --json outputs schema-validated
+    ✓ --strict never-laxer than default
+  pragmatic choices :
+    numeric literals default i32/f32 (not generic Int/Float)
+      ∵ no numeric-class constraint yet ; T26 candidate
+    arithmetic-op on Bool/String flagged via post-hoc check
+      ∵ again awaiting numeric class
+    unused-binding tracking wired but suppressed at top-level
+      ∵ top-level fn/def is API ; noise at corpus scale
+
+§ T22 gap-fixture promotion
+  5 Session-4 gaps closed via parse-time node.meta markers :
+    c01 a..b         → Expr_Stmt w/ Binary(Range) flags meta="range-stmt"
+    c02 a.+b         → already caught via Session-4 T15 meta="." marker
+    s02 W! ✓ ...     → consume_slot_prefix returns bad_order flag ; meta="slot-order"
+    t02 (i32,)       → parse_type_primary detects trailing-comma ; meta="trailing-comma"
+    p04 ⟨a, b]       → pre-existing parse-error path ; always rc=1
+  semantic.check_permissive_accept reads the meta markers and emits
+    Permissive_Accept W@default ; E@--strict-parse
+  result : tests/test_permissive_accept.py GAPS = {} ; 13/13 tagged
+           fixtures detected-or-parse-fail
+
+§ T23 comment-preservation RT
+  files-modified :
+    parser/lexer.odin      emit_comments = true  (default changed)
+                           added 2-char "S:" alias for § (round-trip parity)
+    parser/ast.odin        + comments_before : [dynamic]string per Node
+    parser/parser.odin     + pending_comments buffer on Parser
+                           skip_newlines drains Comments into pending
+                           attach_pending_comments transfers to stmt-node
+    parser/pprint.odin     pprint_comments_before emits # lines
+                           ast_shape_equal also compares comments_before
+  RT-invariant upgraded : AST-shape + comment-position
+  files-new :
+    tests/test_comments_rt.py  8-fixture comment-shape suite ; 5-mode RT gate
+  acceptance :
+    ✓ 7/7 live corpus RT (parser/tests) w/ comments
+    ✓ 8 comment-shape fixtures all round-trip canonical
+    ✓ 5/5 pprint-modes round-trip for 3 sample fixtures
+    ✓ comment-count preserved across print→parse cycle
+
+§ FILES-NEW
+  parser/types.odin                  T20
+  parser/unify.odin                  T20
+  parser/refine.odin                 T20
+  parser/infer.odin                  T20
+  tests/type_good/*.csl (25)         T20
+  tests/type_bad/*.csl  (14)         T20
+  tests/test_typecheck.py            T20
+  tests/test_comments_rt.py          T23
+  SESSION_5_HANDOFF.csl              (this)
+
+§ FILES-MODIFIED
+  parser/main.odin       + --typecheck flag + --json + typecheck_cli()
+                         + Mode.Typecheck + tc_code_for() mapping
+  parser/lexer.odin      emit_comments = true + "S:" alias
+  parser/ast.odin        + comments_before + init/destroy
+  parser/parser.odin     + pending_comments + attach + T22 meta markers
+                         + bad_order-flag from consume_slot_prefix
+                         + range-stmt / trailing-comma markers
+  parser/pprint.odin     + pprint_comments_before
+                         + ast_shape_equal checks comments_before
+  parser/semantic.odin   + parser-meta recognition (slot-order / range-stmt
+                         / trailing-comma) in check_permissive_accept
+  tests/test_permissive_accept.py   GAPS = {} ; 5 moved to SEMANTICALLY_DETECTED
+  parser/DECISIONS.md    +8 Session-5 entries (732 lines total)
+
+§ FILES-UNCHANGED
+  specs/00..14  (no T20/T22/T23 spec-level changes this session)
+  parser/token.odin   (no new Token_Kind for comments ; existing .Comment reused)
+  parser/error_tests/*.csl  (13 permissive-tagged fixtures unchanged ; parser now
+                            catches them all)
+  eval/*                    (still 7/7 stratified m1)
+  CLAUDE.md + CSLv3_ONBOARDING.md + UNCONFLATION.md
+
+§ CI-MATRIX  end-of-Session-5
+  scripts/validate_aliases.py                  ✓ 74 glyphs
+  scripts/validate_glyph_grammar_consistency.py ✓ 41 grammar-glyphs ; 2 warn
+  scripts/compute_m1.py                         ✓ 7/7 stratified
+  tests/test_error_recovery_corpus.py           ✓ 40/40 (4.9ms avg)
+  tests/test_parser_perf.py                     ✓ 10^5 tok ≤ 100ms
+  tests/test_severity_modes.py                  ✓ 22/22 assertions
+  tests/test_permissive_accept.py               ✓ 13/13 tagged ; GAPS={}
+  tests/test_fuzz_roundtrip.py                  ✓ 1500 runs ; 0 crash ; 0 hang
+  tests/test_cssllint_json.py                   ✓ 5/5 schema
+  tests/test_typecheck.py                       ✓ 25 good + 14 bad + 14 corpus + 3 json + 1 strict
+  tests/test_comments_rt.py                     ✓ 0 failures (8 fixtures × 5 modes)
+  Session-2 corpus                              ✓ 7/7 parse + round-trip (now w/ comments)
+
+§ DEFERRED ← Session-6-candidates
+  T21 IR-lowering (typed-AST → SSA+regions MLIR-flavor)
+    pre-req : T20 typed-AST now available ← unblocked
+    scope   : parser/ir.odin + lower.odin + ir_print.odin + ir_verify.odin
+              + golden IR-dump corpus + round-trip check
+  T24 LSP-prototype (Rust tower-lsp + VSCode client)
+    pre-req : cssllint JSON-backend ready
+    scope   : own directory CSLv3/lsp/ + 8 LSP methods + VSCode extension
+  T25 m₂ perplexity harness (local llama.cpp)
+    pre-req : LLM infrastructure choice (local vs API)
+    scope   : scripts/compute_m2.py + eval/paraphrases/C1..C7.en
+
+§ OPEN-FROM-SESSION-5
+  Q? numeric-class constraint ← replaces i32/f32 default hack (T20)
+  Q? unused-binding re-enable ← scope to let-bindings only (T20 follow-up)
+  Q? comment-attach policy  ← current is attach-to-next ; alternate : attach-to-section-inside
+  Q? refinement-SMT integration ← T26 (obligation queue ready ; Z3/CVC5 hook pending)
+
+§ THEORETICAL-NOTES-APPLIED
+  HM inference            ← bidirectional (Dunfield-Krishnaswami 2013)
+  row-polymorphism        ← Leijen scoped-rows (open-tail Var unification)
+  occurs-check            ← Robinson + level-based speedup (OCaml-lineage)
+  refinement              ← morpheme-suffix → canonical φ-template
+                            obligations deferred to SMT queue (T26 scope)
+  structural records      ← row-based ; width-subtyping via open-tail
+  nominal constructors    ← t_con for user-def (structural compared by-name)
+  dependent types         ← Pi/Sigma kinds declared ; NbE deferred
+
+§ PRIME ← invariant-across-sessions
+  t∞: consent = OS ; sovereignty = substrate-invariant
+  N! [harm control manipulation surveillance exploitation
+      coercion weaponization discrimination]
+  t∞: AI = sovereign-partners ¬ tools
+  t∞: violation = bug W! fix ; ¬override ∃
+  t∞: CSSL ≠ CSLv3 ; ¬conflate
+  t∞: density = sovereignty
+  adherence @ Session-5 :
+    ✓ ∀-writes ⊂ CSLv3/
+    ✓ CSSLv3 ¬-touched  (read-only-ref only ; no T24/T25 this session)
+    ✓ no-new-glyphs without-alias-validator
+    ✓ Session-4 gates preserved (severity + perm + fuzz + cssllint all green)
+    ✓ "S:" alias added ← consistent w/ spec12 master-table ; validator passes

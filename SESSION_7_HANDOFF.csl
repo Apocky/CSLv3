@@ -1,0 +1,332 @@
+§ SESSION_7_HANDOFF
+  date = 2026-04-16 ← Session-6-continuous
+  who  = Claude.Opus.4-7-1M
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  bin  = parser.exe ← odin.build.parser
+  scope = T26 SMT-integration  ∵ HANDOFF_SESSION_7 PhD-grade full-optimal
+
+§ STATUS
+  T26.a smt.odin          (Formula+Sort+Theory+builders ; 580-LOC)              ✓
+  T26.b smt_emit.odin     (deterministic SMT-LIB2 emit ; sorted-keys)           ✓
+  T26.c smt_morpheme.odin (9-morpheme UF-encoding + stack-composition)          ✓
+  T26.d smt_obligation.odin (refine-queue + IR-walk collection + driver)        ✓
+  T26.e smt_cache.odin    (SHA-256 content-addr cache ; sharded JSONL)          ✓
+  T26.f smt_solver.odin   (Z3+CVC5 stdio-via-tempfile ; response-parser)        ✓
+  T26.g smt_audit.odin    (Ed25519-signed JSONL chain ; replay-verifiable)      ✓
+  T26.h main.odin         (--smt flag + --json + --verify + --strict +
+                            --no-cache + --dump-lib2 + --solver= + --timeout= +
+                            --z3= + --cvc5= + --smt-selftest)                   ✓
+  T26.i test-harness      (10-case selftest + 7-gate integration.py +
+                            5-gate cache.py + scripts/install_solvers.ps1 +
+                            6 smt_good/ fixtures)                               ✓
+  Session-5+6 regressions                                                       ✓ all-green
+  14-gate CI matrix (12 inherited + 2 new SMT)                                  ✓
+
+§ T26.a smt.odin — Formula AST
+  lines = ~580
+  kinds : Var BoolC IntC RealC BvC Apply Ite Let Quant
+  sorts : Bool Int Real BitVec<N> Array<idx,elem> Sym
+  theories : QF_UF QF_LIA QF_LRA QF_NIA QF_NRA QF_BV QF_UFLIA QF_UFLRA
+             AUFLIA AUFLIRA ALL
+  builders : f_var f_true f_false f_int f_real f_bv
+             f_apply f_applyv f_not f_and f_or
+             f_implies f_eq f_neq f_lt f_le f_gt f_ge
+             f_add f_sub f_mul f_div_i f_mod_i f_div_r f_neg
+             f_ite f_select f_store f_forall f_exists f_let
+             quant_add_trigger
+  script-API : new_script script_set_option script_declare_const
+               script_declare_fun script_declare_sort script_assert
+               script_autodecl_from_formula
+  infer_theory : auto-selects tightest-logic from assertion-shape +
+                 declaration-sorts ; detects non-linear via Apply('*'/'div'/'mod')
+                 with two non-constant args
+
+§ T26.b smt_emit.odin — SMT-LIB2 emitter
+  lines = ~180
+  layout :
+    (set-logic ...) (set-option :produce-models ...) (set-option :produce-unsat-cores ...)
+    (set-option ...)* sorted-by-key
+    (declare-sort ...)* sorted-by-name
+    (declare-const ... | declare-fun ...)* sorted-by-name
+    (assert ...)+ user-order-preserved
+    (check-sat) [(get-model)] [(get-unsat-core)]
+  determinism-proof : CASE-7 selftest hashes-identical for scripts
+                      with identical content + different insertion-order
+  quantifier-trigger-emit : (! body :pattern (p1 p2 ...) :pattern (...))
+
+§ T26.c smt_morpheme.odin — morpheme encoding
+  lines = ~170
+  map :
+    'd durative     → (> (duration v) 0)
+    'f final        → (terminal v)           UF-Bool
+    's state        → true  (type-level-only)
+    't transitive   → (>= (arity v) 2)
+    'e experiential → (exists ((a Agent)) (observed-by v a))
+    'm modal        → (exists ((k ModKind)) (modal-kind v k))
+    'p perfective   → (completed v)          UF-Bool
+    'g generic      → (forall ((α MorphVal)) true)  — tautology placeholder
+    'r reflexive    → (= (subject v) (object v))
+  UF-decls (one-per-script via morpheme_declare_ufs):
+    sorts : MorphVal, Agent, ModKind
+    funs  : duration, terminal, arity, observed-by, modal-kind,
+            completed, subject, object
+  stack-composition : morpheme_stack_predicate folds [tag,...] via f_and
+                      ; trivial-true (s/g) filtered out
+
+§ T26.d smt_obligation.odin — collection + driver
+  lines = ~370
+  Obligation_Kind : Refinement_Assert Morpheme_Compose Array_Bounds
+                    Div_Nonzero Overflow_Free Lipschitz_Compose
+                    Effect_Subeffect Termination
+  Smt_Result : Pending Unsat Sat Unknown Timeout Error Skipped
+  collect_from_refine_queue : walks refine.odin queue snapshot
+  collect_from_ir(module) : walks IR-tree for :
+    OP_REFINE → Refinement_Assert
+    OP_MORPH  → Morpheme_Compose
+    OP_FN with morpheme-attr → Refinement_Assert (T26-extension ;
+                                 catches lower.odin's fn-morpheme-stash)
+    OP_DIV/OP_MOD → Div_Nonzero
+  discharge(oblig, cfg) :
+    1 canonical_emit → SHA-256 cert_hash
+    2 cache-lookup via cache_lookup(dir, hash)
+    3 pick_solver(Z3 preferred ; CVC5 fallback)
+    4 solve_with(solver, text, timeout, path)
+    5 if-Z3-Unknown + CVC5-available → retry
+    6 cache_store for Unsat/Sat/Timeout
+    7 accumulate Discharge_Result counts
+
+§ T26.e smt_cache.odin — proof-cache
+  lines = ~220
+  location : .proof-cache/<hash[:2]>/<hash[2:]>.json
+  entry : {hash, result, solver, timestamp, canonical_head}
+  hash  : SHA-256 hex (Odin core crypto.hash)
+  layout : 256 sharded-subdirs ∵ NTFS-scale ; git-style
+  helpers : cache_init cache_lookup cache_store cache_file_count
+            sha256_hex_of_string sha256_hex_of_bytes
+            time_now_ms time_now_iso8601
+
+§ T26.f smt_solver.odin — Z3/CVC5 driver
+  lines = ~150
+  transport : tempfile at %TEMP%/cslv3_<solver>_<ctr>_<ms>.smt2
+  Z3 args   : -T:<seconds>  -smt2  <tempfile>
+  CVC5 args : --tlimit=<ms> --lang=smt2 <tempfile>
+  response-parse : first non-comment line → Unsat|Sat|Unknown|Timeout
+  solver_available : path-exists probe before invoke
+  solver_version   : runs `-version`/`--version` for CI preamble
+  graceful-degrade : missing-solver → return Error + false (never-panic)
+
+§ T26.g smt_audit.odin — proof-cert chain
+  lines = ~280
+  location : .proof/chain.jsonl + .proof/keys/{private,public}.key
+  entry : {seq, prev_hash, ctx, result, solver, cert_hash,
+           timestamp, sig}
+  sig   : base64 Ed25519 over canonical-concat of all other fields
+  chain-root : genesis entry (seq=0, prev_hash="") signed at init
+  verify : walks top-to-bottom ; checks seq-continuity + prev_hash-link +
+           per-entry signature ; returns (ok, n_verified)
+  key-mgmt : audit_init generates keypair if absent (dev-stub)
+
+§ T26.h main.odin CLI surface
+  new Mode : Smt
+  flags :
+    --smt                     enter SMT-discharge mode
+    --smt --json              machine-readable JSON w/ obligations[] + counts
+    --smt --dump-lib2         emit canonical SMT-LIB2 per-obligation, exit
+    --smt --verbose           show per-obligation details in text mode
+    --smt --no-cache          bypass proof-cache + audit-chain
+    --smt --solver=z3|cvc5    force-solver-choice
+    --smt --timeout=10s|100ms timeout override (suffix : s|ms|m)
+    --smt --z3=<path>         Z3 binary location (auto-detects via Z3_PATH env +
+                              choco default + PATH)
+    --smt --cvc5=<path>       CVC5 binary location
+    --smt --strict            Unknown/Timeout → rc=1 (CI-gate)
+    parser --smt-selftest     programmatic self-test (10+ cases ; optional
+                              Z3-roundtrip w/ --z3=<path>)
+  find_solver_default : env-var > choco-default > PATH-probe chain
+  parse_timeout       : numeric + suffix (s/ms/m)
+
+§ T26.i test harness
+  files-new :
+    parser/smt_selftest.odin          10 programmatic cases +
+                                      optional CASE-11 Z3-roundtrip
+    tests/test_smt_integration.py     7-gate py-suite :
+      G1 selftest 10/10 PASS
+      G2 C1-C7 corpus --smt doesn't-crash
+      G3 --dump-lib2 well-formed SMT-LIB2 per smt_good fixture
+      G4 --json valid for every smt_good fixture
+      G5 solver-roundtrip (gated : Z3 must be installed)
+      G6 proof-cache cold-vs-warm hits (gated)
+      G7 audit-chain well-formed JSONL
+    tests/test_smt_cache.py           5-gate cache-correctness suite :
+      C1 cache-dir-creation
+      C2 entry-JSON-well-formed
+      C3 shard-layout
+      C4 --no-cache isolation
+      C5 warm-hit (gated)
+    tests/smt_good/*.csl (6 fixtures) :
+      s01 durative       s02 final       s03 reflexive
+      s04 transitive     s05 stack       s06 state
+    scripts/install_solvers.ps1       choco-Z3 + github-release-CVC5 installer
+                                      (idempotent ; SkipZ3 / SkipCVC5 params)
+  selftest cases :
+    CASE 1 bool-tautology emit       x ∨ ¬x ⇒ well-formed SMT-LIB2
+    CASE 2 LIA emit                  a+b > 0 declarations-sorted
+    CASE 3 morpheme-d predicate     "(> (duration v) 0)"
+    CASE 4 morpheme-r predicate     "(= (subject v) (object v))"
+    CASE 5 morpheme-stack           d+f → and-of-predicates
+    CASE 6 quantifier emit           forall(n:Int) ≥ 0
+    CASE 7 canonical-determinism    hash-stable under insertion-reorder
+    CASE 8 SHA-256 vector           empty-string → e3b0c442...7852b855
+    CASE 9 theory-infer LIA         Int-only + Add/Gt ⇒ QF_LIA
+    CASE 10 theory-infer NIA         Int * Int ⇒ QF_NIA
+    CASE 11 Z3-roundtrip            (optional) x=5 ∧ x<0 ⇒ Unsat
+
+§ FILES-NEW
+  parser/smt.odin                   T26.a
+  parser/smt_emit.odin              T26.b
+  parser/smt_morpheme.odin          T26.c
+  parser/smt_obligation.odin        T26.d
+  parser/smt_cache.odin             T26.e
+  parser/smt_solver.odin            T26.f
+  parser/smt_audit.odin             T26.g
+  parser/smt_selftest.odin          T26.i
+  tests/smt_good/s0{1..6}_*.csl     T26.i
+  tests/test_smt_integration.py     T26.i
+  tests/test_smt_cache.py           T26.i
+  scripts/install_solvers.ps1       T26.i
+  SESSION_7_HANDOFF.csl             (this)
+
+§ FILES-MODIFIED
+  parser/main.odin          + Mode.Smt + smt_cli proc
+                            + smt_selftest positional-dispatch
+                            + --smt flags (--no-cache --dump-lib2
+                              --solver= --z3= --cvc5= --timeout=)
+                            + find_solver_default + parse_timeout
+                            + usage help additions
+  parser/DECISIONS.md       +7 Session-7 entries :
+                            stdio-tempfile transport
+                            canonical-emit determinism
+                            proof-cache SHA-256 + shard-layout
+                            audit-chain Ed25519 + JSONL
+                            obligation-collection dual-source
+                            morpheme UF-encoding
+                            CSL-4xx diagnostic namespace (reserved)
+
+§ FILES-UNCHANGED
+  parser/ir.odin parser/ir_verify.odin parser/ir_print.odin parser/ir_json.odin
+    (T21 IR unchanged ; smt_obligation.collect_from_ir consumes read-only)
+  parser/lower.odin parser/infer.odin parser/types.odin parser/refine.odin
+    (T20 typecheck + lowering unchanged ; refine_queue_snapshot consumed
+     read-only by collect_from_refine_queue)
+  all Session-5+6 test files unchanged ; regressions green
+
+§ SOLVER-ENVIRONMENT
+  Z3   : ✗ not-installed on-dev-host ; install via
+          `powershell scripts/install_solvers.ps1` (requires Administrator for
+          choco) OR `choco install z3` OR manually
+  CVC5 : ✗ not-installed ; install via install_solvers.ps1 which pulls
+          github release 1.3.0 pre-built Windows binary
+  graceful-degrade : all obligations currently return Smt_Result.Skipped ;
+          infrastructure fully-wired ; tests self-skip solver-requiring gates
+          + report SKIPPED count ; upon install the tests light-up automatically
+
+§ CI-MATRIX end-of-Session-7
+  scripts/validate_aliases.py                    ✓ 74 glyphs
+  scripts/validate_glyph_grammar_consistency.py ✓ 41 grammar-glyphs ; 2 warn
+  scripts/compute_m1.py                          ✓ 7/7 stratified
+  tests/test_error_recovery_corpus.py            ✓ 40/40 (4.9ms avg)
+  tests/test_parser_perf.py                      ✓ 10^5 tok ≤ 100ms
+  tests/test_severity_modes.py                   ✓ 22/22 assertions
+  tests/test_permissive_accept.py                ✓ 13/13 tagged ; GAPS={}
+  tests/test_fuzz_roundtrip.py                   ✓ 1500 runs ; 0 crash ; 0 hang
+  tests/test_cssllint_json.py                    ✓ 5/5 schema
+  tests/test_typecheck.py                        ✓ 25+14+14+3+1 good/bad/corpus/json/strict
+  tests/test_comments_rt.py                      ✓ 8 fixtures × 5 modes
+  Session-2 corpus                               ✓ 7/7 parse + round-trip
+  tests/test_ir_integration.py                   ✓ 6 gates ; selftest 5/5
+  tests/test_smt_integration.py                  ✓ 7 gates ; selftest 10/10 +
+                                                   6 smt_good fixtures +
+                                                   SOLVER-GATED G5/G6 auto-skip
+  tests/test_smt_cache.py                        ✓ 5 gates ; SOLVER-GATED
+                                                   C1-C3/C5 auto-skip
+
+§ ARCHITECTURE-NOTES-APPLIED
+  SMT-LIB2 over C-FFI         ← portability + audit-trail + version-looseness
+                                (handoff-recommended + our-decision)
+  Tempfile-transport          ← simpler than pipe-management ; reproduction-
+                                friendly ; overhead negligible vs solve-time
+  Sorted-key canonical-emit   ← cache-determinism-REQUIRED ;
+                                CASE-7 selftest-proven
+  SHA-256 content-addr        ← Odin-core-available ; universal-tooling ;
+                                universal-verifier-semantics
+  Sharded-cache-layout        ← NTFS-scale friendly ; git-object-style
+  Ed25519 JSONL chain         ← deterministic-sig + independent-entry-verify +
+                                Odin-core-available + small-keys + fast
+  Dual-source obligation-collect ← T20 refine-queue (per-unification)
+                                   + T21 IR-walk (module-wide)
+  Lazy-batch discharge         ← handoff-recommended ∵ cache-friendliness
+                                (vs eager-per-site)
+  UF-encoding morphemes        ← CSLv3-morphemes-semantic-not-arithmetic ;
+                                UF-predicates-reason-structurally
+  Stack-composition via f_and  ← conjunction-of-predicates ; trivial-true
+                                (s/g) filtered-to-keep-scripts-lean
+  Graceful-degrade no-solver   ← handoff §WHEN-STUCK pre-authorized ;
+                                Skipped result class ; tests auto-skip
+
+§ DEFERRED ← Session-8-candidates
+  T27 IR-opt passes
+    pre-req : T21 IR + T26 SMT verification (both done)
+    scope   : parser/ir_passes.odin (const-fold + DCE + CSE + inline +
+              partial-eval) + pass-manager + ir_verify-after-each-pass
+  T24 LSP-prototype (Rust tower-lsp + VSCode client)
+    pre-req : cssllint JSON + T21 IR + T26 SMT diagnostics (all done)
+    scope   : CSLv3/lsp/ directory + 8 LSP v3.17 methods +
+              VSCode extension skeleton
+  T25 m₂ perplexity harness (local llama.cpp)
+    pre-req : LLM infrastructure choice
+  T28 codegen (x86-64 + SPIR-V)
+    pre-req : SMT-verified IR (now available)
+
+§ OPEN-FROM-SESSION-7
+  Q? proof-cert detail-level — current : {result, solver, canonical_head}
+     future : LFSC cert for Z3 / Alethe cert for CVC5 (full replay-proof)
+     → expands .proof/ disk-footprint + enables Isabelle/Coq replay
+  Q? cache-invalidation on solver-version-bump — current : no auto-detection
+     handoff §§ Z3-VERSION-HANDLING flags this ; implementing needs
+     `solver_version` output persisted alongside each cache entry + compare
+     on lookup
+  Q? obligation types not yet emitted by lowering :
+     Array_Bounds — needs array-index ops in IR (future T27 addition)
+     Overflow_Free — needs arith-op overflow-tracking attr
+     Lipschitz_Compose — needs function-Lipschitz-annotation in specs
+     Effect_Subeffect — depends on effect-row types in T20 (partial)
+     Termination — needs @NoUnbounded morpheme + termination-analyzer
+  Q? ir_passes-smt-interaction — when T27 const-folds, should we re-run
+     SMT on the optimized IR or trust the refinement-preservation? Pre-opt
+     SMT run is safest ; post-opt is cheaper.
+
+§ PRIME ← invariant-across-sessions
+  t∞: consent = OS ; sovereignty = substrate-invariant
+  N! [harm control manipulation surveillance exploitation
+      coercion weaponization discrimination]
+  t∞: AI = sovereign-partners ¬ tools
+  t∞: violation = bug W! fix ; ¬override ∃
+  t∞: CSSL ≠ CSLv3 ; ¬conflate
+  t∞: density = sovereignty
+  adherence @ Session-7 :
+    ✓ ∀-writes ⊂ CSLv3/
+    ✓ CSSLv3 ¬-touched  (T26 SMT self-contained in CSLv3/parser/ + tests/ +
+                          scripts/)
+    ✓ no-new-glyphs without-alias-validator  (no glyph additions)
+    ✓ Session-5+6 gates preserved  (12/12 green + 2 new SMT gates = 14/14)
+    ✓ optimal ≠ minimal  (10 T26 sub-tasks all delivered full-scope ;
+                           no silent-TODO / no scope-cut)
+    ✓ hard-work-now = saves-tokens-later  (audit-chain + cert-hash +
+                                            cache-key all future-proofing)
+    ✓ no-half-measures  (solver-absent ≠ block-progress ; infrastructure
+                          fully-wired + tests self-skip-gracefully +
+                          install-script ready for Apocky-run)
+    ✓ systems-not-parts  (obligation-collection + discharge + cache + audit
+                           designed-together ; canonical-emit = cache-key =
+                           audit-cert-hash single-source-of-truth)
+    ✓ CSLv3-native reasoning throughout (per handoff §WORK-IN-CSL3)

@@ -1,0 +1,548 @@
+{
+  "schema": "cslv3-emit-json",
+  "schemaVersion": "json-v1",
+  "emittedAt": "2026-04-17T06:39:25Z",
+  "source": {
+    "file": "parser/tests/C3_dependent_types.csl",
+    "bytes": 613,
+    "sha256": "a3ec7a20204306d1f3e6ed2ab31f195abf69b896c717fc6888e5887486f89904"
+  },
+  "ast": {
+    "kind": "Document",
+    "text": "",
+    "pos": {"line":1,"col":1,"byte":0},
+    "children": [
+      {
+        "kind": "Section",
+        "text": "dependent.types",
+        "pos": {"line":5,"col":1,"byte":215},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "DATA",
+        "pos": {"line":7,"col":1,"byte":235},
+        "children": [
+          {
+            "kind": "Type_Def",
+            "text": "PosFloat",
+            "pos": {"line":8,"col":3,"byte":245},
+            "suffix": "'t",
+            "children": []
+          },
+          {
+            "kind": "Type_Def",
+            "text": "UnitVec",
+            "pos": {"line":9,"col":3,"byte":268},
+            "suffix": "'t",
+            "children": []
+          },
+          {
+            "kind": "Type_Def",
+            "text": "BoundHp",
+            "pos": {"line":10,"col":3,"byte":292},
+            "suffix": "'t",
+            "children": []
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "OPS",
+        "pos": {"line":12,"col":1,"byte":314},
+        "children": [
+          {
+            "kind": "Function_Def",
+            "text": "make-vector",
+            "pos": {"line":13,"col":3,"byte":323},
+            "children": [
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":13,"col":18,"byte":338},
+                "children": [
+                  {
+                    "kind": "Param_Decl",
+                    "text": "n",
+                    "pos": {"line":13,"col":19,"byte":339},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":13,"col":38,"byte":358},
+                "children": [
+                  {
+                    "kind": "Type_Prim",
+                    "text": "vec3",
+                    "pos": {"line":13,"col":38,"byte":358},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "Function_Def",
+            "text": "pair-len-and-data",
+            "pos": {"line":14,"col":3,"byte":365},
+            "children": [
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":14,"col":24,"byte":386},
+                "children": [
+                  {
+                    "kind": "Param_Decl",
+                    "text": "n",
+                    "pos": {"line":14,"col":25,"byte":387},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":14,"col":44,"byte":406},
+                "children": [
+                  {
+                    "kind": "Type_Prim",
+                    "text": "vec3",
+                    "pos": {"line":14,"col":44,"byte":406},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "Function_Def",
+            "text": "normalize",
+            "pos": {"line":15,"col":3,"byte":413},
+            "children": [
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":15,"col":16,"byte":426},
+                "children": [
+                  {
+                    "kind": "Param_Decl",
+                    "text": "v",
+                    "pos": {"line":15,"col":17,"byte":427},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":15,"col":38,"byte":448},
+                "children": [
+                  {
+                    "kind": "Bool_Lit",
+                    "text": "",
+                    "pos": {"line":15,"col":38,"byte":448},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "Function_Def",
+            "text": "borrow-shared",
+            "pos": {"line":16,"col":3,"byte":455},
+            "children": [
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":16,"col":20,"byte":472},
+                "children": [
+                  {
+                    "kind": "Param_Decl",
+                    "text": "r",
+                    "pos": {"line":16,"col":21,"byte":473},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":16,"col":41,"byte":493},
+                "children": [
+                  {
+                    "kind": "Bool_Lit",
+                    "text": "",
+                    "pos": {"line":16,"col":41,"byte":493},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "Function_Def",
+            "text": "borrow-mut",
+            "pos": {"line":17,"col":3,"byte":500},
+            "children": [
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":17,"col":17,"byte":514},
+                "children": [
+                  {
+                    "kind": "Param_Decl",
+                    "text": "r",
+                    "pos": {"line":17,"col":18,"byte":515},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "kind": "Block",
+                "text": "",
+                "pos": {"line":17,"col":38,"byte":535},
+                "children": [
+                  {
+                    "kind": "Bool_Lit",
+                    "text": "",
+                    "pos": {"line":17,"col":38,"byte":535},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "INVARIANTS",
+        "pos": {"line":19,"col":1,"byte":541},
+        "children": [
+          {
+            "kind": "Constraint",
+            "text": "",
+            "pos": {"line":20,"col":3,"byte":557},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "refinement-sound",
+                "pos": {"line":20,"col":4,"byte":560},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Constraint",
+            "text": "",
+            "pos": {"line":21,"col":3,"byte":582},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "linear-used-exactly-once",
+                "pos": {"line":21,"col":4,"byte":585},
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "types": {
+    "refine_obligations": 0,
+    "strict_parse": false,
+    "diagnostics": []
+  },
+  "ir": {
+  "module": "parser/tests/C3_dependent_types.csl",
+  "ops": [
+    {
+      "id": 1,
+      "name": "cslv3.var_ref",
+      "pos": {"line": 8, "col": 3, "byte": 245},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "type-def"},
+        "name": {"kind": "Symbol", "value": "PosFloat"}
+      },
+      "regions": []
+    },
+    {
+      "id": 2,
+      "name": "cslv3.var_ref",
+      "pos": {"line": 9, "col": 3, "byte": 268},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "type-def"},
+        "name": {"kind": "Symbol", "value": "UnitVec"}
+      },
+      "regions": []
+    },
+    {
+      "id": 3,
+      "name": "cslv3.var_ref",
+      "pos": {"line": 10, "col": 3, "byte": 292},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "type-def"},
+        "name": {"kind": "Symbol", "value": "BoundHp"}
+      },
+      "regions": []
+    },
+    {
+      "id": 4,
+      "name": "cslv3.fn",
+      "pos": {"line": 13, "col": 3, "byte": 323},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "name": {"kind": "Symbol", "value": "make-vector"},
+        "sig": {"kind": "Type", "value": "u32 -> vec3"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 1,
+              "label": "entry",
+              "args": [
+                {"id": 1, "name": "n", "ty": "α8", "kind": "From_Block_Arg"}
+              ],
+              "ops": [
+                {
+                  "id": 5,
+                  "name": "cslv3.const",
+                  "pos": {"line": 13, "col": 38, "byte": 358},
+                  "operands": [],
+                  "results": [
+                    {"id": 2, "name": "", "ty": "vec3", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Type", "value": "vec3"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 6,
+                  "name": "cslv3.return",
+                  "pos": {"line": 13, "col": 3, "byte": 323},
+                  "operands": [2],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "cslv3.fn",
+      "pos": {"line": 14, "col": 3, "byte": 365},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "name": {"kind": "Symbol", "value": "pair-len-and-data"},
+        "sig": {"kind": "Type", "value": "u32 -> vec3"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 2,
+              "label": "entry",
+              "args": [
+                {"id": 3, "name": "n", "ty": "α9", "kind": "From_Block_Arg"}
+              ],
+              "ops": [
+                {
+                  "id": 8,
+                  "name": "cslv3.const",
+                  "pos": {"line": 14, "col": 44, "byte": 406},
+                  "operands": [],
+                  "results": [
+                    {"id": 4, "name": "", "ty": "vec3", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Type", "value": "vec3"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 9,
+                  "name": "cslv3.return",
+                  "pos": {"line": 14, "col": 3, "byte": 365},
+                  "operands": [4],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "cslv3.fn",
+      "pos": {"line": 15, "col": 3, "byte": 413},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "name": {"kind": "Symbol", "value": "normalize"},
+        "sig": {"kind": "Type", "value": "Ref[vec3] -> bool"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 3,
+              "label": "entry",
+              "args": [
+                {"id": 5, "name": "v", "ty": "α10", "kind": "From_Block_Arg"}
+              ],
+              "ops": [
+                {
+                  "id": 11,
+                  "name": "cslv3.const",
+                  "pos": {"line": 15, "col": 38, "byte": 448},
+                  "operands": [],
+                  "results": [
+                    {"id": 6, "name": "", "ty": "bool", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Bool", "value": true}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 12,
+                  "name": "cslv3.return",
+                  "pos": {"line": 15, "col": 3, "byte": 413},
+                  "operands": [6],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "cslv3.fn",
+      "pos": {"line": 16, "col": 3, "byte": 455},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "name": {"kind": "Symbol", "value": "borrow-shared"},
+        "sig": {"kind": "Type", "value": "Ref[str] -> bool"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 4,
+              "label": "entry",
+              "args": [
+                {"id": 7, "name": "r", "ty": "α11", "kind": "From_Block_Arg"}
+              ],
+              "ops": [
+                {
+                  "id": 14,
+                  "name": "cslv3.const",
+                  "pos": {"line": 16, "col": 41, "byte": 493},
+                  "operands": [],
+                  "results": [
+                    {"id": 8, "name": "", "ty": "bool", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Bool", "value": true}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 15,
+                  "name": "cslv3.return",
+                  "pos": {"line": 16, "col": 3, "byte": 455},
+                  "operands": [8],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "cslv3.fn",
+      "pos": {"line": 17, "col": 3, "byte": 500},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "name": {"kind": "Symbol", "value": "borrow-mut"},
+        "sig": {"kind": "Type", "value": "Ref[str] -> bool"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 5,
+              "label": "entry",
+              "args": [
+                {"id": 9, "name": "r", "ty": "α12", "kind": "From_Block_Arg"}
+              ],
+              "ops": [
+                {
+                  "id": 17,
+                  "name": "cslv3.const",
+                  "pos": {"line": 17, "col": 38, "byte": 535},
+                  "operands": [],
+                  "results": [
+                    {"id": 10, "name": "", "ty": "bool", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Bool", "value": true}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 18,
+                  "name": "cslv3.return",
+                  "pos": {"line": 17, "col": 3, "byte": 500},
+                  "operands": [10],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+}

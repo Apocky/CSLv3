@@ -1,0 +1,3 @@
+# smt_bad b15 — div-by-zero at u32 width
+§ T
+  fn f (x : u32) -> u32 = x / 0

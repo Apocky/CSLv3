@@ -1,0 +1,26 @@
+# corpus-mode: pure-CSL
+# tests: §P/§D/§T/§S/§C reasoning substrate (§05)
+# glyph-class: Section, evidence markers [x] [~] [!], Causes ~>
+# features: think-block shape, decomposition lists, trace annotations
+
+§ reasoning.trace
+
+§ P
+  # problem: parser-speed regression after lexer rewrite
+  # goal: restore 10k lines-per-second baseline
+
+§ D
+  # decomposition: slowdown from alloc OR dispatch OR rune-decode
+
+§ T
+  # alloc       ~> heap-profile    [x] flat
+  # dispatch    ~> switch-profile  [~] 8 percent worse
+  # rune-decode ~> micro-bench     [!] 40 percent worse
+
+§ S
+  # synthesis: primary culprit is rune-decode
+  # fix: cache utf8 width for ASCII fast-path
+
+§ C
+  # check:  [x] throughput restored within 2 percent
+  # edge:   [~] mixed-unicode input remains 15 percent slower than baseline

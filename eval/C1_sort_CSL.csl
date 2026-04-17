@@ -1,0 +1,28 @@
+# corpus-mode: pure-CSL
+§ sort.spec
+
+§ GOAL
+  # what: in-place comparison sort
+  # why:  predictable worst-case, zero allocations
+
+§ DATA
+  def Arr't = [i32; _]
+  def Cmp't = i32 -> i32 -> bool
+
+§ OPS
+  fn sort (a : &Arr't, cmp : Cmp't) -> bool = true
+  fn merge-sort (a : &Arr't, lo : i32, hi : i32, cmp : Cmp't) -> bool = true
+  fn merge (a : &Arr't, lo : i32, mid : i32, hi : i32, cmp : Cmp't) -> bool = true
+
+§ INVARIANTS
+  ⌈time <= n⌉
+  ⌈extra-space = n⌉
+
+§ TESTS
+  [x] case1 : sort-empty-returns-true
+  [x] case2 : sort-one-returns-true
+  [x] edge  : sort-reversed-returns-true
+
+§ ANTI-PATTERNS
+  [!] recursion-on-tiny-subarrays
+  [x] insertion-sort-at-small-n

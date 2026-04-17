@@ -1,0 +1,7 @@
+{
+  "hash": "913d4b5551319809c58af0ba9f7a5c2f054c3dd8fc3c4c6b6a6852ffc0ec5ebd",
+  "result": "sat",
+  "solver": "cvc5",
+  "timestamp": "2026-04-17T07:14:54Z",
+  "canonical_head": "(set-logic QF_UFLIA)\n(set-option :produce-models true)\n(declare-sort Agent 0)\n(declare-sort ModKind 0)\n(declare-sort MorphVal 0)\n(declare-fun arity (MorphVal) Int)\n(declare-fun completed (MorphVal) Bo"
+}

@@ -1,0 +1,148 @@
+§ CSLv3_CSSLv3_BRIDGE
+I> CSLv3 = dense spec / reasoning notation (THIS repo)
+I> CSSLv3 = programming language at C:\Users\Apocky\source\repos\CSSLv3
+I> this spec describes the interop contract between the two
+I> read-only reference : CSSLv3\specs\SYNTHESIS_V2.csl + CSSLv3\specs\09_SYNTAX.csl
+W! this file lives in CSLv3 -- we do NOT write to the CSSLv3 repo
+W! both sides round-trip via cslparser (this repo's reference implementation)
+
+§ LAYERING
+  # user-facing code       : CSSLv3 (.cssl / .cssl-rust / .cssl-csl)
+  # chain-of-thought       : CSLv3 inside CoT-comments
+  # spec documents         : CSLv3 (.csl) at project level
+  I> CSSLv3 carries the running program ; CSLv3 carries the reasoning
+
+§ INTEGRATION-SURFACES
+
+§§ S1-CoT-IN-CSSLv3-SOURCE
+  # Per CSSLv3 09_SYNTAX CoT-IN-COMMENTS section, a CSSLv3 source file may
+  # embed CSLv3 inside comment forms:
+  #   (a) block-CoT       §-brace...§-brace   (multi-line)
+  #   (b) line-CoT        § I> | § W! | § N!  until EOL
+  # Compiler-default: treat as comment, emit nothing into HIR.
+  # With --lint-csl, the comment bodies are handed to cslparser for
+  # parse-validation; any error is surfaced at editor-level.
+  # IDE tooling highlights the § + W! + N! + I> as structural tokens.
+  W! authors use CSLv3 ¬ English for rationale in CSSLv3 source
+  # (density = sovereignty ; CC8 in SYNTHESIS_V2)
+
+§§ S2-FORMATTER-ROUND-TRIP
+  # Per CSSLv3 09_SYNTAX COMPILER-GLYPH-OPS section, the CSSLv3 formatter
+  # (csslfmt) round-trips ASCII-form and Unicode-form of shared glyphs.
+  # Mapping (informational ; canonical list in specs/12_TOKENIZER.csl):
+  #
+  #   ASCII       Unicode     semantic
+  #   ->          arrow       fn-arrow / flow
+  #   =>          dbl-arrow   implies / match-arm
+  #   ::          dbl-colon   path-sep / has-type
+  #   !=          neq         not-equal
+  #   <=          le          lte
+  #   >=          ge          gte
+  #   all         forall      universal quantifier
+  #   any         exists      existential quantifier
+  #   |>          triangle    pipeline
+  #   &&          and         logical-and
+  #   ||          or          logical-or
+  #   ~           not         negation
+  #   in          in          set-membership
+  #
+  # Storage form : Unicode UTF-8 (canonical).
+  # Formatter R! : auto-upgrade ASCII to Unicode on save.
+  # Round-trip invariant: parse → format → parse ≡ same-HIR.
+  # Reuse        : the alias table in 12_TOKENIZER.csl is the shared source
+  #                of truth (74 entries after Session 3 expansion).
+
+§§ S3-PARSER-REUSE
+  # cslparser binary  : parser.exe produced by `odin build parser/`
+  # cslparser library : Odin package `cslparser` (parser/*.odin)
+  # CLI surface :
+  #   --errors      silent if clean ; file:line:col diagnostics otherwise
+  #   --tokens      lexer-only dump
+  #   --semantic    semantic pass : morphemes, aliases, scope, validity
+  #   --roundtrip   parse → print → reparse → AST-shape-equal
+  #   --print       reprint through pretty-printer
+  #   --mode=X      X in {canonical, compact, literate, ascii-only, unicode-only}
+  # CSSLv3 consumes cslparser to:
+  #   (a) validate block-CoT and line-CoT bodies under --lint-csl
+  #   (b) normalise CoT glyphs (ASCII vs Unicode) during csslfmt
+  #   (c) surface CoT blocks to Claude-instance tooling as AST,
+  #       not as opaque text.
+
+§§ LINT-PROTOCOL-Session-4-T19
+  # cssllint subcommand : `parser cssllint [--json] [--strict] [--strict-parse] <file>`
+  # Produces machine-readable diagnostics suitable for CSSLv3 compiler
+  # embedding. --json emits a single JSON object conforming to the schema:
+  #
+  #   {
+  #     "file":   <string>,
+  #     "status": "ok" | "warn" | "error",
+  #     "counts": { "info": N, "warn": N, "error": N },
+  #     "diags":  [
+  #       { "line": <int>, "col": <int>, "sev": "info"|"warn"|"error",
+  #         "code": <string>, "msg": <string> }
+  #     ]
+  #   }
+  #
+  # Diagnostic-code namespace :
+  #   CSL-E-LEX       lexer error
+  #   CSL-E-PARSE     parse error
+  #   CSL-E-002       morpheme-duplicate (always-error)
+  #   CSL-E-IO        file-read error
+  #   CSL-W-001       morpheme-order
+  #   CSL-W-003       morpheme-unknown
+  #   CSL-W-004       slot-arity
+  #   CSL-W-005       evidence-contradict
+  #   CSL-W-007       permissive-accept
+  #   CSL-I-006       compound-assoc (info-only)
+  #
+  # Exit-code contract :
+  #   0  status == "ok" or "warn" (sev flag lint/default)
+  #   1  status == "error" OR (--strict AND any-warn) OR (--strict-parse-specific)
+  #
+  # CSSLv3 tooling usage pattern :
+  #   $ parser cssllint --json src.cssl > diags.json
+  #   (parse diags.json ; render inline in IDE ; gate CI on status != "ok")
+  #
+  # Schema stability : tied to CSLv3 minor version.
+  # Adding new diag codes is backward-compatible; renaming is a major bump.
+
+§ HANDOFF-DATA-MODEL
+  # When CSSLv3 tooling hands a CoT block to cslparser :
+  #   input  : raw source bytes of the block body (delimiters stripped)
+  #   output : Node tree with kind in {Section, Directive, Relation, ...}
+  #   errors : []Parse_Error ; non-empty implies the body is malformed CSLv3
+  # Reverse direction : cslparser pretty-printer emits bytes ;
+  # CSSLv3 can reinsert verbatim.
+
+§ VERSIONING
+  # CSSLv3 is a separate repository ; its 00-23 specs evolve independently.
+  # CSLv3 ships here as a stable notation with its own semver.
+  # Bridge contract = THIS file + specs/12_TOKENIZER.csl alias table.
+  W! alias-table change -> bump CSLv3 minor ; CSSLv3 consumes-major-compatible
+  R! CSSLv3 may later self-host its CoT formatter
+  # (the contract stabilises the glyph table, not the implementation.)
+
+§ NON-GOALS
+  N! CSLv3 does NOT import or execute CSSLv3 code
+  N! CSSLv3 source is NOT a CSLv3 document
+  # (only CoT bodies and § I>/W!/N! lines are CSLv3-parseable.)
+  N! CSLv3 specs do NOT describe CSSLv3 semantics
+  # (those live in CSSLv3's own specs/ tree.)
+
+§ INVARIANTS
+  t_inf : CSLv3-glyph-inventory = one source of truth  -- specs/12_TOKENIZER.csl
+  t_inf : CSLv3-grammar         = one source of truth  -- specs/02_GRAMMAR.csl + 13
+  t_inf : cslparser             = reference implementation
+  t_inf : density = sovereignty -- CC8 of CSSLv3 SYNTHESIS_V2
+
+§ REFERENCES
+  # @specs/01_GLYPHS.csl              3-tier glyph inventory
+  # @specs/02_GRAMMAR.csl             BNF + prose grammar for CSLv3
+  # @specs/08_COMPILER.csl            CSLv3 reference compiler (cslparser)
+  # @specs/12_TOKENIZER.csl           ASCII alias master table (74 entries)
+  # @specs/13_GRAMMAR_SELF.csl        CSLv3 grammar expressed in CSLv3
+  # @CSSLv3/specs/SYNTHESIS_V2.csl    CSSLv3 design thesis
+  # @CSSLv3/specs/09_SYNTAX.csl       CSSLv3 dual-surface syntax reference
+  # @CSSLv3/specs/11_IFC.csl          CSSLv3 IFC + PRIME-DIRECTIVE encoding
+  # @parser/DECISIONS.md              choices behind cslparser
+  # @UNCONFLATION.md                  historical record : CSSL not CSLv3

@@ -1,0 +1,34 @@
+module @"parser/tests/C1_sort.csl" {
+  cslv3.var_ref {kind="type-def", name=@Arr}
+  cslv3.var_ref {kind="type-def", name=@Cmp}
+  cslv3.fn {name=@sort, sig=Ref[Arr] -> Cmp -> bool} {  // kind=Fn_Body
+    ^entry(%1:a : α10, %2:cmp : α11):
+      %3 = cslv3.const {value=true} : bool
+      cslv3.return(%3)
+  }
+  cslv3.fn {name=@merge-sort, sig=Ref[Arr] -> i32 -> i32 -> Cmp -> bool} {  // kind=Fn_Body
+    ^entry(%4:a : α12, %5:lo : α13, %6:hi : α14, %7:cmp : α15):
+      %8 = cslv3.const {value=true} : bool
+      cslv3.return(%8)
+  }
+  cslv3.fn {name=@merge, sig=Ref[Arr] -> i32 -> i32 -> i32 -> Cmp -> bool} {  // kind=Fn_Body
+    ^entry(%9:a : α16, %10:lo : α17, %11:mid : α18, %12:hi : α19, %13:cmp : α20):
+      %14 = cslv3.const {value=true} : bool
+      cslv3.return(%14)
+  }
+  cslv3.fn {kind="top-const", name=@case1} {  // kind=Fn_Body
+    ^entry:
+      %15 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%15)
+  }
+  cslv3.fn {kind="top-const", name=@case2} {  // kind=Fn_Body
+    ^entry:
+      %16 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%16)
+  }
+  cslv3.fn {kind="top-const", name=@edge} {  // kind=Fn_Body
+    ^entry:
+      %17 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%17)
+  }
+}

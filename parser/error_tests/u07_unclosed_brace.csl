@@ -1,0 +1,2 @@
+§ test
+  fn foo () -> bool = { let x = 1

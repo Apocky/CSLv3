@@ -1,0 +1,91 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "CSLv3",
+  "scopeName": "source.cslv3",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#string" },
+    { "include": "#number" },
+    { "include": "#section" },
+    { "include": "#modal" },
+    { "include": "#evidence" },
+    { "include": "#morpheme" },
+    { "include": "#keyword" },
+    { "include": "#type" },
+    { "include": "#operator" },
+    { "include": "#identifier" }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        { "match": "#.*$", "name": "comment.line.number-sign.cslv3" }
+      ]
+    },
+    "string": {
+      "patterns": [
+        { "begin": "\"", "end": "\"", "name": "string.quoted.double.cslv3" }
+      ]
+    },
+    "number": {
+      "patterns": [
+        { "match": "\\b[0-9]+(\\.[0-9]+)?\\b", "name": "constant.numeric.cslv3" }
+      ]
+    },
+    "section": {
+      "patterns": [
+        {
+          "match": "[§¶]\\s*[A-Za-z][A-Za-z0-9_\\-.]*",
+          "name": "markup.heading.section.cslv3"
+        },
+        { "match": "[§¶]", "name": "keyword.control.section.cslv3" }
+      ]
+    },
+    "modal": {
+      "patterns": [
+        { "match": "\\b(I>|W!|R!|M\\?|N!|Q\\?|P>|D>)\\b", "name": "keyword.other.modal.cslv3" }
+      ]
+    },
+    "evidence": {
+      "patterns": [
+        { "match": "[✓✗◐○⊘△▽‼]", "name": "markup.other.evidence.cslv3" }
+      ]
+    },
+    "morpheme": {
+      "patterns": [
+        {
+          "match": "'[dfstempgr](?:'[dfstempgr]){0,4}",
+          "name": "keyword.other.morpheme.cslv3"
+        }
+      ]
+    },
+    "keyword": {
+      "patterns": [
+        {
+          "match": "\\b(fn|def|enum|record|type|match|if|then|else|let|in|forall|exists|where|with|case|true|false|import|export|alias)\\b",
+          "name": "keyword.control.cslv3"
+        }
+      ]
+    },
+    "type": {
+      "patterns": [
+        {
+          "match": "\\b(bool|i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|str|Unit|Int|Float|vec2|vec3|vec4|mat4|quat|rgba)\\b",
+          "name": "support.type.primitive.cslv3"
+        },
+        { "match": "\\b[A-Z][A-Za-z0-9_]*\\b", "name": "entity.name.type.cslv3" }
+      ]
+    },
+    "operator": {
+      "patterns": [
+        { "match": "[→←↔≤≥≠∧∨¬∀∃∈⊆⊂∪∩⇒∵∴⊗⊕⊑⊔⊓∫⊞]", "name": "keyword.operator.unicode.cslv3" },
+        { "match": "(->|<-|<->|<=|>=|!=|=>|::|::=|\\|>)", "name": "keyword.operator.ascii.cslv3" },
+        { "match": "[.@+\\-*/:=]", "name": "keyword.operator.compound.cslv3" }
+      ]
+    },
+    "identifier": {
+      "patterns": [
+        { "match": "\\b[a-z][A-Za-z0-9_\\-]*\\b", "name": "variable.other.cslv3" }
+      ]
+    }
+  }
+}

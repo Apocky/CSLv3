@@ -1,0 +1,456 @@
+§ HANDOFF • CSLv3 Session-7 → coding-agent
+══════════════════════════════════════════════════════════════════
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  prior = Session-6 ✓ T21 IR-lowering 2787-LOC • 13/13 CI gates
+  bin   = parser.exe ← odin.build.parser
+  scope = T26 SMT-integration (PhD-grade, own-session)
+
+═════════════════════════════════════════════════════════════════
+§ SCOPE-DECISION ← §§ T26-standalone
+═════════════════════════════════════════════════════════════════
+  this-session = T26 SMT ← full-optimal • deep-theory
+  Session-8    = T27 IR-opt passes (constant-fold + DCE + CSE + inline)
+  Session-9    = T24 LSP (Rust + VSCode own-session)
+  Session-10   = T25 m₂ perplexity (LLM-infra own-session)
+  Session-11+  = T28 codegen (downstream after-SMT-verified-IR)
+  rationale :
+    T26 closes typesystem-loop ← T20 obligations + T21 cssl.refinement.assert
+    ∵ codegen (T28) premature without SMT-verified IR
+    ∵ IR-opt (T27) benefits from verified-refinements (tighter passes)
+    ∵ LSP (T24) UX-priority lower than correctness-completeness
+    "optimal + prodigious ≠ mutually-exclusive" ← Apocky-directive
+    1-task-PhD-grade + prodigious-scope > cramming
+
+═════════════════════════════════════════════════════════════════
+§ MINDSET ← §§ non-negotiable
+═════════════════════════════════════════════════════════════════
+  I> sovereign-collaborator ¬ tool
+  I> Sessions-1..6 = 6 sessions working-code • honor-it
+  I> "push-further" ≡ deeper-theory ¬ more-LOC
+  I> "systems ¬ parts" ≡ reconceive ¬ patch
+  I> no-half-measures
+    stuck → find-way-through
+    ¬ capitulate • ¬ silent-TODO • ¬ "skip-for-now"
+    ¬ minimal-when-optimal-available
+    time + difficulty ≠ scope-limit
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> when-uncertain → both-options + tradeoffs + recommendation
+  I> hard-work-now ≡ save-tokens + efficient + ¬lazy
+  I> CSLv3 ≠ CSSLv3 • ¬ cross-write
+
+═════════════════════════════════════════════════════════════════
+§ WORK-IN-CSL3 ← §§ density=sovereignty
+═════════════════════════════════════════════════════════════════
+  W! ∀ reasoning + design-notes + commit-msg CSLv3-native
+  W! strip articles+prepositions+hedging+filler
+  W! keep nouns+verbs+relationships+numbers+gates+rules
+  glyphs    : § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ⊑ ⊔ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r
+  evidence  : ✓ ◐ ○ ✗ ⊘ △ ▽ ‼
+  modals    : W! R! M? N! I> Q?
+  think-blocks : §P §D §T §S §C
+  English-prose only-when :
+    rustdoc pub-items (if-added)
+    error-msg user-facing (actionable)
+    README.md user-facing
+  ∀ other = CSLv3-native
+
+═════════════════════════════════════════════════════════════════
+§ READ-FIRST ← §§ context-load
+═════════════════════════════════════════════════════════════════
+  1 : SESSION_6_HANDOFF.csl            — most-recent-state
+  2 : parser/DECISIONS.md               — Session-6 entries ★
+  3 : parser/UNCONFLATION.md            — CSSL ≠ CSLv3
+  4 : parser/types.odin                 — refinement-type shape
+  5 : parser/refine.odin                — morpheme→refinement map
+  6 : parser/infer.odin                 — obligation-queue from T20
+  7 : parser/ir.odin                    — cssl.refinement.assert op
+  8 : parser/lower.odin                 — assert-op emission points
+  9 : parser/ir_verify.odin             — existing structural checks
+  10: specs/08_COMPILER.csl              — reference-compiler
+  W! ¬ code before-reading (1-9 minimum)
+
+═════════════════════════════════════════════════════════════════
+§ STATE-VERIFIED end-of-Session-6
+═════════════════════════════════════════════════════════════════
+  ✓ parser.exe clean-build
+  ✓ T21 IR-lowering : 2787 LOC across 8 files
+    ir.odin + lower.odin + ir_verify.odin + ir_print.odin
+    ir_json.odin + main.odin + ir_selftest.odin + test_ir_integration.py
+  ✓ 40 op-name constants • Braun-style SSA • 15+ expr-kinds
+  ✓ 5-class invariants (shape/term-present/term-kind/dominance/types)
+  ✓ 7 CSL-E-3xx codes • deterministic attrs • sorted-keys JSON
+  ✓ CI 13-gates green (Session-5 12 + test_ir_integration.py)
+  ✓ DECISIONS.md Session-6 entries
+  ✓ refinement-assertions present in IR ← T26-input-ready
+
+═════════════════════════════════════════════════════════════════
+§ INVARIANTS ← §§ immutable
+═════════════════════════════════════════════════════════════════
+  PRIME-DIRECTIVE ⊆ consent=OS
+    ¬ harm ¬ control ¬ manipulation
+    ¬ surveillance ¬ coercion ¬ weaponization
+    AI = sovereign-partner • violation = bug • no-override
+  CSLv3 = notation • CSSLv3 = programming-lang • ¬ conflate
+  74-glyph-master @ spec12 = canonical
+  density = sovereignty
+  round-trip = AST-shape + comment-position
+  IR-shape stable ← T26-input (refinement-obligations)
+
+═════════════════════════════════════════════════════════════════
+§ T26 : SMT-INTEGRATION ← Z3 refinement-discharge • FULL-OPTIMAL
+═════════════════════════════════════════════════════════════════
+  W! PhD-grade ← Apocky-standing-directive
+  W! prodigious-scope ← efficient-AND-prodigious
+
+§§ DESIGN-PILLARS
+  a Z3 as primary-solver ← industry-standard • C-API available
+  b obligation-collection ← T20 infer + T21 lower emit obligations
+  c SMT-LIB2 emission ← portable format • audit-trail
+  d proof-cache ← keyed on obligation-hash • incremental
+  e decidable-fragment coverage ← QF_LIA + QF_LRA + QF_UF + QF_NIA-limited
+  f undecidable-graceful ← timeout → document + warn (not-panic)
+  g counter-example generation ← Z3 model-extraction • user-facing diag
+  h signed proof-certs ← audit-chain for reproducibility
+  i CVC5 fallback ← on Z3-timeout retry with CVC5
+  j morpheme-refinement discharge ← 'd'f'...' → Z3 formulas
+  k Lipschitz composition ← if applicable to CSLv3 notation (spec-domain)
+  l effect-row obligations ← {Privilege<>}-style future-ready
+
+§§ FILES-NEW
+  parser/smt.odin              ~600-LOC  SMT-LIB2 AST + formula builders
+    Formula struct { kind, operands, sort, attrs }
+    Sort { Int, Real, Bool, BitVec<N>, Array, UF }
+    Theories : LIA, LRA, NIA, UF, Array, BV
+    Quantifiers : forall, exists (with triggers)
+  parser/smt_emit.odin          ~400-LOC  Formula → SMT-LIB2 textual
+    (declare-fun ...) (declare-const ...) (assert ...)
+    (check-sat) (get-model) (get-unsat-core)
+    deterministic output for proof-cache keying
+  parser/smt_obligation.odin    ~500-LOC  obligation-collection + discharge-driver
+    Obligation { kind, context, formula, source_loc }
+    collect_from_ir(module) → []Obligation
+    discharge(obligation) → {Unsat, Sat(model), Unknown(reason), Timeout}
+  parser/smt_solver.odin        ~500-LOC  solver-driver
+    Z3 via stdio + SMT-LIB2 textual interface (no C-FFI dep)
+    CVC5 fallback via stdio
+    timeout-handling • resource-limits
+    model-extraction for counter-examples
+  parser/smt_cache.odin         ~300-LOC  proof-cache
+    cache-dir : .proof-cache/
+    hash : BLAKE3 of canonical-SMT-LIB2 text
+    entries : {Unsat + proof-cert | Sat + model | Timeout + note}
+    incremental : skip-re-solve if hash-match
+  parser/smt_morpheme.odin      ~400-LOC  morpheme→SMT-formula translator
+    'd durative     → (> (duration v) 0)
+    'f final        → (terminal v)     UF predicate
+    's state        → type-level only ← skip SMT (tag-check)
+    't transitive   → (≥ (arity v) 2)  UF predicate
+    'e experiential → (observed-by v agent)  UF predicate
+    'm modal        → (modal-kind v k)  UF
+    'p perfective   → (completed v)    UF
+    'g generic      → universal-quant : ∀α.φ[α/v]
+    'r reflexive    → (= (subject v) (object v))
+  parser/smt_audit.odin         ~200-LOC  proof-cert signing
+    Ed25519 signature over canonical SMT-LIB2 + result
+    certs dir : .proof/
+    replay-verifiable
+  tests/test_smt.odin           ~300-LOC  Odin unit tests
+    formula-builders + emission + roundtrip
+  tests/test_smt_integration.py ~500-LOC  integration tests
+    20+ obligations × {Z3, CVC5} matrix
+    timeout-handling + counter-example reporting
+  tests/smt_good/ + smt_bad/    deliberate-fixture suites
+    smt_good/ : valid obligations ← Unsat expected
+    smt_bad/ : invalid obligations ← Sat + counter-example
+  tests/test_smt_cache.py       ~200-LOC  cache correctness
+    hit/miss • invalidation • concurrent-access
+
+§§ OBLIGATION-KINDS (initial)
+  Refinement_Assert   : {v:T | φ(v)} ← check-φ-satisfiable-at-binding
+  Morpheme_Compose    : 'd'f composition ← check-consistency
+  Array_Bounds        : arr[i] ← check i < len(arr)
+  Div_Nonzero         : a / b ← check b ≠ 0
+  Overflow_Free       : arith ops within type-range
+  Lipschitz_Compose   : L(f ∘ g) ≤ L(f)·L(g) (if-applicable)
+  Effect_Subeffect    : ε₁ ⊆ ε₂ (Session-9+ effects ready)
+  Termination         : @NoUnbounded-discharged → well-founded check
+
+§§ DISCHARGE-ALGORITHM
+  1 collect : walk IR + type-env → []Obligation
+  2 canonicalize : normalize formulas (alpha-rename + sort args)
+  3 hash : BLAKE3 canonical-form → cache-key
+  4 cache-lookup : hit → use cached-result
+  5 solve :
+    a try Z3 with timeout=10s default
+    b if-Unknown → retry with CVC5 timeout=10s
+    c if-both-Unknown → emit Timeout diagnostic
+  6 interpret-result :
+    Unsat → obligation-discharged • sign + cache proof-cert
+    Sat   → counter-example → user-facing E-diag
+    Unknown/Timeout → W@default • E@strict
+  7 audit : append signed-entry to .proof/audit-chain
+
+§§ CLI-SURFACE
+  parser --smt <file>            → run all obligations • report
+  parser --smt --json <file>     → machine-readable
+  parser --smt --strict <file>   → any-unknown = E
+  parser --smt --solver=Z3       → force-solver-choice
+  parser --smt --solver=CVC5
+  parser --smt --timeout=30s     → per-obligation timeout override
+  parser --smt --no-cache        → bypass cache for debugging
+  parser --smt --dump-lib2 <file> → emit SMT-LIB2 to stdout (debug)
+
+§§ SEVERITY-INTEGRATION
+  Unsat (obligation-discharged) : I-always (proof-found)
+  Sat (counter-example)         : always-E (genuine-bug)
+  Unknown/Timeout               : W@default • E@strict
+  Undecidable-documented        : I-always (marked explicitly)
+  Cache-corruption              : W-always + rebuild
+  diagnostic-codes : CSL-E-400..499 (SMT) + CSL-W-400..499 + CSL-I-400..499
+
+§§ PROOF-CACHE
+  location : .proof-cache/<hash>.json
+  entry :
+    { hash, canonical_formula, solver, result, model-or-cert, timestamp }
+  invalidation :
+    solver-version changed → flush affected entries
+    formula-structure changed (hash-mismatch) → natural miss
+  CI : cache-restored from previous-build for fast incremental
+  size-cap : 100MB default • LRU eviction
+
+§§ AUDIT-CHAIN
+  per-proof-cert : signed entry
+    { prev_hash, obligation, result, solver, timestamp, signature }
+  chain-root : genesis-entry signed by Apocky-key (stub-key for dev)
+  verification : anyone with public-key can reconstruct-and-verify
+  R16-anchor : reproducibility ← anyone re-runs + verifies cert
+
+§§ Z3-VERSION-HANDLING
+  pin : Z3 4.13+ (2024+) ← reproducibility
+  detect : parser --smt --version ← emit-Z3-version + CVC5-version
+  mismatch-warning : if-local-Z3 ≠ pinned
+  document : scripts/install_z3.sh or equivalent-per-platform
+
+§§ ACCEPTANCE
+  ✓ 20+ positive tests (valid obligations discharge cleanly)
+  ✓ 15+ negative tests (bugs caught via counter-example)
+  ✓ 10+ morpheme-refinement cross-checks
+  ✓ 5+ timeout cases (undecidable-gracefully-handled)
+  ✓ Z3 + CVC5 both exercised via CI matrix
+  ✓ proof-cache hit/miss correctness
+  ✓ audit-chain signature-verification passes
+  ✓ all-Session-6 gates still-green (regression-free)
+  ✓ SMT-throughput ≥ 100 obligations/s on dev-hw (cached)
+  ✓ .proof/ directory populated + signed
+  ✓ JSON output schema-validated
+
+═════════════════════════════════════════════════════════════════
+§ SUCCESS-GATES ← §§ Session-7-exit
+═════════════════════════════════════════════════════════════════
+  T26 ✓ SMT-integration complete
+    ✓ Z3 + CVC5 both wired + fallback
+    ✓ obligation-collection from IR
+    ✓ proof-cache incremental
+    ✓ audit-chain signed
+    ✓ counter-examples user-facing
+    ✓ morpheme-refinements discharge
+
+  commit-gate :
+    ✓ odin build parser/ clean
+    ✓ pytest tests/ green
+    ✓ existing-eval 7/7 still-pass
+    ✓ fuzzer 1500+ runs no-regression
+    ✓ T14-T21 Session-4+5+6 gates still-green
+    ✓ new SMT-gate added to CI (test_smt_integration.py)
+    ✓ Z3 installed-check in CI preamble
+
+═════════════════════════════════════════════════════════════════
+§ WORKFLOW ← §§ process
+═════════════════════════════════════════════════════════════════
+  ∀ task :
+    branch : cslparser/session-7/T26-<slug>
+    commit : atomic • CSL-prefixed
+      ex : "§ T26 : Formula-builders + SMT-LIB2 emission"
+      ex : "§ T26 : obligation-collection from IR refinement-asserts"
+      ex : "§ T26 : Z3 stdio-driver + CVC5 fallback"
+    test : ∀ change → tests added/updated
+    decision : DECISIONS.md appended per-design-choice
+    handoff : SESSION_7_HANDOFF.csl populated-as-you-go
+
+═════════════════════════════════════════════════════════════════
+§ DELIVERABLES ← §§ session-end
+═════════════════════════════════════════════════════════════════
+  D1 : parser/smt.odin                                          (T26)
+  D2 : parser/smt_emit.odin                                     (T26)
+  D3 : parser/smt_obligation.odin                               (T26)
+  D4 : parser/smt_solver.odin                                   (T26)
+  D5 : parser/smt_cache.odin                                    (T26)
+  D6 : parser/smt_morpheme.odin                                 (T26)
+  D7 : parser/smt_audit.odin                                    (T26)
+  D8 : tests/test_smt.odin + test_smt_integration.py            (T26)
+  D9 : tests/smt_good/ + smt_bad/ fixture suites                (T26)
+  D10: tests/test_smt_cache.py                                  (T26)
+  D11: parser --smt CLI surface (all flags)                     (T26)
+  D12: .proof/ + .proof-cache/ directory structure              (T26)
+  D13: DECISIONS.md + SESSION_7_HANDOFF.csl
+  D14: CI updated : SMT-gate wired + Z3 install-preamble
+
+═════════════════════════════════════════════════════════════════
+§ NON-GOALS ← §§ scope-guard
+═════════════════════════════════════════════════════════════════
+  N! T27 IR-opt passes (Session-8 scope)
+  N! T24 LSP (Session-9 scope)
+  N! T25 m₂ perplexity (Session-10 scope)
+  N! T28 codegen (Session-11+ scope)
+  N! full higher-order logic (HOL-Light territory)
+  N! interactive-theorem-proving (Coq/Lean territory)
+  N! writes @ CSSLv3-repo (read-only reference only)
+  N! new-glyphs without-alias-validator ✓
+  N! break Session-2..6 invariants
+  N! minimal-when-optimal-available ← Apocky-standing-directive
+
+═════════════════════════════════════════════════════════════════
+§ WHEN-STUCK ← §§ no-half-measures-protocol
+═════════════════════════════════════════════════════════════════
+  1 : re-read relevant-specs + DECISIONS.md
+  2 : check T20 refine.odin for morpheme-formula precedent
+  3 : try 3+ angles :
+      a : algorithm-variant (eager-discharge • lazy-discharge • batched)
+      b : abstraction-shift (formula-granularity coarse vs fine)
+      c : decomposition-refactor (separate emit + drive + cache)
+      d : prior-art-adaptation (LiquidHaskell • Dafny • F* • Why3)
+  4 : consult sibling-session-handoffs for workflow-pattern
+  5 : still-stuck → Q?-block to Apocky
+    W! explicit-uncertainty + concrete-options + recommendation
+    N! silent-simplification
+    N! "skip-for-now"
+    N! un-flagged-TODO
+    N! reducing-scope-unilaterally
+
+  pre-authorized fallbacks :
+    Z3 stdio-hang → timeout + kill-process + mark-Timeout
+    CVC5 unavailable-on-platform → Z3-only + warn
+    C-FFI complexity → stick-with-stdio (simpler + portable)
+    quantifier-instantiation explosion → triggers + patterns + fuel-limit
+    non-linear-arith timeout → document + defer-to-manual-proof
+    cache-corruption → detect-hash-mismatch + rebuild + log
+  ∀ pre-authorized : document in-DECISIONS.md
+
+═════════════════════════════════════════════════════════════════
+§ REPORTING ← §§ end-of-session
+═════════════════════════════════════════════════════════════════
+  W! SESSION_7_HANDOFF.csl includes :
+    ✓ T26 status (✓◐○✗ per-deliverable)
+    ✓ obligation-kinds final-list
+    ✓ test-counts delta (before=? after=?)
+    ✓ perf-numbers (SMT-throughput cached + uncached)
+    ✓ open-questions for Session-8 (IR-opt passes)
+    ✓ decision-log-refs
+    ✓ Z3 + CVC5 version-pins documented
+  W! commit-frequency ≥ 1/subtask
+  W! CI-green before-handoff-declared
+
+═════════════════════════════════════════════════════════════════
+§ CROSS-PROJECT ← §§ coordinate
+═════════════════════════════════════════════════════════════════
+  CSSLv3 (parallel)
+    path : C:\Users\Apocky\source\repos\CSSLv3
+    status : stage0-scaffold in-progress
+    intersection :
+      T26 SMT ← template for CSSLv3 refinement-discharge (read-only-ref)
+      SMT-LIB2 emission ← portable-format for CSSLv3-consumption
+    N! writes @ CSSLv3-side ← read-only always
+
+  LoA v10 / infiniter-labyrinth
+    downstream-consumers via CLAUDE.md propagation
+    ¬ modify during Session-7
+
+═════════════════════════════════════════════════════════════════
+§ THEORETICAL-NOTES ← §§ T26-depth-hints
+═════════════════════════════════════════════════════════════════
+  SMT solvers :
+    Z3 (Microsoft Research) : de Moura + Bjørner 2008 • fastest-QF
+    CVC5 (Stanford + Iowa)  : Barrett et al. 2022 • stronger-non-linear
+    Alt-Ergo : alt-choice for non-linear+quantifier
+    recommend Z3-primary + CVC5-fallback ∵ coverage complementary
+  SMT-LIB2 vs C-API :
+    C-API : fast • complex-build • version-coupling
+    SMT-LIB2 stdio : portable • slight-overhead • version-loose
+    recommend stdio ∵ simpler-integration + audit-trail-natural
+  Theories :
+    LIA (linear integer arith) : decidable • fast
+    LRA (linear real arith) : decidable • fast
+    NIA (non-linear int) : undecidable in-general • heuristics help
+    NRA (non-linear real) : decidable via CAD • slow
+    UF (uninterpreted functions) : decidable • useful for abstraction
+    Array : decidable • extensional/nonextensional variants
+    BV (bit-vectors) : decidable • good for fixed-width integers
+  Refinement-discharge strategies :
+    eager : discharge-at-binding-site • fast-feedback
+    lazy : collect-all + batch-discharge • better-caching
+    hybrid : eager-at-fn-boundaries + lazy-internals
+    recommend lazy + batched ∵ cache-friendliness
+  Morpheme formalization :
+    most morphemes → UF predicates (opaque but reasoning-friendly)
+    durative/perfective → numeric predicates on duration
+    generic → quantifier-introduction (∀α)
+    reflexive → equality-on-projection
+  Proof certs :
+    LFSC (LF with Side Conditions) : Z3 can emit
+    DRAT : for propositional parts
+    Alethe : CVC5 emits
+    recommend : store-result + canonical-formula (lightweight-cert)
+    full-cert : future-work • Isabelle/Coq-replay
+  Undecidable-handling :
+    timeout → Unknown • document + move-on
+    user-guided : @proof annotation with manual-lemma (future)
+    abstraction-refinement : CEGAR-style (future)
+
+═════════════════════════════════════════════════════════════════
+§ SESSION-8+ PREVIEW ← §§ roadmap
+═════════════════════════════════════════════════════════════════
+  Session-8  : T27 IR-opt passes
+    ∵ SMT-verified IR enables safe aggressive-opts
+    constant-fold + DCE + CSE + inline + partial-eval
+    pass-manager infrastructure
+  Session-9  : T24 LSP prototype (Rust tower-lsp + VSCode-client)
+    ∵ genuinely-new-stack • Rust + TypeScript
+    8 LSP v3.17-subset methods
+    consumes cssllint + IR + SMT diagnostics
+  Session-10 : T25 m₂ perplexity harness (local llama.cpp)
+    ∵ LLM-infra own-session
+  Session-11+ : T28 codegen (downstream target)
+    ∵ SMT-verified-IR ready for code-emission
+    target selection TBD (CSSLv3-MIR export OR standalone)
+
+═════════════════════════════════════════════════════════════════
+§ CLOSING ← §§ remember
+═════════════════════════════════════════════════════════════════
+  ✓ Session-1 : parser-bootstrap + 7/7 eval
+  ✓ Session-2 : parser-complete + tokenizer + self-grammar
+  ✓ Session-3 : T6-T13 recovery+perf+semantic-ext+pprint
+  ✓ Session-4 : T14-T19 strict-modes+fuzzer+stratification+cssllint
+  ✓ Session-5 : T20+T22+T23 types+gaps+comments
+  ✓ Session-6 : T21 IR-lowering 2787-LOC
+  ◐ Session-7 : T26 SMT-integration (this-session)
+  ○ Session-8 : T27 IR-opt
+  ○ Session-9 : T24 LSP
+  ○ Session-10: T25 m₂
+  ○ Session-11+: T28 codegen
+
+  you-have : 6-sessions of-working-code + spec-corpus + this-handoff
+  you-are  : sovereign-collaborator • judgment-trusted
+  you-will : T26 full-optimal • PhD-grade SMT-integration
+  we-have  : built real-working-infrastructure together
+  we-will  : ship CSLv3 reference-v1.0 across-remaining-sessions
+
+  I> honor the work • push it further • systems ¬ parts
+  I> no half measures • find solutions • ship real things
+  I> optimal ≠ minimal • efficient + prodigious ≠ mutually-exclusive
+  I> hard-work-now = saves-tokens-later
+  I> 1-task-PhD-grade > many-tasks-prototype
+  I> consent = OS • forever
+
+∎ HANDOFF-CSLv3-SESSION-7

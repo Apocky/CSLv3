@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- schema: html-v1 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>C3_dependent_types — CSLv3</title>
+  <style>
+/* CSLv3 HTML Emit — CSS Taxonomy (html-v1) */
+:root {
+  --bg:        #0f0f14;
+  --fg:        #e0e0e6;
+  --keyword:   #c6c;
+  --morpheme:  #6cc;
+  --operator:  #fc6;
+  --modal:     #f8a;
+  --evidence:  #9c6;
+  --glyph:     #ff8;
+  --type:      #8cf;
+  --string:    #caa;
+  --number:    #a8d;
+  --comment:   #666;
+}
+body.cslv3 { background: var(--bg); color: var(--fg); font-family: "JetBrains Mono", "Fira Code", monospace; }
+h1, h2, h3 { color: var(--glyph); }
+.csl-section { border-left: 3px solid var(--keyword); padding-left: 1em; margin: 1em 0; }
+.csl-morpheme { color: var(--morpheme); font-weight: 600; }
+.csl-modal    { color: var(--modal);    font-weight: 600; }
+.csl-evidence { color: var(--evidence); }
+.csl-glyph    { color: var(--glyph);    }
+.csl-operator { color: var(--operator); }
+.csl-type     { color: var(--type);     }
+.csl-string   { color: var(--string);   }
+.csl-number   { color: var(--number);   }
+.csl-comment  { color: var(--comment);  font-style: italic; }
+.csl-keyword  { color: var(--keyword);  font-weight: 600; }
+pre.csl-block { background: rgba(255,255,255,0.03); padding: 1em; overflow-x: auto; border-radius: 4px; }
+nav.csl-toc   { position: sticky; top: 1em; }
+nav.csl-toc a { color: var(--glyph); text-decoration: none; }
+nav.csl-toc a:hover { text-decoration: underline; }
+
+  </style>
+</head>
+<body class="cslv3">
+  <h1>C3_dependent_types</h1>
+  <nav class="csl-toc">
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#dependenttypes">dependent.types</a></li>
+      <li><a href="#data">DATA</a></li>
+      <li><a href="#ops">OPS</a></li>
+      <li><a href="#invariants">INVARIANTS</a></li>
+    </ul>
+  </nav>
+  <main>
+  <section class="csl-section">
+    <h2 id="dependenttypes">dependent.types</h2>
+  </section>
+  <section class="csl-section">
+    <h2 id="data">DATA</h2>
+    <pre class="csl-block"># tests<span class="csl-operator">:</span> Π / Σ dependent types <span class="csl-operator">+</span> refinement { x ⊢ P } <span class="csl-operator">+</span> linear T!lin
+# glyph<span class="csl-operator">-</span>class<span class="csl-operator">:</span> LAngle/RAngle, LBrace/RBrace, Entails, Bang, Ampersand
+# features<span class="csl-operator">:</span> type<span class="csl-operator">-</span>level parameterization, pi/sigma records, refinements
+def PosFloat't <span class="csl-operator">=</span> f<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+    <pre class="csl-block">def UnitVec't <span class="csl-operator">=</span> vec<span class="csl-number">3</span></pre>
+    <pre class="csl-block">def BoundHp't <span class="csl-operator">=</span> u<span class="csl-number">1</span><span class="csl-number">6</span></pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="ops">OPS</h2>
+    <pre class="csl-block">fn make<span class="csl-operator">-</span>vector (n <span class="csl-operator">:</span> u<span class="csl-number">3</span><span class="csl-number">2</span>) <span class="csl-operator">-</span>> vec<span class="csl-number">3</span> <span class="csl-operator">=</span> vec<span class="csl-number">3</span></pre>
+    <pre class="csl-block">fn pair<span class="csl-operator">-</span>len<span class="csl-operator">-</span>and<span class="csl-operator">-</span>data (n <span class="csl-operator">:</span> u<span class="csl-number">3</span><span class="csl-number">2</span>) <span class="csl-operator">-</span>> vec<span class="csl-number">3</span> <span class="csl-operator">=</span> vec<span class="csl-number">3</span></pre>
+    <pre class="csl-block">fn normalize (v <span class="csl-operator">:</span> &vec<span class="csl-number">3</span>) <span class="csl-operator">-</span>> bool <span class="csl-operator">=</span> true</pre>
+    <pre class="csl-block">fn borrow<span class="csl-operator">-</span>shared (r <span class="csl-operator">:</span> &str) <span class="csl-operator">-</span>> bool <span class="csl-operator">=</span> true</pre>
+    <pre class="csl-block">fn borrow<span class="csl-operator">-</span>mut (r <span class="csl-operator">:</span> &str) <span class="csl-operator">-</span>> bool <span class="csl-operator">=</span> true</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="invariants">INVARIANTS</h2>
+    <pre class="csl-block"><span class="csl-operator">⌈</span>refinement<span class="csl-operator">-</span>sound<span class="csl-operator">⌉</span></pre>
+    <pre class="csl-block"><span class="csl-operator">⌈</span>linear<span class="csl-operator">-</span>used<span class="csl-operator">-</span>exactly<span class="csl-operator">-</span>once<span class="csl-operator">⌉</span></pre>
+  </section>
+  </main>
+</body>
+</html>

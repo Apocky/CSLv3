@@ -1,0 +1,30 @@
+module @"parser/tests/C3_dependent_types.csl" {
+  cslv3.var_ref {kind="type-def", name=@PosFloat}
+  cslv3.var_ref {kind="type-def", name=@UnitVec}
+  cslv3.var_ref {kind="type-def", name=@BoundHp}
+  cslv3.fn {name=@make-vector, sig=u32 -> vec3} {  // kind=Fn_Body
+    ^entry(%1:n : α8):
+      %2 = cslv3.const {value=vec3} : vec3
+      cslv3.return(%2)
+  }
+  cslv3.fn {name=@pair-len-and-data, sig=u32 -> vec3} {  // kind=Fn_Body
+    ^entry(%3:n : α9):
+      %4 = cslv3.const {value=vec3} : vec3
+      cslv3.return(%4)
+  }
+  cslv3.fn {name=@normalize, sig=Ref[vec3] -> bool} {  // kind=Fn_Body
+    ^entry(%5:v : α10):
+      %6 = cslv3.const {value=true} : bool
+      cslv3.return(%6)
+  }
+  cslv3.fn {name=@borrow-shared, sig=Ref[str] -> bool} {  // kind=Fn_Body
+    ^entry(%7:r : α11):
+      %8 = cslv3.const {value=true} : bool
+      cslv3.return(%8)
+  }
+  cslv3.fn {name=@borrow-mut, sig=Ref[str] -> bool} {  // kind=Fn_Body
+    ^entry(%9:r : α12):
+      %10 = cslv3.const {value=true} : bool
+      cslv3.return(%10)
+  }
+}

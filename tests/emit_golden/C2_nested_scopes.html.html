@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- schema: html-v1 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>C2_nested_scopes — CSLv3</title>
+  <style>
+/* CSLv3 HTML Emit — CSS Taxonomy (html-v1) */
+:root {
+  --bg:        #0f0f14;
+  --fg:        #e0e0e6;
+  --keyword:   #c6c;
+  --morpheme:  #6cc;
+  --operator:  #fc6;
+  --modal:     #f8a;
+  --evidence:  #9c6;
+  --glyph:     #ff8;
+  --type:      #8cf;
+  --string:    #caa;
+  --number:    #a8d;
+  --comment:   #666;
+}
+body.cslv3 { background: var(--bg); color: var(--fg); font-family: "JetBrains Mono", "Fira Code", monospace; }
+h1, h2, h3 { color: var(--glyph); }
+.csl-section { border-left: 3px solid var(--keyword); padding-left: 1em; margin: 1em 0; }
+.csl-morpheme { color: var(--morpheme); font-weight: 600; }
+.csl-modal    { color: var(--modal);    font-weight: 600; }
+.csl-evidence { color: var(--evidence); }
+.csl-glyph    { color: var(--glyph);    }
+.csl-operator { color: var(--operator); }
+.csl-type     { color: var(--type);     }
+.csl-string   { color: var(--string);   }
+.csl-number   { color: var(--number);   }
+.csl-comment  { color: var(--comment);  font-style: italic; }
+.csl-keyword  { color: var(--keyword);  font-weight: 600; }
+pre.csl-block { background: rgba(255,255,255,0.03); padding: 1em; overflow-x: auto; border-radius: 4px; }
+nav.csl-toc   { position: sticky; top: 1em; }
+nav.csl-toc a { color: var(--glyph); text-decoration: none; }
+nav.csl-toc a:hover { text-decoration: underline; }
+
+  </style>
+</head>
+<body class="cslv3">
+  <h1>C2_nested_scopes</h1>
+  <nav class="csl-toc">
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#outer">outer</a></li>
+      <li><a href="#first-sub">first-sub</a></li>
+      <li><a href="#second-sub">second-sub</a></li>
+      <li><a href="#deep-sub">deep-sub</a></li>
+      <li><a href="#another-deep">another-deep</a></li>
+      <li><a href="#sibling-after-deep">sibling-after-deep</a></li>
+      <li><a href="#next-top">next-top</a></li>
+      <li><a href="#final">final</a></li>
+    </ul>
+  </nav>
+  <main>
+  <section class="csl-section">
+    <h2 id="outer">outer</h2>
+  </section>
+  <section class="csl-section">
+    <h2 id="first-sub">first-sub</h2>
+    <pre class="csl-block"># tests<span class="csl-operator">:</span> deep indent <span class="csl-operator">+</span> <span class="csl-section">§</span><span class="csl-section">§</span> subsection nesting <span class="csl-operator">+</span> indent<span class="csl-operator">-</span>as<span class="csl-operator">-</span>cut (Peirce)
+# glyph<span class="csl-operator">-</span>class<span class="csl-operator">:</span> Section, Indent, Dedent
+# features<span class="csl-operator">:</span> multiple `<span class="csl-section">§</span>` depth, nested indent blocks, sibling sections
+name <span class="csl-operator">:</span> str</pre>
+    <pre class="csl-block">active <span class="csl-operator">:</span> bool</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="second-sub">second-sub</h2>
+  </section>
+  <section class="csl-section">
+    <h2 id="deep-sub">deep-sub</h2>
+    <pre class="csl-block">nested <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+    <pre class="csl-block">inner <span class="csl-operator">:</span> u<span class="csl-number">8</span></pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="another-deep">another-deep</h2>
+    <pre class="csl-block">item <span class="csl-operator">:</span> f<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="sibling-after-deep">sibling-after-deep</h2>
+    <pre class="csl-block">reset <span class="csl-operator">:</span> bool</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="next-top">next-top</h2>
+    <pre class="csl-block">flat <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="final">final</h2>
+  </section>
+  </main>
+</body>
+</html>

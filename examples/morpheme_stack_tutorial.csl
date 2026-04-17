@@ -1,0 +1,96 @@
+# CSLv3 morpheme-stack + type-suffix tutorial
+# Every statement below should parse, round-trip, and (where a stack is
+# present) trigger zero T11 diagnostics.
+#
+# Verify with:
+#   parser.exe --errors    examples/morpheme_stack_tutorial.csl
+#   parser.exe --roundtrip examples/morpheme_stack_tutorial.csl
+#   parser.exe --semantic  examples/morpheme_stack_tutorial.csl
+
+§ tutorial.morphemes
+
+§ 0-TYPE-SUFFIXES
+  # type suffixes clip onto the END of an identifier and say "what kind
+  # of thing this name denotes".  they do NOT participate in morpheme
+  # stacking — they are a single mark on the head.
+  hp'd          : u16        # 'd  = data value
+  render'f      : bool       # 'f  = function
+  physics's     : bool       # 's  = system / module
+  Material't    : bool       # 't  = type / category
+  player'e      : bool       # 'e  = entity / instance
+  iron'm        : bool       # 'm  = material
+  density'p     : f32        # 'p  = property / attribute
+  alive'g       : bool       # 'g  = gate / boolean
+  max_hp'r      : bool       # 'r  = rule / constraint
+
+§ 1-ASPECT-SLOT
+  # aspect: where in its lifecycle is the verb?
+  render.prog    : bool       # progressive  — is rendering
+  merge.perf     : bool       # perfective   — has merged
+  spawn.iter     : bool       # iterative    — repeatedly spawns
+  update.hab     : bool       # habitual     — regularly updates
+  compact.inch   : bool       # inchoative   — beginning to compact
+  sync.term      : bool       # terminative  — finishing syncing
+
+§ 2-MODALITY-SLOT
+  # modality: permission / obligation
+  commit.must    : bool       # obligatory
+  retry.may      : bool       # permitted
+  reorder.cant   : bool       # impossible
+  flush.will     : bool       # intended
+  abort.wont     : bool       # refused
+
+§ 3-CERTAINTY-SLOT
+  # certainty: epistemic status
+  pass.cert      : bool       # certain
+  drift.prob     : bool       # probable
+  stall.poss     : bool       # possible
+  leak.doubt     : bool       # doubtful
+
+§ 4-SCOPE-SLOT
+  # scope of effect
+  cache.loc      : bool       # local
+  cache.glob     : bool       # global
+  policy.ctx     : bool       # context-dependent
+
+§ 5-TWO-SLOT-STACKS
+  # aspect + modality:  means "must begin X-ing" etc.
+  merge.inch.must        : bool       # must begin merging
+  render.prog.cert       : bool       # is definitely rendering
+  spawn.iter.may         : bool       # may repeatedly spawn
+
+§ 6-THREE-SLOT-STACKS
+  # aspect + modality + certainty
+  allocate.prog.must.cert     : bool
+  release.perf.may.prob       : bool
+
+§ 7-FOUR-SLOT-STACKS
+  # aspect + modality + certainty + scope
+  reconcile.iter.may.poss.loc : bool
+
+§ 8-FIVE-SLOT-STACKS
+  # the notation's maximum practical density
+  transmit.prog.may.poss.loc  : bool   # may be possibly transmitting, locally
+
+§ 9-STACK-WITH-COMPOUND-BASE
+  # the base of a stack can itself be a compound — the morpheme chain
+  # still applies to the HEAD (rightmost) element.  here: 'handler'
+  # is the head; 'net.request' is its compound scope.
+  net.request.handler.prog   : bool    # the handler (progressive)
+  engine.render.pass.perf    : bool    # the pass (perfective)
+
+§ 10-ANTI-PATTERNS
+  # things that WILL trigger T11 semantic diagnostics:
+  # - unknown morpheme:      render.fakeaspect : bool     # 'fakeaspect' is not in the morpheme set
+  # - duplicate slot:        x.must.may        : bool     # two modality morphemes
+  # - out-of-order slot:     x.cert.prog       : bool     # certainty before aspect
+  #
+  # these are commented out so the file round-trips clean.  uncomment to
+  # see the diagnostics from `parser.exe --semantic`.
+
+§ 11-AUTHORING-GUIDE
+  # R! order: aspect → modality → certainty → scope
+  # R! one morpheme per slot ; omit default slots entirely (silent)
+  # R! when in doubt between a compound and a morpheme, check MORPHEMES
+  #    in parser/semantic.odin for the canonical vocabulary
+# ∎

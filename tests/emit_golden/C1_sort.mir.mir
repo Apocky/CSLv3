@@ -1,0 +1,39 @@
+// schema: mir-v1
+// dialect: cssl
+// source: parser/tests/C1_sort.csl
+// emittedAt: 2026-04-17T06:39:26Z
+
+cssl.module @"parser/tests/C1_sort.csl" {
+  cssl.var_ref {kind="type-def", name=@Arr}
+  cssl.var_ref {kind="type-def", name=@Cmp}
+  cssl.fn {name=@sort, sig=Ref[Arr] -> Cmp -> bool} {
+    ^entry(%1:a : α10, %2:cmp : α11):
+      %3 = cssl.const {value=true} : bool
+      cssl.return(%3)
+  }
+  cssl.fn {name=@merge-sort, sig=Ref[Arr] -> i32 -> i32 -> Cmp -> bool} {
+    ^entry(%4:a : α12, %5:lo : α13, %6:hi : α14, %7:cmp : α15):
+      %8 = cssl.const {value=true} : bool
+      cssl.return(%8)
+  }
+  cssl.fn {name=@merge, sig=Ref[Arr] -> i32 -> i32 -> i32 -> Cmp -> bool} {
+    ^entry(%9:a : α16, %10:lo : α17, %11:mid : α18, %12:hi : α19, %13:cmp : α20):
+      %14 = cssl.const {value=true} : bool
+      cssl.return(%14)
+  }
+  cssl.fn {kind="top-const", name=@case1} {
+    ^entry:
+      %15 = cssl.const {value=@nil} : Unit
+      cssl.return(%15)
+  }
+  cssl.fn {kind="top-const", name=@case2} {
+    ^entry:
+      %16 = cssl.const {value=@nil} : Unit
+      cssl.return(%16)
+  }
+  cssl.fn {kind="top-const", name=@edge} {
+    ^entry:
+      %17 = cssl.const {value=@nil} : Unit
+      cssl.return(%17)
+  }
+}

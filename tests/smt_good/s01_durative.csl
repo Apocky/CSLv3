@@ -1,0 +1,3 @@
+# smt_good s01 — valid durative binding ; refinement holds vacuously (UF-unconstrained)
+§ DUR
+  hp'd : i32

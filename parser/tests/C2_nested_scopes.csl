@@ -1,0 +1,26 @@
+# tests: deep indent + §§ subsection nesting + indent-as-cut (Peirce)
+# glyph-class: Section, Indent, Dedent
+# features: multiple `§` depth, nested indent blocks, sibling sections
+
+§ outer
+
+§§ first-sub
+  name : str
+  active : bool
+
+§§ second-sub
+
+§§§ deep-sub
+  nested : i32
+  inner : u8
+
+§§§ another-deep
+  item : f32
+
+§§ sibling-after-deep
+  reset : bool
+
+§ next-top
+  flat : i32
+
+§ final

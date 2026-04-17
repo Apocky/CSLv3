@@ -1,0 +1,53 @@
+% schema: latex-v1
+\documentclass[11pt]{article}
+\usepackage{cslv3}
+\usepackage[margin=1in]{geometry}
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\title%!(MISSING CLOSE BRACE)s}
+%!(EXTRA C3\_dependent\_types)\author{CSLv3 auto-emit}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA dependent.types, sec:dependenttypes)\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA DATA, sec:data)\begin{lstlisting}[language=csl]
+# tests: Π / Σ dependent types + refinement { x ⊢ P } + linear T!lin
+# glyph-class: LAngle/RAngle, LBrace/RBrace, Entails, Bang, Ampersand
+# features: type-level parameterization, pi/sigma records, refinements
+def PosFloat't = f32
+\end{lstlisting}
+\begin{lstlisting}[language=csl]
+def UnitVec't = vec3
+\end{lstlisting}
+\begin{lstlisting}[language=csl]
+def BoundHp't = u16
+\end{lstlisting}
+\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA OPS, sec:ops)\begin{lstlisting}[language=csl]
+fn make-vector (n : u32) -> vec3 = vec3
+\end{lstlisting}
+\begin{lstlisting}[language=csl]
+fn pair-len-and-data (n : u32) -> vec3 = vec3
+\end{lstlisting}
+\begin{lstlisting}[language=csl]
+fn normalize (v : &vec3) -> bool = true
+\end{lstlisting}
+\begin{lstlisting}[language=csl]
+fn borrow-shared (r : &str) -> bool = true
+\end{lstlisting}
+\begin{lstlisting}[language=csl]
+fn borrow-mut (r : &str) -> bool = true
+\end{lstlisting}
+\section%!(MISSING CLOSE BRACE)s}\label%!(MISSING CLOSE BRACE)s}
+%!(EXTRA INVARIANTS, sec:invariants)\begin{lstlisting}[language=csl]
+⌈refinement-sound⌉
+\end{lstlisting}
+\begin{lstlisting}[language=csl]
+⌈linear-used-exactly-once⌉
+\end{lstlisting}
+
+\end{document}

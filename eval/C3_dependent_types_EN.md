@@ -1,0 +1,53 @@
+# C3 — Dependent Types Specification (English)
+
+## Goal
+
+This specification describes a Hindley-Milner style type inference
+system extended with refinement types and linear types. The goal is to
+provide static type checking with a minimal annotation burden on the
+user, suitable for the CSLv3 reference compiler.
+
+## Data
+
+We define a positive-float type, which is a 32-bit floating point value
+constrained to be greater than zero. We define a unit-vector type,
+which is a 3-dimensional vector constrained to have magnitude
+approximately equal to one. We define a bounded-health type, which is a
+16-bit unsigned integer whose maximum value is bounded by an externally
+supplied constant.
+
+## Operations
+
+The `make-vector` operation takes an unsigned 32-bit length and returns
+a 3-dimensional vector whose length depends on that input value, giving
+us a Pi-type signature.
+
+The `pair-len-and-data` operation takes an unsigned 32-bit length and
+returns a dependent pair of the length value together with the vector
+itself. This is a Sigma-type signature.
+
+The `normalize` operation takes a mutable reference to a 3-dimensional
+vector and returns a boolean success indicator. It operates on an
+existing buffer rather than allocating.
+
+The `borrow-shared` operation takes a shared reference to a string and
+returns a boolean. The reference is read-only and may be shared with
+other callers.
+
+The `borrow-mut` operation takes an exclusive mutable reference to a
+string and returns a boolean. The reference grants write access and may
+not be aliased.
+
+## Invariants
+
+Refinement soundness: any runtime value inhabiting a refinement type
+must actually satisfy the attached predicate at runtime. Linear
+variables must be used exactly once — not zero times, not more than
+one time — and any deviation is a type error caught at compile time.
+
+## Tests
+
+The identity function has type `a -> a`. Adding one has type `i32 -> i32`.
+Function application has type `(a -> b) -> a -> b`. Self-application
+fails the occurs check because it would require a type that contains
+itself.

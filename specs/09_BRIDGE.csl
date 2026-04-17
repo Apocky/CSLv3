@@ -1,0 +1,114 @@
+§ CSLv3 EN ↔ CSL TRANSLATION
+I> reconciled: pasted (compression rules), specs/ (deletion+transformation rules, full example)
+I> 2026-04-16: worked examples rewritten domain-neutral (game content removed)
+R! used for: onboarding humans, interop w/ non-CSL tooling, doc gen
+
+§ EN → CSL DELETION RULES (what to strip)
+| EN pattern                     | CSLv3    | reason           |
+|-------------------------------|----------|------------------|
+| articles (the, a, an)         | ∅        | zero information |
+| "it is", "there is/are"       | ∅        | existential implied |
+| "should", "must", "needs to"  | W! R! M? | modal operators  |
+| "in order to"                 | →        | flow operator    |
+| "such that", "where"          | ⊢ or scope| constraint      |
+| "for example"                 | # eg:    | annotation       |
+| "however", "nevertheless"     | ∅ or ⚠   | hedging → delete |
+| "basically", "essentially"    | ∅        | filler           |
+| "it's worth noting that"      | ∅        | pure waste       |
+| "respectively"                | positional| structural      |
+| passive voice                 | active   | always           |
+| "is stored as"                | :: type  | type annotation  |
+
+§ EN → CSL TRANSFORMATION RULES
+| EN pattern                    | CSLv3 pattern              |
+|------------------------------|----------------------------|
+| "A is a B"                    | A :: B                     |
+| "A is a type of B"            | A :: B                     |
+| "A must B"                    | W! A B                     |
+| "A should B"                  | R! A B                     |
+| "A may B"                     | M? A B                     |
+| "A has property P"            | A.P                        |
+| "A contains B"                | A { B } or A.B             |
+| "If X then Y"                 | X → Y or X ⇒ Y             |
+| "If X then Y else Z"          | X ? Y : Z                  |
+| "X because Y"                 | X ∵ Y                      |
+| "Therefore X"                 | ∴ X                        |
+| "X causes Y"                  | X ~> Y                     |
+| "X yields Y"                  | X → Y                      |
+| "X, Y, and Z"                 | [X, Y, Z] or X+Y+Z         |
+| "all X are Y"                 | ∀x∈X: x :: Y               |
+| "there exists X..."           | ∃x: ...                    |
+| "X of Y"                      | Y.X (right-head TP)        |
+| "not X"                       | ¬X                         |
+| "X and Y"                     | X ∧ Y or X+Y               |
+| "X or Y"                      | X ∨ Y or X | Y             |
+| "is equivalent to"            | ↔ or ≡                     |
+| "maps to"                     | →                          |
+| "pre-condition"               | ⌊ ⌋                        |
+| "post-condition"              | ⌈ ⌉                        |
+| "invariant"                   | t∞:                        |
+| "X is between A and B"        | X :: [A..B]                |
+| "X can be A, B, or C"         | X :: A | B | C             |
+| "for each X in collection"    | ∀X ∈ col:                  |
+| "X should never exceed Y"     | ⌈X ≤ Y⌉                    |
+| "X triggers Y"                | X ~> Y or X → Y            |
+| "X emits event Y"             | X ! Y                      |
+| "when X then Y"               | X → Y                      |
+
+§ CSL → EN RULES (expansion, for docs)
+  inverse of above
+  render for humans unfamiliar w/ CSL
+  R! every glyph → its EN equivalent from §01 table
+
+§ MIXED MODE (readable spec)
+  allow EN sentences surrounded by CSL structure when:
+    ◐ explaining rationale to mixed-audience
+    ◐ onboarding docs
+    ◐ external APIs
+  W! core spec body always pure CSL
+
+§ FULL EXAMPLE — scheduler priority calc (domain-neutral)
+
+  EN (189 tokens):
+  "The task scheduler priority calculation works as follows. When the
+   scheduler evaluates a pending task, it first retrieves the task's
+   base priority and the waiting-time-so-far. It then calculates the
+   aged priority by multiplying base priority by an aging factor, which
+   is the waiting time divided by ten plus one. Next, the scheduler
+   checks the task's deadline and subtracts the remaining time from
+   the aged priority to get the deadline-adjusted priority. If the
+   adjusted priority is less than one, it is set to one to ensure every
+   task gets at least one cycle. Finally, a starvation boost is applied:
+   if the task has been waiting longer than a threshold, the priority
+   is multiplied by a starvation multiplier, which defaults to two.
+   The final priority value is then used for scheduling."
+
+  CSLv3 (42 tokens):
+    § sched.prio.calc
+      aged    = task.base * (task.wait / 10 + 1)
+      adj     = max(1, aged - task.deadline.remaining)
+      starved = task.wait > threshold
+      final   = starved ? adj * (task.starve-mult | 2) : adj
+
+  compression: 189 → 42 = 4.5×
+
+§ SECOND EXAMPLE (ordering rule, neutral)
+
+  EN: "The request pipeline should batch database writes by table,
+       because connection churn is expensive. This must happen before
+       the response-assembly step."
+
+  CSLv3:
+    R! req.pipe batch.writes ← table
+    ∵ db.conn.churn = expensive
+    W! order: batch ≺ resp.assemble
+
+  compression: 32 → 12 = 2.7×
+
+§ WHEN TO USE WHICH MODE
+  ✓ pure CSL: specs, GDDs, architecture docs, agent CoT, CSLv3 compiler source
+  ✓ pure CSL: handoffs between Claude instances
+  ◐ mixed: code comments (short CSL ; EN if team-external)
+  ◐ mixed: onboarding materials
+  ✗ pure EN: user-facing chat when user writes EN (match register)
+∎

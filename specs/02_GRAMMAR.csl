@@ -1,0 +1,167 @@
+§ CSLv3 GRAMMAR
+I> reconciled: pasted (CFG + LL(2)), root (PEG), specs/ (BNF + slot grammar)
+R! ← Lojban: unambiguous parse via rigid word-class markers
+R! ← J: ASCII fallback everywhere
+W! LL(2) target — parseable w/ 2-token lookahead
+W! ∄ ambiguous parse — if two readings: mandatory explicit grouping
+
+§ TOKEN CLASSES
+  GLYPH   → single unicode sigil (table §01)
+  WORD    → [A-Za-z_][A-Za-z0-9_]* (identifiers, densified nouns)
+  NUM     → integer | float | hex (0x) | bin (0b)
+  STR     → "..." | `...` (raw)
+  SUFFIX  → 'd | 'f | 's | 't | 'e | 'm | 'p | 'g | 'r (determinative)
+
+§ SLOT TEMPLATE
+I> from v2-specs, most formalized slot grammar
+I> every CSLv3 statement occupies:
+  [EVIDENCE?] [MODAL?] [DET?] SUBJECT [RELATION] OBJECT [GATE?] [SCOPE?] [META?]
+
+| slot     | pos | required | default         | content                    |
+|----------|-----|----------|-----------------|----------------------------|
+| EVIDENCE | 0   | ○        | ✓ (confirmed)   | ✓ ◐ ○ ✗ ⊘ △ ▽ ‼            |
+| MODAL    | 1   | ○        | (assertion)     | W! R! M? N! I> Q? P> D>    |
+| DET      | 2   | ○        | (none)          | § ∫ ⊞ or type suffix       |
+| SUBJECT  | 3   | ✓        | —               | compound name              |
+| RELATION | 4   | ✓        | : (is/has)      | : :: = → ← ↔ ∈ ⊂ ≡        |
+| OBJECT   | 5   | ✓        | —               | value/type/target          |
+| GATE     | 6   | ○        | (unconditional) | if/when/unless + expr      |
+| SCOPE    | 7   | ○        | (global)        | @frame, @chunk, per entity |
+| META     | 8   | ○        | (none)          | # comment                  |
+
+§ SLOT OMISSION RULES (Ithkuil: defaults are silent)
+  slot 0 omitted → ✓ (confirmed/certain)
+  slot 1 omitted → assertion (not modal)
+  slot 4 omitted → : (definition/binding)
+  slot 6 omitted → unconditional
+  slot 7 omitted → global scope
+  W! only write non-default values
+
+§ LINE STRUCTURE (Caveman rule)
+  DROP: articles (a/an/the), auxiliaries (is/are/was),
+        copulas where inferable, filler (that/which),
+        "in order to", "it is important", "note that"
+  KEEP: nouns, verbs, relationships, numbers, gates, glyphs
+  ORDER: topic → relation → object (SVO collapse when unambiguous)
+
+§ BLOCK STRUCTURE
+  colon + indent = scope introduction (Python-like)
+  §HEADER:
+    content
+    content
+  ∎  § optional explicit close; indentation-sensitive otherwise
+  
+  W! indent = scope boundary (Peircean cut linearized)
+  W! adjacent items at same indent = conjoined (Peircean juxtaposition)
+
+§ PARSE PRIORITY (high → low)
+  glyph-prefix   § @ # & * $
+  enclosure       ( ) [ ] { } ⟨ ⟩ ⟦ ⟧ « » ⌈ ⌉ ⌊ ⌋ ⟪ ⟫
+  postfix-suffix  'd 'f 's 't 'e 'm 'p 'g 'r
+  unary           ¬ ~ !
+  access          . :: 
+  binary-arith    * / %  +  -
+  range           ..
+  binary-cmp      < > ≤ ≥ = ≠ ≈
+  binary-logic    ∧ ∨ ⊕
+  binary-flow     → ← ⇒ ↔ |> <|
+  binary-meta     ⊢ ∴ ∵ ~>
+  conditional     ? :
+  sequence        , ;
+
+§ BNF GRAMMAR (unified from 3 v2 grammars)
+```bnf
+document     ::= section*
+section      ::= '§'+ ident ':' INDENT block DEDENT
+block        ::= statement*
+
+statement    ::= evidence? modal? definition
+              |  evidence? modal? relation_stmt
+              |  evidence? modal? constraint
+              |  evidence? modal? conditional
+              |  formula
+              |  directive
+              |  comment
+
+evidence     ::= '✓' | '◐' | '○' | '✗' | '⊘' | '△' | '▽' | '‼'
+modal        ::= 'W!' | 'R!' | 'M?' | 'N!' | 'I>' | 'Q?' | 'P>' | 'D>'
+
+definition   ::= subject ':' type_expr constraint? scope? meta?
+              |  subject '=' expr scope? meta?
+              |  'def' ident suffix? '{' field* '}'
+              |  'def' ident suffix? '=' 'enum' '[' variant_list ']'
+              |  'fn' ident '(' params? ')' ('->' type_expr)? body
+
+relation_stmt::= subject rel_op object gate? scope? meta?
+rel_op       ::= '→' | '←' | '↔' | '⇒' | '∈' | '⊂' | '::' | '≡'
+
+constraint   ::= '⌈' expr '⌉'
+              |  '⌊' expr '⌋'
+formula      ::= '⟦' (!'⟧' .)* '⟧'
+conditional  ::= expr ':' INDENT block DEDENT
+              |  expr '→' expr
+              |  expr '?' expr ':' expr
+
+subject      ::= det? compound suffix?
+object       ::= det? compound suffix? | literal | type_expr | block_expr
+det          ::= '§' | '∫' | '⊞'
+
+compound     ::= atom ('.' atom)*
+              |  compound '+' compound
+              |  compound '-' compound
+              |  compound '⊗' compound
+              |  compound '@' compound
+atom         ::= WORD | '$' DIGIT
+
+suffix       ::= "'" [dfstemgpr]
+
+type_expr    ::= prim_type | array_type | union_type | opt_type
+              |  tuple_type | map_type | ref_type | result_type
+prim_type    ::= 'f32' | 'f64' | 'i32' | 'i64' | 'u8' | 'u16' | 'u32' | 'u64'
+              |  'bool' | 'vec2' | 'vec3' | 'vec4' | 'mat4' | 'quat' | 'str'
+array_type   ::= '[' type_expr ';' (NUM | '_') ']'
+union_type   ::= type_expr '|' type_expr
+opt_type     ::= type_expr '?'
+result_type  ::= type_expr '!'
+tuple_type   ::= '(' type_expr (',' type_expr)* ')'
+map_type     ::= '{' type_expr ':' type_expr '}'
+ref_type     ::= '&' type_expr
+
+gate         ::= ('if' | 'when' | 'unless' | 'while') expr
+scope        ::= ('@' compound) | ('per' compound) | ('in' compound)
+meta         ::= '#' TEXT_TO_EOL
+comment      ::= '#' TEXT_TO_EOL | '§{' TEXT '§}'
+directive    ::= modal TEXT_TO_EOL
+
+literal      ::= NUM | STR | 'true' | 'false' | 'nil'
+body         ::= '{' statement* expr? '}'
+block_expr   ::= '{' statement* expr? '}'
+field        ::= ident suffix? '::' type_expr constraint? meta?
+variant_list ::= ident (',' ident)*
+              |  ident '{' variant_list '}' (',' variant_list)*
+params       ::= param (',' param)*
+param        ::= ident '::' type_expr
+args         ::= expr (',' expr)*
+expr         ::= term (op term)*
+term         ::= compound | literal | '(' expr ')' | '¬' term
+              |  fn_call | lambda | pipeline
+fn_call      ::= ident '(' args? ')'
+lambda       ::= 'λ' '(' params? ')' '→' expr
+              |  '\\' '(' params? ')' '->' expr
+pipeline     ::= expr ('|>' expr)+
+op           ::= '+' | '-' | '*' | '/' | '%'
+              |  '==' | '!=' | '<' | '>' | '<=' | '>='
+              |  '∧' | '∨' | '⊕' | '&' | '|'
+
+INDENT       ::= (increase in indentation, 2 spaces per level)
+DEDENT       ::= (decrease in indentation)
+```
+
+§ DE BRUIJN POSITIONAL REFERENCE
+I> from v2-root: within scope block (3 levels max), $0 $1 $2 replace names
+  $0 = first defined thing in scope
+  $1 = second
+  $2 = third
+  W! beyond 3 levels or cross-scope → use names
+  W! positional ref = local optimization, ¬ mandatory
+∎

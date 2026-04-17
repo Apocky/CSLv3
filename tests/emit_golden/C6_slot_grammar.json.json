@@ -1,0 +1,1581 @@
+{
+  "schema": "cslv3-emit-json",
+  "schemaVersion": "json-v1",
+  "emittedAt": "2026-04-17T06:39:25Z",
+  "source": {
+    "file": "parser/tests/C6_slot_grammar.csl",
+    "bytes": 965,
+    "sha256": "8abb66853905ff8b220e61a180242eac7e0eae76a570100e0ad096c68f8cafe4"
+  },
+  "ast": {
+    "kind": "Document",
+    "text": "",
+    "pos": {"line":1,"col":1,"byte":0},
+    "children": [
+      {
+        "kind": "Section",
+        "text": "slot.grammar.coverage",
+        "pos": {"line":5,"col":1,"byte":243},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "MINIMAL",
+        "pos": {"line":7,"col":1,"byte":269},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":8,"col":3,"byte":282},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "x",
+                "pos": {"line":8,"col":3,"byte":282},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":9,"col":3,"byte":292},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "y",
+                "pos": {"line":9,"col":3,"byte":292},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "EVIDENCE-ONLY",
+        "pos": {"line":11,"col":1,"byte":300},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":12,"col":7,"byte":323},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "a",
+                "pos": {"line":12,"col":7,"byte":323},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":13,"col":7,"byte":337},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "b",
+                "pos": {"line":13,"col":7,"byte":337},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":14,"col":7,"byte":351},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "c",
+                "pos": {"line":14,"col":7,"byte":351},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":15,"col":7,"byte":365},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "d",
+                "pos": {"line":15,"col":7,"byte":365},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "MODAL-ONLY",
+        "pos": {"line":17,"col":1,"byte":374},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":18,"col":6,"byte":393},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "must-be-true",
+                "pos": {"line":18,"col":6,"byte":393},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":19,"col":6,"byte":418},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "should-hold",
+                "pos": {"line":19,"col":6,"byte":418},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":20,"col":6,"byte":442},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "may-happen",
+                "pos": {"line":20,"col":6,"byte":442},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":21,"col":6,"byte":465},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "must-not-fire",
+                "pos": {"line":21,"col":6,"byte":465},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "EVIDENCE-AND-MODAL",
+        "pos": {"line":23,"col":1,"byte":487},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":24,"col":10,"byte":518},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "required-and-proven",
+                "pos": {"line":24,"col":10,"byte":518},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":25,"col":10,"byte":554},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "suggested-partial",
+                "pos": {"line":25,"col":10,"byte":554},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":26,"col":10,"byte":588},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "forbidden-and-failed",
+                "pos": {"line":26,"col":10,"byte":588},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "DET-WITH-SUBJECT",
+        "pos": {"line":28,"col":1,"byte":617},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":29,"col":4,"byte":642},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "density",
+                "pos": {"line":29,"col":4,"byte":642},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":30,"col":4,"byte":661},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "chunk",
+                "pos": {"line":30,"col":4,"byte":661},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "RELATION-VARIANTS",
+        "pos": {"line":32,"col":1,"byte":674},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":33,"col":3,"byte":697},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "a",
+                "pos": {"line":33,"col":3,"byte":697},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":34,"col":3,"byte":707},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "b",
+                "pos": {"line":34,"col":3,"byte":707},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":35,"col":3,"byte":721},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "c",
+                "pos": {"line":35,"col":3,"byte":721},
+                "children": []
+              },
+              {
+                "kind": "Num_Lit",
+                "text": "10",
+                "pos": {"line":35,"col":7,"byte":725},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Relation",
+            "text": "",
+            "pos": {"line":36,"col":3,"byte":730},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "x",
+                "pos": {"line":36,"col":3,"byte":730},
+                "children": []
+              },
+              {
+                "kind": "Ident",
+                "text": "y",
+                "pos": {"line":36,"col":8,"byte":735},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Relation",
+            "text": "",
+            "pos": {"line":37,"col":3,"byte":739},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "s",
+                "pos": {"line":37,"col":3,"byte":739},
+                "children": []
+              },
+              {
+                "kind": "Ident",
+                "text": "src",
+                "pos": {"line":37,"col":8,"byte":744},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "GATE-TRAILING",
+        "pos": {"line":39,"col":1,"byte":749},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":40,"col":3,"byte":768},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "active",
+                "pos": {"line":40,"col":3,"byte":768},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":41,"col":3,"byte":793},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "pending",
+                "pos": {"line":41,"col":3,"byte":793},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "SCOPE-TRAILING",
+        "pos": {"line":43,"col":1,"byte":824},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":44,"col":3,"byte":844},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "render",
+                "pos": {"line":44,"col":3,"byte":844},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":45,"col":3,"byte":867},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "tick",
+                "pos": {"line":45,"col":3,"byte":867},
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "Section",
+        "text": "FULL-SLOT",
+        "pos": {"line":47,"col":1,"byte":887},
+        "children": [
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":48,"col":11,"byte":912},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "flux",
+                "pos": {"line":48,"col":11,"byte":912},
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "Definition",
+            "text": "",
+            "pos": {"line":49,"col":11,"byte":946},
+            "children": [
+              {
+                "kind": "Ident",
+                "text": "voxel",
+                "pos": {"line":49,"col":11,"byte":946},
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "types": {
+    "refine_obligations": 0,
+    "strict_parse": false,
+    "diagnostics": []
+  },
+  "ir": {
+  "module": "parser/tests/C6_slot_grammar.csl",
+  "ops": [
+    {
+      "id": 1,
+      "name": "cslv3.fn",
+      "pos": {"line": 8, "col": 3, "byte": 282},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "x"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 1,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 2,
+                  "name": "cslv3.const",
+                  "pos": {"line": 8, "col": 3, "byte": 282},
+                  "operands": [],
+                  "results": [
+                    {"id": 1, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 3,
+                  "name": "cslv3.return",
+                  "pos": {"line": 8, "col": 3, "byte": 282},
+                  "operands": [1],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "cslv3.fn",
+      "pos": {"line": 9, "col": 3, "byte": 292},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "y"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 2,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 5,
+                  "name": "cslv3.const",
+                  "pos": {"line": 9, "col": 3, "byte": 292},
+                  "operands": [],
+                  "results": [
+                    {"id": 2, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 6,
+                  "name": "cslv3.return",
+                  "pos": {"line": 9, "col": 3, "byte": 292},
+                  "operands": [2],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "cslv3.fn",
+      "pos": {"line": 12, "col": 7, "byte": 323},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "a"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 3,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 8,
+                  "name": "cslv3.const",
+                  "pos": {"line": 12, "col": 7, "byte": 323},
+                  "operands": [],
+                  "results": [
+                    {"id": 3, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 9,
+                  "name": "cslv3.return",
+                  "pos": {"line": 12, "col": 7, "byte": 323},
+                  "operands": [3],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "cslv3.fn",
+      "pos": {"line": 13, "col": 7, "byte": 337},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "b"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 4,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 11,
+                  "name": "cslv3.const",
+                  "pos": {"line": 13, "col": 7, "byte": 337},
+                  "operands": [],
+                  "results": [
+                    {"id": 4, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 12,
+                  "name": "cslv3.return",
+                  "pos": {"line": 13, "col": 7, "byte": 337},
+                  "operands": [4],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "cslv3.fn",
+      "pos": {"line": 14, "col": 7, "byte": 351},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "c"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 5,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 14,
+                  "name": "cslv3.const",
+                  "pos": {"line": 14, "col": 7, "byte": 351},
+                  "operands": [],
+                  "results": [
+                    {"id": 5, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 15,
+                  "name": "cslv3.return",
+                  "pos": {"line": 14, "col": 7, "byte": 351},
+                  "operands": [5],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "cslv3.fn",
+      "pos": {"line": 15, "col": 7, "byte": 365},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "d"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 6,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 17,
+                  "name": "cslv3.const",
+                  "pos": {"line": 15, "col": 7, "byte": 365},
+                  "operands": [],
+                  "results": [
+                    {"id": 6, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 18,
+                  "name": "cslv3.return",
+                  "pos": {"line": 15, "col": 7, "byte": 365},
+                  "operands": [6],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "cslv3.fn",
+      "pos": {"line": 18, "col": 6, "byte": 393},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "must-be-true"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 7,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 20,
+                  "name": "cslv3.const",
+                  "pos": {"line": 18, "col": 6, "byte": 393},
+                  "operands": [],
+                  "results": [
+                    {"id": 7, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 21,
+                  "name": "cslv3.return",
+                  "pos": {"line": 18, "col": 6, "byte": 393},
+                  "operands": [7],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "cslv3.fn",
+      "pos": {"line": 19, "col": 6, "byte": 418},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "should-hold"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 8,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 23,
+                  "name": "cslv3.const",
+                  "pos": {"line": 19, "col": 6, "byte": 418},
+                  "operands": [],
+                  "results": [
+                    {"id": 8, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 24,
+                  "name": "cslv3.return",
+                  "pos": {"line": 19, "col": 6, "byte": 418},
+                  "operands": [8],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "name": "cslv3.fn",
+      "pos": {"line": 20, "col": 6, "byte": 442},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "may-happen"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 9,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 26,
+                  "name": "cslv3.const",
+                  "pos": {"line": 20, "col": 6, "byte": 442},
+                  "operands": [],
+                  "results": [
+                    {"id": 9, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 27,
+                  "name": "cslv3.return",
+                  "pos": {"line": 20, "col": 6, "byte": 442},
+                  "operands": [9],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "name": "cslv3.fn",
+      "pos": {"line": 21, "col": 6, "byte": 465},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "must-not-fire"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 10,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 29,
+                  "name": "cslv3.const",
+                  "pos": {"line": 21, "col": 6, "byte": 465},
+                  "operands": [],
+                  "results": [
+                    {"id": 10, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 30,
+                  "name": "cslv3.return",
+                  "pos": {"line": 21, "col": 6, "byte": 465},
+                  "operands": [10],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "name": "cslv3.fn",
+      "pos": {"line": 24, "col": 10, "byte": 518},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "required-and-proven"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 11,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 32,
+                  "name": "cslv3.const",
+                  "pos": {"line": 24, "col": 10, "byte": 518},
+                  "operands": [],
+                  "results": [
+                    {"id": 11, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 33,
+                  "name": "cslv3.return",
+                  "pos": {"line": 24, "col": 10, "byte": 518},
+                  "operands": [11],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "name": "cslv3.fn",
+      "pos": {"line": 25, "col": 10, "byte": 554},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "suggested-partial"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 12,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 35,
+                  "name": "cslv3.const",
+                  "pos": {"line": 25, "col": 10, "byte": 554},
+                  "operands": [],
+                  "results": [
+                    {"id": 12, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 36,
+                  "name": "cslv3.return",
+                  "pos": {"line": 25, "col": 10, "byte": 554},
+                  "operands": [12],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "name": "cslv3.fn",
+      "pos": {"line": 26, "col": 10, "byte": 588},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "forbidden-and-failed"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 13,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 38,
+                  "name": "cslv3.const",
+                  "pos": {"line": 26, "col": 10, "byte": 588},
+                  "operands": [],
+                  "results": [
+                    {"id": 13, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 39,
+                  "name": "cslv3.return",
+                  "pos": {"line": 26, "col": 10, "byte": 588},
+                  "operands": [13],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "name": "cslv3.fn",
+      "pos": {"line": 29, "col": 4, "byte": 642},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "density"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 14,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 41,
+                  "name": "cslv3.const",
+                  "pos": {"line": 29, "col": 4, "byte": 642},
+                  "operands": [],
+                  "results": [
+                    {"id": 14, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 42,
+                  "name": "cslv3.return",
+                  "pos": {"line": 29, "col": 4, "byte": 642},
+                  "operands": [14],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "name": "cslv3.fn",
+      "pos": {"line": 30, "col": 4, "byte": 661},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "chunk"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 15,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 44,
+                  "name": "cslv3.const",
+                  "pos": {"line": 30, "col": 4, "byte": 661},
+                  "operands": [],
+                  "results": [
+                    {"id": 15, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 45,
+                  "name": "cslv3.return",
+                  "pos": {"line": 30, "col": 4, "byte": 661},
+                  "operands": [15],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "name": "cslv3.fn",
+      "pos": {"line": 33, "col": 3, "byte": 697},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "a"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 16,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 47,
+                  "name": "cslv3.const",
+                  "pos": {"line": 33, "col": 3, "byte": 697},
+                  "operands": [],
+                  "results": [
+                    {"id": 16, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 48,
+                  "name": "cslv3.return",
+                  "pos": {"line": 33, "col": 3, "byte": 697},
+                  "operands": [16],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "name": "cslv3.fn",
+      "pos": {"line": 34, "col": 3, "byte": 707},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "b"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 17,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 50,
+                  "name": "cslv3.const",
+                  "pos": {"line": 34, "col": 3, "byte": 707},
+                  "operands": [],
+                  "results": [
+                    {"id": 17, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 51,
+                  "name": "cslv3.return",
+                  "pos": {"line": 34, "col": 3, "byte": 707},
+                  "operands": [17],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "name": "cslv3.fn",
+      "pos": {"line": 35, "col": 3, "byte": 721},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "c"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 18,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 53,
+                  "name": "cslv3.const",
+                  "pos": {"line": 35, "col": 7, "byte": 725},
+                  "operands": [],
+                  "results": [
+                    {"id": 18, "name": "", "ty": "i32", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Int", "value": 10}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 54,
+                  "name": "cslv3.return",
+                  "pos": {"line": 35, "col": 3, "byte": 721},
+                  "operands": [18],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "name": "cslv3.fn",
+      "pos": {"line": 40, "col": 3, "byte": 768},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "active"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 19,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 56,
+                  "name": "cslv3.const",
+                  "pos": {"line": 40, "col": 3, "byte": 768},
+                  "operands": [],
+                  "results": [
+                    {"id": 19, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 57,
+                  "name": "cslv3.return",
+                  "pos": {"line": 40, "col": 3, "byte": 768},
+                  "operands": [19],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "name": "cslv3.fn",
+      "pos": {"line": 41, "col": 3, "byte": 793},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "pending"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 20,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 59,
+                  "name": "cslv3.const",
+                  "pos": {"line": 41, "col": 3, "byte": 793},
+                  "operands": [],
+                  "results": [
+                    {"id": 20, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 60,
+                  "name": "cslv3.return",
+                  "pos": {"line": 41, "col": 3, "byte": 793},
+                  "operands": [20],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "name": "cslv3.fn",
+      "pos": {"line": 44, "col": 3, "byte": 844},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "render"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 21,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 62,
+                  "name": "cslv3.const",
+                  "pos": {"line": 44, "col": 3, "byte": 844},
+                  "operands": [],
+                  "results": [
+                    {"id": 21, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 63,
+                  "name": "cslv3.return",
+                  "pos": {"line": 44, "col": 3, "byte": 844},
+                  "operands": [21],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "name": "cslv3.fn",
+      "pos": {"line": 45, "col": 3, "byte": 867},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "tick"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 22,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 65,
+                  "name": "cslv3.const",
+                  "pos": {"line": 45, "col": 3, "byte": 867},
+                  "operands": [],
+                  "results": [
+                    {"id": 22, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 66,
+                  "name": "cslv3.return",
+                  "pos": {"line": 45, "col": 3, "byte": 867},
+                  "operands": [22],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "name": "cslv3.fn",
+      "pos": {"line": 48, "col": 11, "byte": 912},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "flux"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 23,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 68,
+                  "name": "cslv3.const",
+                  "pos": {"line": 48, "col": 11, "byte": 912},
+                  "operands": [],
+                  "results": [
+                    {"id": 23, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 69,
+                  "name": "cslv3.return",
+                  "pos": {"line": 48, "col": 11, "byte": 912},
+                  "operands": [23],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "name": "cslv3.fn",
+      "pos": {"line": 49, "col": 11, "byte": 946},
+      "operands": [],
+      "results": [],
+      "attrs": {
+        "kind": {"kind": "Str", "value": "top-const"},
+        "name": {"kind": "Symbol", "value": "voxel"}
+      },
+      "regions": [
+        {
+          "kind": "Fn_Body",
+          "blocks": [
+            {
+              "id": 24,
+              "label": "entry",
+              "args": [],
+              "ops": [
+                {
+                  "id": 71,
+                  "name": "cslv3.const",
+                  "pos": {"line": 49, "col": 11, "byte": 946},
+                  "operands": [],
+                  "results": [
+                    {"id": 24, "name": "", "ty": "Unit", "kind": "From_Op"}
+                  ],
+                  "attrs": {
+                    "value": {"kind": "Symbol", "value": "nil"}
+                  },
+                  "regions": []
+                },
+                {
+                  "id": 72,
+                  "name": "cslv3.return",
+                  "pos": {"line": 49, "col": 11, "byte": 946},
+                  "operands": [24],
+                  "results": [],
+                  "attrs": {},
+                  "regions": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+}

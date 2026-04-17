@@ -1,0 +1,136 @@
+§ CSLv3 COMPOUND FORMATION + MORPHEME STACKING
+I> reconciled: 3 v2 sources had 4 compound types each but DIFFERENT sets
+I> v3 = 5 compound types (union of all three) + morpheme stacking (pasted)
+R! ← Sanskrit samasa: arbitrary-depth nominal compounds w/ explicit relation
+R! ← Ithkuil: morpheme stacking per word via suffix slots
+R! ← German: head-final, modifier-chains
+
+§ FIVE COMPOUND CLASSES
+
+§§ TP (tatpurusha) — determinative
+  op: `.` (dot)
+  semantics: A.B = B_of_A (head=B, modifier=A)
+  head: right (final element)
+  all 3 v2s agree on `.` → canonical
+  
+  ex:
+    render.pipeline          → pipeline of render
+    entity.pos.x             → x of position of entity
+    player.inv.slot[0].item  → item in slot 0 of inventory of player
+    
+  R! most common compound → default operator
+
+§§ DV (dvandva) — copulative
+  op: `+` (plus)
+  semantics: A+B = {A, B} co-equal, both
+  all 3 v2s agree on `+` → canonical
+  
+  ex:
+    cpu+gpu                  → both CPU and GPU
+    read+write               → both operations
+    hp+mp+stamina            → all three stats
+    §physics+§collision      → joint system reference
+
+§§ KD (karmadhāraya) — appositive
+  op: `-` (hyphen)
+  semantics: A-B = B_that_is_A (descriptive)
+  from v2-root (pasted omitted this; specs/ didn't have it)
+  I> distinct from TP: TP = relational, KD = attributive
+  
+  ex:
+    static-mesh              → mesh that is static
+    hot-path                 → path that is hot (performance-critical)
+    dead-entity              → entity that is dead
+    raw-damage               → damage that is raw (before mitigation)
+
+§§ BV (bahuvrihi) — exocentric
+  op: `⊗` (tensor product)
+  semantics: A⊗B = thing_having_A_and_B (refers outside itself)
+  from pasted; v2-specs used `>` (conflict w/ comparison) → `⊗` wins
+  
+  ex:
+    red⊗crown                → entity having red crown
+    fire⊗resist              → entity having fire resistance
+    high⊗perf                → thing characterized by high performance
+
+§§ AV (avyayibhava) — adverbial/locative
+  op: `@` (at)
+  semantics: @X = at/per/in_scope_of_X (indeclinable result)
+  from v2-root; pasted used `°` → `@` wins (ASCII, intuitive)
+  
+  ex:
+    @frame                   → per frame
+    @chunk                   → per chunk
+    @entity                  → per entity
+    @init                    → at initialization
+    @tick                    → per tick
+    render @frame            → render scoped to frame
+
+§ COMPOUND NESTING (recursive)
+  compounds compose into larger compounds w/o limit:
+  sys.render.pass.shadow.shader.frag
+    = frag OF shader OF shadow OF pass OF render OF sys
+  
+  resolution: left-to-right, innermost-first
+    a.b.c     = c OF (b OF a)
+    a+b+c     = a AND b AND c (flat union)
+    a.b+c.d   = (b OF a) AND (d OF c)
+    
+  W! when nesting creates ambiguity → explicit ( ) grouping
+  R! alias long paths: `alias sc = system.subsystem.component`
+
+§ MORPHEME STACKING (Ithkuil-inspired)
+I> novel in v2-pasted, no conflict → adopted wholesale
+I> suffix stack encodes aspect/modality/certainty/scope on ANY term
+  
+  TEMPLATE: BASE[.aspect][.mod][.cert][.scope]
+  
+  §§ ASPECT suffixes
+  | suffix | semantics                    |
+  |--------|------------------------------|
+  | .prog  | progressive (is-doing)       |
+  | .perf  | perfective (completed)       |
+  | .iter  | iterative (repeatedly)       |
+  | .hab   | habitual (regularly does)    |
+  | .inch  | inchoative (beginning to)    |
+  | .term  | terminative (ceasing to)     |
+  
+  §§ MODALITY suffixes
+  | suffix | semantics                    |
+  |--------|------------------------------|
+  | .must  | obligatory                   |
+  | .may   | permitted                    |
+  | .cant  | impossible                   |
+  | .will  | intentional/future           |
+  | .wont  | refuses / will-not           |
+  
+  §§ CERTAINTY suffixes
+  | suffix | semantics                    |
+  |--------|------------------------------|
+  | .cert  | certain                      |
+  | .prob  | probable                     |
+  | .poss  | possible                     |
+  | .doubt | doubtful                     |
+  
+  §§ SCOPE suffixes
+  | suffix | semantics                    |
+  |--------|------------------------------|
+  | .loc   | local                        |
+  | .glob  | global                       |
+  | .ctx   | context-dependent            |
+
+  §§ STACKING EXAMPLES
+    render.prog.cert         → is-definitely-rendering
+    spawn.iter.may.loc       → may-repeatedly-spawn, locally
+    merge.inch.must          → must-begin-merging
+    damage.perf.cert.glob    → has-definitely-damaged, globally
+    allocate.prog.doubt.loc  → possibly-allocating, locally
+
+§ DENSITY ANALYSIS
+  I> avg Ithkuil morpheme ≈ 4.5 bits semantic content
+  I> avg EN word ≈ 11 bits surface, ≈ 2.8 bits semantic (Shannon)
+  I> CSLv3 target ≈ 6-8 bits semantic/token (BPE-measured)
+  I> morpheme stack: 4 suffixes encode what EN needs ~8 words for
+     "is currently, probably, repeatedly spawning in local scope"
+     → spawn.iter.prog.prob.loc (5 tokens vs 10)
+∎

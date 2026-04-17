@@ -1,0 +1,4 @@
+# smt_good s05 — multi-morpheme stacking (d + f)
+§ STACK
+  event'd : bool
+  marker'f : bool

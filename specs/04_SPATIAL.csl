@@ -1,0 +1,75 @@
+§ CSLv3 2D OPERATORS
+I> reconciled: pasted (Peirce+tensor+Feynman), root (Peirce linearized)
+R! ← Peirce Existential Graphs: enclosure = negation, juxtaposition = AND
+R! ← Penrose/tensor diagrams: spatial = structural
+R! ← Feynman: time-axis implicit in layout
+
+§ ENCLOSURE SEMANTICS
+  ( X )           → grouping (binding)
+  [ X ]           → list / array / sequence
+  { X }           → set / block / scope
+  ⟨ X ⟩           → tuple / record / entity-property
+  ⟦ X ⟧           → formula / equation / meaning-of
+  « X »           → quotation (X mentioned, ¬ used) / external API
+  ⌈ X ⌉           → constraint / upper-bound / invariant / postcondition
+  ⌊ X ⌋           → floor / lower-bound / precondition
+  ⟪ X ⟫           → temporal scope / phase marker
+
+§ LINEARIZED PEIRCEAN LOGIC
+I> from v2-root: indentation = cut depth (negation/scope boundary)
+I> adjacency = conjunction (co-present on sheet)
+  
+  indent = scope → deeper indent = nested assertion
+  adjacent items at same indent = AND'd
+  
+  ex:
+    §material.property:
+      ρ : f32 ⌈0.01..20000⌉
+      μ : f32 ⌈0..1⌉
+      σ : [f32;6]
+        ¬σ < 0 @compression     # indent = Peircean cut = negation scope
+
+    §chunk ⊞32³ voxel*           # adjacent = all true simultaneously
+
+§ PEIRCE ENCLOSURE → NEGATION (optional mode)
+  ¬(X)   ≡ Peircean cut of X
+  double-cut: ¬(¬(X)) = X       # insertion/erasure rule
+  scroll: ¬(P ¬(Q)) ≡ P ⇒ Q    # implication via nested cuts
+  R! use when proof-theoretic rigor needed; normal specs use → ⇒
+
+§ TENSOR/STRING DIAGRAMS (ASCII form)
+I> from pasted: for multi-input operations
+  X ─f→ Y ─g→ Z        # f:X→Y, g:Y→Z, sequential composition
+  X ═╗
+      ╠ h → W           # h: X⊗Y → W, parallel inputs merge
+  Y ═╝
+
+  R! use when composition structure > prose description
+  R! use in §05 REASON blocks for causal structure
+
+§ DATAFLOW (Feynman-style)
+  vertical   = time (top → bottom)
+  horizontal = parallel computation
+  labels on edges = typed values
+  vertices   = operations
+  
+  R! use in reasoning blocks when causal structure > linear prose
+
+§ TABLES (2D as pure information)
+  | col1 | col2 | col3 |
+  |------|------|------|
+  | ...  | ...  | ...  |
+  R! use when data is genuinely 2D
+  N! linearize tables into prose
+
+§ CONDITIONAL PATTERNS (from v2-root)
+  simple:    ⟨entity.health⟩ ≤ 0 → die
+  gated:     W! §physics.tick @frame
+  warning:   ⚠ §render.pass # > 4 → perf-warn
+  query:     Q? §audio.reverb.quality
+  block:
+    ⟨player.underwater⟩:
+      §render.post += fog-underwater
+      §audio.filter : lowpass@800hz
+      ⟨breath⟩ -= Δt
+∎

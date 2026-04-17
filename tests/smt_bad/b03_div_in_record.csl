@@ -1,0 +1,3 @@
+# smt_bad b03 — div-by-zero nested in record-expr position
+§ T
+  fn ratio (n : i32) -> i32 = n / 0

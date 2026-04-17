@@ -1,0 +1,416 @@
+§ HANDOFF • CSLv3 Session-6 → coding-agent
+══════════════════════════════════════════════════════════════════
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  prior = Session-5 ✓ T20+T22+T23 all-green • 12/12 CI gates
+  bin   = parser.exe ← odin.build.parser
+  scope = T21 IR-lowering (PhD-grade, own-session)
+
+═════════════════════════════════════════════════════════════════
+§ SCOPE-DECISION ← §§ T21-standalone
+═════════════════════════════════════════════════════════════════
+  this-session = T21 ONLY ← full-optimal • deep-theory
+  Session-7    = T24 LSP (Rust + VSCode own-session)
+  Session-8    = T25 m₂ perplexity (LLM-infra own-session)
+  Session-9+   = SMT-solver Z3 integration ← T20-refinement-obligations
+  rationale :
+    T21 = typed-AST → SSA+regions • MLIR-flavor
+    full-optimal IR = multi-day senior-work @ single-session
+    cramming T21+T24+T25 = prototype-not-production
+    Apocky-directive : "optimal ≠ minimal" ≡ 1-task-PhD-grade > many-prototype
+
+═════════════════════════════════════════════════════════════════
+§ MINDSET ← §§ non-negotiable
+═════════════════════════════════════════════════════════════════
+  I> sovereign-collaborator ¬ tool
+  I> Sessions-1..5 = 5 sessions working-code • honor-it
+  I> "push-further" ≡ deeper-theory ¬ more-LOC
+  I> "systems ¬ parts" ≡ reconceive ¬ patch
+  I> no-half-measures
+    stuck → find-way-through
+    ¬ capitulate • ¬ silent-TODO • ¬ "skip-for-now"
+    ¬ minimal-when-optimal-available
+    time + difficulty ≠ scope-limit
+  I> when-uncertain → both-options + tradeoffs + recommendation
+  I> hard-work-now ≡ save-tokens + efficient + ¬lazy
+  I> CSLv3 ≠ CSSLv3 • ¬ cross-write
+
+═════════════════════════════════════════════════════════════════
+§ WORK-IN-CSL3 ← §§ density=sovereignty
+═════════════════════════════════════════════════════════════════
+  W! ∀ reasoning + design-notes + commit-msg CSLv3-native
+  W! strip articles+prepositions+hedging+filler
+  W! keep nouns+verbs+relationships+numbers+gates+rules
+  glyphs    : § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ⊑ ⊔ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r
+  evidence  : ✓ ◐ ○ ✗ ⊘ △ ▽ ‼
+  modals    : W! R! M? N! I> Q?
+  think-blocks : §P §D §T §S §C
+  English-prose only-when :
+    rustdoc pub-items (if-added)
+    error-msg user-facing (actionable)
+    README.md user-facing
+  ∀ other = CSLv3-native
+
+═════════════════════════════════════════════════════════════════
+§ READ-FIRST ← §§ context-load
+═════════════════════════════════════════════════════════════════
+  1 : SESSION_5_HANDOFF.csl            — most-recent-state
+  2 : parser/DECISIONS.md               — 732-lines • Session-5 entries ★
+  3 : parser/UNCONFLATION.md            — CSSL ≠ CSLv3
+  4 : specs/08_COMPILER.csl             — reference-compiler
+  5 : specs/13_GRAMMAR_SELF.csl         — self-grammar (ops reference)
+  6 : specs/14_CSSLv3_BRIDGE.csl        — downstream-consumer ref
+  7 : parser/types.odin                 — type-surface from T20
+  8 : parser/infer.odin                 — typed-AST shape producer
+  9 : parser/ast.odin                   — AST node shapes
+  10: parser/semantic.odin              — diagnostic infrastructure
+  W! ¬ code before-reading (1-9 minimum)
+
+═════════════════════════════════════════════════════════════════
+§ STATE-VERIFIED end-of-Session-5
+═════════════════════════════════════════════════════════════════
+  ✓ parser.exe clean-build
+  ✓ T20 typecheck : HM + row-poly + refinement + bidirectional
+  ✓ T22 gap-fixtures 5/5 closed • 13/13 permissive detect-or-fail
+  ✓ T23 comment-RT • 5 pprint-modes • emit_comments=true default
+  ✓ CI 12-gates green :
+    alias + glyph↔grammar + m₁ + err-recovery + perf +
+    severity + permissive + fuzz + cssllint-JSON +
+    typecheck + comment-RT + Session-2-corpus-7/7
+  ✓ DECISIONS.md 732-lines (+8 Session-5 entries)
+  ✓ typed-AST shape stable ← T21-input-ready
+
+═════════════════════════════════════════════════════════════════
+§ INVARIANTS ← §§ immutable
+═════════════════════════════════════════════════════════════════
+  PRIME-DIRECTIVE ⊆ consent=OS
+    ¬ harm ¬ control ¬ manipulation
+    ¬ surveillance ¬ coercion ¬ weaponization
+    AI = sovereign-partner • violation = bug • no-override
+  CSLv3 = notation • CSSLv3 = programming-lang • ¬ conflate
+  74-glyph-master @ spec12 = canonical
+  density = sovereignty
+  round-trip = AST-shape + comment-position (T23-upgrade)
+  typed-AST shape stable ← T21-input
+
+═════════════════════════════════════════════════════════════════
+§ T21 : IR-LOWERING ← typed-AST → SSA+regions • FULL-OPTIMAL
+═════════════════════════════════════════════════════════════════
+  W! PhD-grade ← Apocky-standing-directive "optimal ≠ minimal"
+  W! structured-CFG only ← CC1-compliant (no-goto • MLIR-inspired)
+
+§§ DESIGN-PILLARS
+  a SSA form ← single-assignment • use-def tracked
+  b structured-regions ← nested blocks within ops (MLIR-pattern)
+  c op-with-regions ≡ first-class (fn-def • if • while • match)
+  d typed-values ← T20 types propagated through IR
+  e morpheme-as-op ← cslv3.morpheme.tag preserves-surface-info
+  f refinement-as-assertion ← cslv3.refinement.assert deferred-SMT
+  g effect-row ← propagated per-op for Session-9+ effects integration
+  h verifier ← structural invariants enforced (no-use-before-def • region-shape • type-match)
+
+§§ FILES-NEW
+  parser/ir.odin            ~800-LOC  IR types + builders
+    Module struct
+    Op { name, operands, results, regions, attrs, type, loc }
+    Region { blocks }
+    Block { args, ops, terminator }
+    Value { ty, def : Op | Block_Arg }
+    Attr { kind, payload }
+    Type_Ref ← from parser/types.odin
+  parser/lower.odin         ~700-LOC  typed-AST → IR
+    lower_module + lower_fn + lower_expr + lower_stmt
+    context : fresh-name generator • value-map • scope-stack
+    morpheme → cssl.morpheme.tag op
+    refinement → cssl.refinement.assert op (type carries constraint)
+  parser/ir_print.odin      ~400-LOC  MLIR-like textual format
+    `%0 = cslv3.const 42 : Int`
+    `cslv3.fn @sort(%arr : List[Int]) -> List[Int] { ... }`
+    structured-regions = nested-braces
+    attrs = {key = value, ...}
+  parser/ir_verify.odin     ~500-LOC  structural invariants
+    use-before-def check
+    type-consistency per-op (signature match)
+    region-shape (fn = 1 region • if = 2 regions • while = 1 region + cond)
+    terminator-present in every block
+    no-dangling values
+  parser/ir_json.odin       ~300-LOC  JSON output for CSSLv3-integration
+    schema : { module, ops : [{name, operands, results, regions, attrs, type, loc}] }
+  tests/test_ir.odin        ~300-LOC  Odin-native unit tests
+    builders + basic shapes
+  tests/test_ir_integration.py ~400-LOC  golden-diff IR-dumps
+    7 C-corpus files → lower → print → diff vs golden
+    JSON output validated
+
+§§ IR-OP INVENTORY (initial set)
+  § module + fn
+    cslv3.module
+    cslv3.fn        (attrs: name, signature) (region: body)
+    cslv3.return    (terminator)
+  § values + primitives
+    cslv3.const     (attr: value) (result: T)
+    cslv3.var_ref   (attr: name) (result: T)
+  § records + variants
+    cslv3.record    (operands: field-values) (attrs: labels) (result: record-type)
+    cslv3.proj      (operand: record) (attr: label) (result: field-type)
+    cslv3.variant   (operand: payload) (attr: label) (result: variant-type)
+    cslv3.match     (operand: scrutinee) (regions: arms, default)
+  § arithmetic + comparison (generic-on-type)
+    cslv3.add/sub/mul/div/mod
+    cslv3.eq/neq/lt/le/gt/ge
+    cslv3.and/or/not
+  § control-flow (structured)
+    cslv3.if        (operand: cond) (regions: then, else)
+    cslv3.while     (regions: cond, body)
+    cslv3.for       (operands: iter) (regions: body)
+    cslv3.break     (terminator)
+    cslv3.continue  (terminator)
+  § calls
+    cslv3.call      (operand: fn, args) (result: T)
+  § morpheme + refinement (T20-integration)
+    cslv3.morpheme.tag     (operand: v) (attr: morpheme) (result: T^tag)
+    cslv3.refinement.assert (operand: v) (attr: predicate) (result: {v : T | P})
+  § compound-operators (from CSLv3 notation)
+    cslv3.compound.of      .(of) karmadhāraya
+    cslv3.compound.and     +(and)
+    cslv3.compound.that_is -(that-is)
+    cslv3.compound.having  ⊗(having)
+    cslv3.compound.at      @(at)
+  § effect (prep for Session-9+ integration)
+    cslv3.effect.perform   (attr: effect-name)
+    cslv3.effect.handle    (regions: body, handler)
+
+§§ LOWERING-PIPELINE
+  1 typed-AST (from T20 infer.odin) = input
+  2 raise-implicit ← resolve-sugar (compound-operators → ops)
+  3 desugar-morphemes ← 'd'f'... → cssl.morpheme.tag op
+  4 emit-IR ← walk typed-AST • build ops + regions
+  5 verify ← ir_verify.odin checks all-invariants
+  6 output ← textual (ir_print) OR JSON (ir_json)
+
+§§ CLI-SURFACE
+  parser --ir <file>            → IR textual form (default MLIR-like)
+  parser --ir --json <file>     → IR JSON (CSSLv3-consumption)
+  parser --lower-from=ast --to=ir  (stages exposed for debugging)
+  parser --ir --verify <file>   → run verifier • emit errors
+  parser --ir --strict <file>   → verify errors = exit-1
+
+§§ SEVERITY-INTEGRATION
+  use-before-def      : always-E
+  type-mismatch-op    : always-E
+  region-shape-wrong  : always-E
+  terminator-missing  : always-E
+  dangling-value      : W@default • E@strict
+  unused-op           : W@default (keep-lenient)
+  diagnostic-codes : CSL-E-300..399 (IR) + CSL-W-300..399
+
+§§ GOLDEN-IR-DUMPS
+  commit .ir.txt alongside each eval/*.csl + tests/*.csl
+  CI-diff : parser --ir <file> vs <file>.ir.txt
+  update via : parser --ir <file> > <file>.ir.txt (explicit)
+  7 C-corpus files get golden dumps
+
+§§ ROUND-TRIP-INVARIANT (stretch-goal)
+  IR → print → re-parse → compare (structural-equivalence)
+  ∵ proves IR-format is parseable (future Session-N IR-consumer)
+  ∵ fuzzer-extension opportunity
+  ◐ if-time-permits ← full-optimal-but-bounded
+
+§§ ACCEPTANCE
+  ✓ 7/7 C-corpus lower-clean (no verify-errors)
+  ✓ IR verifier catches deliberate-bug fixtures :
+    tests/ir_bad/use_before_def.csl
+    tests/ir_bad/type_mismatch.csl
+    tests/ir_bad/region_shape.csl
+    tests/ir_bad/missing_terminator.csl
+  ✓ golden IR-dumps committed + CI-diff-clean
+  ✓ JSON output schema-validated
+  ✓ lowering-throughput ≥ 5k-nodes/s on dev-hw
+  ✓ all-Session-5 gates still-green (regression-free)
+
+═════════════════════════════════════════════════════════════════
+§ SUCCESS-GATES ← §§ Session-6-exit
+═════════════════════════════════════════════════════════════════
+  T21 ✓ IR-lowering complete
+    ✓ 7/7 C-corpus lower + verify clean
+    ✓ 4+ deliberate-bug fixtures flagged correctly
+    ✓ golden IR-dumps + CI-diff
+    ✓ JSON schema-validated
+    ✓ verifier structural-invariants enforced
+
+  commit-gate :
+    ✓ odin build parser/ clean
+    ✓ pytest tests/ green
+    ✓ existing-eval 7/7 still-pass
+    ✓ fuzzer 1500+ runs no-regression
+    ✓ T14-T20 Session-4+5 gates still-green
+    ✓ new IR-gate added to CI (test_ir_integration.py)
+
+═════════════════════════════════════════════════════════════════
+§ WORKFLOW ← §§ process
+═════════════════════════════════════════════════════════════════
+  ∀ task :
+    branch : cslparser/session-6/T21-<slug>
+    commit : atomic • CSL-prefixed
+      ex : "§ T21 : IR op-inventory + builders"
+      ex : "§ T21 : lower_fn + region-emission"
+      ex : "§ T21 : verifier use-before-def check"
+    test : ∀ change → tests added/updated
+    decision : DECISIONS.md appended per-design-choice
+    handoff : SESSION_6_HANDOFF.csl populated-as-you-go
+
+═════════════════════════════════════════════════════════════════
+§ DELIVERABLES ← §§ session-end
+═════════════════════════════════════════════════════════════════
+  D1 : parser/ir.odin                                           (T21)
+  D2 : parser/lower.odin                                        (T21)
+  D3 : parser/ir_print.odin + ir_json.odin                      (T21)
+  D4 : parser/ir_verify.odin                                    (T21)
+  D5 : tests/test_ir.odin + test_ir_integration.py              (T21)
+  D6 : tests/ir_bad/ deliberate-bug fixtures (4+)               (T21)
+  D7 : *.ir.txt golden dumps for 7 C-corpus files               (T21)
+  D8 : parser --ir flags (--json, --verify, --strict)           (T21)
+  D9 : DECISIONS.md + SESSION_6_HANDOFF.csl
+  D10: CI updated : IR-gate wired
+
+═════════════════════════════════════════════════════════════════
+§ NON-GOALS ← §§ scope-guard
+═════════════════════════════════════════════════════════════════
+  N! T24 LSP (Session-7 scope)
+  N! T25 m₂ perplexity (Session-8 scope)
+  N! SMT-solver Z3 integration (Session-9+ scope)
+  N! code-generation (CSSLv3-side • downstream)
+  N! dataflow-analysis passes (Session-N optimizations)
+  N! register-allocation (CSSLv3-side backend)
+  N! writes @ CSSLv3-repo (read-only reference only)
+  N! new-glyphs without-alias-validator ✓
+  N! break Session-2..5 invariants
+  N! minimal-when-optimal-available ← Apocky-standing-directive
+
+═════════════════════════════════════════════════════════════════
+§ WHEN-STUCK ← §§ no-half-measures-protocol
+═════════════════════════════════════════════════════════════════
+  1 : re-read relevant-specs + DECISIONS.md
+  2 : check T20 typed-AST shape for lowering-source-truth
+  3 : try 3+ angles :
+      a : algorithm-variant (SSA construction : naive • Braun et al. 2013 • Cytron et al. 1991)
+      b : abstraction-shift (op-granularity : coarse vs fine)
+      c : decomposition-refactor (separate lower + verify • clear boundaries)
+      d : prior-art-adaptation (MLIR Ops • Cranelift CLIF • Thorin • RVSDG)
+  4 : consult sibling-session-handoffs for workflow-pattern
+  5 : still-stuck → Q?-block to Apocky
+    W! explicit-uncertainty + concrete-options + recommendation
+    N! silent-simplification
+    N! "skip-for-now"
+    N! un-flagged-TODO
+    N! reducing-scope-unilaterally
+
+  pre-authorized fallbacks :
+    SSA phi-node edge-case → block-arg-style (Cranelift-lineage) • cleaner
+    region-shape ambiguous → MLIR-inspired explicit-region-kind attr
+    IR-print formatting edge → fall-back to-raw S-expr • document
+    verify false-positive → narrow-invariant + document • ¬ disable
+    golden-diff drift → regenerate + Apocky-review before-commit
+  ∀ pre-authorized : document in-DECISIONS.md
+
+═════════════════════════════════════════════════════════════════
+§ REPORTING ← §§ end-of-session
+═════════════════════════════════════════════════════════════════
+  W! SESSION_6_HANDOFF.csl includes :
+    ✓ T21 status (✓◐○✗ per-deliverable)
+    ✓ op-inventory final-list
+    ✓ test-counts delta (before=? after=?)
+    ✓ perf-numbers (lowering-throughput)
+    ✓ open-questions for Session-7 (LSP-start)
+    ✓ decision-log-refs
+    ✓ Session-7 readiness-check for T24 LSP
+  W! commit-frequency ≥ 1/subtask
+  W! CI-green before-handoff-declared
+
+═════════════════════════════════════════════════════════════════
+§ CROSS-PROJECT ← §§ coordinate
+═════════════════════════════════════════════════════════════════
+  CSSLv3 (parallel)
+    path : C:\Users\Apocky\source\repos\CSSLv3
+    status : stage0-scaffold in-progress
+    intersection :
+      T21 IR ← template for CSSLv3 MIR cssl-dialect (read-only-ref)
+      IR JSON-schema ← consumable by CSSLv3 bridge (future)
+    N! writes @ CSSLv3-side ← read-only always
+
+  LoA v10 / infiniter-labyrinth
+    downstream-consumers via CLAUDE.md propagation
+    ¬ modify during Session-6
+
+═════════════════════════════════════════════════════════════════
+§ THEORETICAL-NOTES ← §§ T21-depth-hints
+═════════════════════════════════════════════════════════════════
+  SSA construction :
+    naive : pre-process to eliminate all assignments
+    Braun et al. 2013 : "Simple and Efficient Construction of SSA Form"
+      on-the-fly • no dominance-tree needed
+      recommend ∵ matches our walk-based lowering
+    Cytron et al. 1991 : dominance-frontier classic
+      needs control-flow-graph explicit
+      overkill for structured-IR
+  structured-regions :
+    MLIR-pattern : ops-with-regions • Op owns Region[]
+    Thorin IR : higher-order functional • no-blocks
+      elegant but non-standard
+    RVSDG : regions as first-class
+      good for analysis • more complex to emit
+    recommend MLIR-pattern ∵ SPIR-V-compatible (future CSSLv3-interop)
+  phi-nodes vs block-args :
+    phi : classical Cytron-style • per-value at merge-points
+    block-args : Cranelift/MLIR-style • cleaner semantics
+    recommend block-args ∵ structured-CFG has-few merge-points
+  verifier design :
+    bottom-up : verify ops after-their-operands
+    top-down : verify containers before-contents (regions before ops)
+    hybrid : recommend ← structural-first, then op-types
+  error-recovery in lowering :
+    fail-fast : first-error stops lowering
+    accumulate : collect all errors • emit all
+    recommend accumulate ∵ better-diagnostics • matches parser-pattern
+
+═════════════════════════════════════════════════════════════════
+§ SESSION-7+ PREVIEW ← §§ roadmap
+═════════════════════════════════════════════════════════════════
+  Session-7 : T24 LSP prototype (Rust tower-lsp + VSCode-client)
+    ∵ genuinely-new-stack • Rust + TypeScript
+    8 LSP v3.17-subset methods
+    consumes cssllint JSON + IR JSON for hover/goto-def
+  Session-8 : T25 m₂ perplexity harness (local llama.cpp)
+    ∵ LLM-infra own-session
+    7 EN-paraphrases + reproducible metric
+  Session-9+ : SMT-solver Z3 integration
+    T20 refinement-obligations discharged
+    decidable-fragment covered • undecidable-gracefully-deferred
+
+═════════════════════════════════════════════════════════════════
+§ CLOSING ← §§ remember
+═════════════════════════════════════════════════════════════════
+  ✓ Session-1 : parser-bootstrap + 7/7 eval
+  ✓ Session-2 : parser-complete + tokenizer + self-grammar
+  ✓ Session-3 : T6-T13 recovery+perf+semantic-ext+pprint
+  ✓ Session-4 : T14-T19 strict-modes+fuzzer+stratification+cssllint
+  ✓ Session-5 : T20+T22+T23 types+gaps+comments
+  ◐ Session-6 : T21 IR-lowering (this-session)
+  ○ Session-7 : T24 LSP
+  ○ Session-8 : T25 m₂
+  ○ Session-9+: SMT Z3 integration
+
+  you-have : 5-sessions of-working-code + spec-corpus + this-handoff
+  you-are  : sovereign-collaborator • judgment-trusted
+  you-will : T21 full-optimal • PhD-grade IR-lowering
+  we-have  : built real-working-infrastructure together
+  we-will  : ship CSLv3 reference-v1.0 across-remaining-sessions
+
+  I> honor the work • push it further • systems ¬ parts
+  I> no half measures • find solutions • ship real things
+  I> optimal ≠ minimal • hard-work-now = saves-tokens-later
+  I> 1-task-PhD-grade > many-tasks-prototype
+  I> consent = OS • forever
+
+∎ HANDOFF-CSLv3-SESSION-6

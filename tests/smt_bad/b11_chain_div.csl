@@ -1,0 +1,3 @@
+# smt_bad b11 — chained div operations all zero-divisors
+§ T
+  fn f (x : i32) -> i32 = (x / 0) / 0

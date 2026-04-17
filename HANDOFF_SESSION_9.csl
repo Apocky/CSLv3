@@ -1,0 +1,451 @@
+§ HANDOFF • CSLv3 Session-9 → coding-agent
+══════════════════════════════════════════════════════════════════
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  prior = Session-8 ✓ T26.1-.3 validated + T27 IR-opt • 15/15 CI-gates
+  bin   = parser.exe ← odin.build.parser
+  scope = T24 LSP prototype (PhD-grade, own-session, new-stack)
+
+═════════════════════════════════════════════════════════════════
+§ SCOPE-DECISION ← §§ T24-standalone
+═════════════════════════════════════════════════════════════════
+  this-session = T24 LSP full-optimal ← Rust + TypeScript
+  Session-10   = T25 m₂ perplexity (LLM-infra)
+  Session-11+  = T28 codegen (target TBD)
+  rationale :
+    ∵ all-upstream-gates closed (types+IR+SMT+opt validated)
+    ∵ 8-sessions of backend invisible to editor ← UX deserves surface
+    ∵ Rust + VSCode = genuinely-new-stack per-precedent
+    ∵ consumes cssllint + IR + SMT + opt-stats = exercises everything
+
+═════════════════════════════════════════════════════════════════
+§ MINDSET ← §§ non-negotiable
+═════════════════════════════════════════════════════════════════
+  I> sovereign-collaborator ¬ tool
+  I> Sessions-1..8 = 8 sessions working-code • honor-it
+  I> "push-further" ≡ deeper-theory ¬ more-LOC
+  I> "systems ¬ parts" ≡ reconceive ¬ patch
+  I> no-half-measures
+    stuck → find-way-through
+    ¬ capitulate • ¬ silent-TODO • ¬ "skip-for-now"
+    ¬ minimal-when-optimal-available
+    time + difficulty ≠ scope-limit
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> CSLv3 ≠ CSSLv3 • ¬ cross-write
+
+═════════════════════════════════════════════════════════════════
+§ WORK-IN-CSL3 ← §§ density=sovereignty
+═════════════════════════════════════════════════════════════════
+  W! ∀ reasoning + design-notes + commit-msg CSLv3-native
+  glyphs    : § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ⊑ ⊔ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r
+  evidence  : ✓ ◐ ○ ✗ ⊘ △ ▽ ‼
+  modals    : W! R! M? N! I> Q?
+  think-blocks : §P §D §T §S §C
+  English-prose only-when : rustdoc-pub • error-msg-user-facing • README.md
+  ∀ other = CSLv3-native
+
+═════════════════════════════════════════════════════════════════
+§ READ-FIRST ← §§ context-load
+═════════════════════════════════════════════════════════════════
+  1 : SESSION_8_HANDOFF.csl             — most-recent-state
+  2 : parser/DECISIONS.md                — Session-8 entries ★
+  3 : parser/UNCONFLATION.md             — CSSL ≠ CSLv3
+  4 : parser/main.odin                   — CLI surface (cssllint + --ir + --smt + --opt)
+  5 : specs/14_CSSLv3_BRIDGE.csl         — LINT-PROTOCOL schema
+  6 : tests/test_cssllint_json.py        — JSON schema reference
+  7 : specs/12_TOKENIZER.csl             — 74-glyph master (hover-source)
+  8 : specs/13_GRAMMAR_SELF.csl          — self-grammar (completion-source)
+  W! ¬ code before-reading (1-6 minimum)
+
+═════════════════════════════════════════════════════════════════
+§ STATE-VERIFIED end-of-Session-8
+═════════════════════════════════════════════════════════════════
+  ✓ parser.exe clean-build
+  ✓ Z3 4.16.0 + CVC5 1.3.3 installed + version-pinned
+  ✓ SMT : 6/6 smt_good Unsat + 15/15 smt_bad Sat (×2 solvers = 30 trials)
+  ✓ SMT-throughput : Z3 122.8 / CVC5 137.3 cached ops/s
+  ✓ Audit-chain : 10 Ed25519-signed entries verified
+  ✓ IR-opt : 6 passes + 4 levels + 28 golden-dumps
+  ✓ O0-O2 byte-stable
+  ✓ CI 15-gates green
+  ✓ Consistency-vs-Verification two-mode SMT semantic-fix documented
+
+═════════════════════════════════════════════════════════════════
+§ INVARIANTS ← §§ immutable
+═════════════════════════════════════════════════════════════════
+  PRIME-DIRECTIVE ⊆ consent=OS
+    ¬ harm ¬ control ¬ manipulation ¬ surveillance ¬ coercion ¬ weaponization
+    AI = sovereign-partner • violation = bug • no-override
+  CSLv3 = notation • CSSLv3 = programming-lang • ¬ conflate
+  74-glyph-master @ spec12 = canonical
+  density = sovereignty
+  LSP = UX-layer • parser.exe = truth-source via-subprocess
+
+═════════════════════════════════════════════════════════════════
+§ T24 : LSP PROTOTYPE ← Rust tower-lsp + VSCode-client • FULL-OPTIMAL
+═════════════════════════════════════════════════════════════════
+  W! PhD-grade ← Apocky-standing-directive
+  W! prodigious-scope ← all-backend-layers surfaced
+
+§§ DESIGN-PILLARS
+  a Rust language-server ← tower-lsp + tokio async
+  b parser.exe as truth-source ← shell-out via subprocess
+  c LSP v3.17 protocol ← full-spec-subset (12+ methods)
+  d VSCode client ← TypeScript + LanguageClient API
+  e incremental-sync ← didChange-debounced (200ms)
+  f multi-backend diagnostics ← parse + semantic + typecheck + SMT + opt
+  g hover-rich ← glyph-alias + morpheme-expansion + type-info
+  h completion-context-aware ← glyphs + morphemes + keywords + idents-in-scope
+  i formatting ← parser --mode=canonical pipeline
+  j goto-definition ← T21 IR use-def-chains surfaced
+  k code-actions ← quick-fixes for common diagnostics
+  l workspace-symbols ← cross-file index
+
+§§ FILES-NEW
+  lsp/Cargo.toml                         workspace + deps
+  lsp/server/Cargo.toml                  server crate
+  lsp/server/src/main.rs                 ~200-LOC  entry + tokio main
+  lsp/server/src/server.rs               ~600-LOC  LanguageServer trait-impl
+  lsp/server/src/parser_shim.rs          ~400-LOC  parser.exe subprocess-driver
+    spawn + stdio-JSON + debounce + cache-last-parse-per-URI
+    timeout-handling + graceful-degrade
+  lsp/server/src/diagnostics.rs          ~400-LOC  cssllint JSON → LSP Diagnostic
+    severity mapping (CSL-E → Error • CSL-W → Warning • CSL-I → Information)
+    code-action attach per-diagnostic
+  lsp/server/src/hover.rs                ~500-LOC  hover-provider
+    glyph lookup (74-glyph-table)
+    morpheme-expansion ('d → durative + refinement-formula)
+    type-info from --typecheck --json
+    compound-operator expansion
+  lsp/server/src/completion.rs           ~500-LOC  completion-provider
+    trigger-chars : ' § . ⊗ @ +
+    contexts : after-' = morpheme-list ; after-§ = modal-list ; ident = scope-symbols
+    snippet-support for common-patterns (fn-def • type-def)
+  lsp/server/src/formatting.rs           ~300-LOC  formatting-provider
+    full-file : parser --mode=canonical
+    range : scoped pprint via AST-subtree-extract (if feasible)
+  lsp/server/src/goto.rs                 ~400-LOC  definition + references
+    parser --ir --json → use-def-chains
+    symbol-at-position lookup
+    cross-file workspace-index (SQLite-backed cache)
+  lsp/server/src/code_actions.rs         ~400-LOC  quick-fixes
+    for CSL-W-unknown-morpheme : suggest-nearest
+    for CSL-E-type-mismatch : insert-cast (if-available)
+    for PERMISSIVE_ACCEPT : promote-or-fix
+  lsp/server/src/workspace_index.rs      ~400-LOC  multi-file index
+    watch .csl files • incremental parse
+    symbol-table per-file + cross-file references
+  lsp/server/src/config.rs               ~200-LOC  workspace-config
+    severity-mode (lint/default/strict)
+    parser.exe path override
+    Z3/CVC5 paths
+  lsp/server/src/smt_diag.rs             ~300-LOC  SMT-diagnostics surfacing
+    run parser --smt --json on-save
+    counter-example rendering inline
+  lsp/server/src/opt_diag.rs             ~200-LOC  opt-stats surfacing
+    pass-statistics as info-diag (optional)
+    per-fn code-lens for "optimized 42% @ O2"
+  lsp/server/tests/integration.rs        ~400-LOC  Rust integration tests
+    full LSP protocol-dance via-stdio-harness
+
+§§ VSCODE-CLIENT
+  lsp/editors/vscode/package.json        extension manifest
+  lsp/editors/vscode/src/extension.ts    ~300-LOC  LanguageClient entry
+  lsp/editors/vscode/src/client.ts       ~200-LOC  server-bootstrap
+  lsp/editors/vscode/syntaxes/cslv3.tmLanguage.json    TextMate grammar
+    74-glyph highlighting + morphemes + compounds + modals
+  lsp/editors/vscode/language-configuration.json       brackets + comments
+  lsp/editors/vscode/README.md           installation + usage
+  lsp/editors/vscode/.vscodeignore       build-artifacts
+  lsp/editors/vscode/icon.png            extension-icon
+
+§§ LSP METHODS (full-set v3.17-subset)
+  § lifecycle
+    initialize               ← capabilities-declaration
+    initialized              ← post-init hook
+    shutdown                 ← cleanup
+    exit                     ← terminate
+  § document-sync
+    textDocument/didOpen
+    textDocument/didChange   ← debounced 200ms
+    textDocument/didSave
+    textDocument/didClose
+  § diagnostics
+    textDocument/publishDiagnostics  ← server-push
+  § features
+    textDocument/hover
+    textDocument/completion
+    textDocument/formatting
+    textDocument/rangeFormatting
+    textDocument/definition
+    textDocument/references
+    textDocument/documentSymbol
+    textDocument/codeAction
+    textDocument/codeLens
+    textDocument/semanticTokens/full    ← rich highlighting beyond TextMate
+  § workspace
+    workspace/didChangeConfiguration
+    workspace/symbol
+    workspace/didChangeWatchedFiles
+
+§§ INCREMENTAL-SYNC
+  didChange → debounce 200ms → full-re-parse (incremental-AST-patching v2-scope)
+  cache : per-URI last-parse-result + last-typecheck + last-SMT
+  invalidation on-change → bump version • stale-results marked
+  background-parse : tokio-spawn per-URI • join-on-publishDiagnostics
+
+§§ SEVERITY-MAPPING
+  CSL-E-xxx   → LSP Error
+  CSL-W-xxx   → LSP Warning
+  CSL-I-xxx   → LSP Information
+  permissive-accept → Hint (wavy-underline subtle)
+  SMT-counter-example → Error w/ related-info (counter-example location)
+  opt-stats  → Information (optional • user-toggle)
+
+§§ HOVER-CONTENT (markdown-rendered)
+  glyph : `≤` (ASCII: `<=` or `le`)
+    Unicode U+2264 • less-than-or-equal
+    Category : comparison-operator
+  morpheme 'd : durative
+    refinement : {v | duration(v) > 0}
+    morpheme-slot : Aspect
+    docs-ref : specs/04_MORPHEMES.csl §§ durative
+  type : Fn<Int → Int / ⟨⟩>
+    inferred-at : line 42 col 10
+    effect-row : pure ⟨⟩
+    refinements : none
+  compound .(of) :
+    Sanskrit : tatpuruṣa • Karmadhāraya
+    semantics : attributive-composition
+    associativity : left
+
+§§ COMPLETION-CONTEXTS
+  after `'` : 9 morphemes ('d 'f 's 't 'e 'm 'p 'g 'r) + doc-tooltip each
+  after `§` : modal-list (I> W! R! M? N! Q?) + think-blocks (§P §D §T §S §C)
+  after `.` : .(of) compound • field-access (if-record-type)
+  after `⊗` : ⊗(having) compound
+  after `@` : @(at) compound • attribute-list
+  after `+` : +(and) compound • arithmetic
+  ident-position : scope-symbols + imports + built-ins
+  type-position : type-constructors + user-types + refinement-builders
+  snippet-support : fn { ... } • def name = ... • enum { ... }
+
+§§ CLI-SURFACE
+  lsp-server --stdio                     (default • VSCode-compat)
+  lsp-server --tcp=localhost:9257        (debug-mode)
+  lsp-server --log-level=debug|info|warn|error
+  lsp-server --parser-path=<path>        (override parser.exe location)
+  lsp-server --version
+
+§§ WORKSPACE-INDEX
+  cache : ~/.cslv3-lsp-cache/<workspace-hash>/index.sqlite
+  tables : files(uri, mtime, hash) + symbols(file_id, name, kind, range, type)
+  refresh : file-watch + didChangeWatchedFiles
+  query : workspace/symbol + definition cross-file
+
+§§ ACCEPTANCE
+  ✓ opens .csl file → diagnostics publish ≤ 500ms (first-open)
+  ✓ didChange → re-diagnostics ≤ 300ms (debounced + cached)
+  ✓ hover on ≤ → full markdown-rendered explanation
+  ✓ hover on 'd → morpheme-expansion + refinement + docs-link
+  ✓ hover on ident → inferred-type + effect-row + refinements
+  ✓ completion after `'` → 9-morphemes with doc-tooltips
+  ✓ completion after `§` → modal-list
+  ✓ format-document → canonical output • RT-safe
+  ✓ format-range → scoped-pprint preserves surroundings
+  ✓ goto-definition → cross-file via-workspace-index
+  ✓ references → all-use-sites listed
+  ✓ documentSymbol → outline-tree per-file
+  ✓ code-action : unknown-morpheme → suggest-nearest (Levenshtein-distance)
+  ✓ code-action : PERMISSIVE_ACCEPT → "promote-to-strict" quick-fix
+  ✓ semanticTokens → 74-glyphs highlighted beyond-TextMate
+  ✓ workspace/symbol → fuzzy-search cross-file
+  ✓ SMT-diagnostic counter-example rendered inline
+  ✓ VSCode extension loads + syntax-highlights
+  ✓ cargo test in lsp/server/ green
+  ✓ manual-test : full-dance open→edit→hover→complete→format→goto green
+
+═════════════════════════════════════════════════════════════════
+§ SUCCESS-GATES ← §§ Session-9-exit
+═════════════════════════════════════════════════════════════════
+  T24 ✓ LSP prototype complete
+    ✓ 17+ LSP methods implemented
+    ✓ VSCode extension + TextMate grammar
+    ✓ parser.exe subprocess-driver with caching
+    ✓ 12+ integration tests green
+    ✓ workspace-index SQLite-backed
+    ✓ hover + completion + format + goto + refs + actions operational
+
+  commit-gate ∀ task :
+    ✓ odin build parser/ clean (no-regression to upstream)
+    ✓ cargo build --release in lsp/server/ clean
+    ✓ cargo test in lsp/server/ green
+    ✓ cargo clippy -D warnings clean
+    ✓ VSCode extension installs-locally
+    ✓ existing-eval 7/7 still-pass
+    ✓ T14-T27 Session-4..8 gates still-green
+    ✓ new LSP-gate wired into CI
+
+═════════════════════════════════════════════════════════════════
+§ WORKFLOW ← §§ process
+═════════════════════════════════════════════════════════════════
+  ∀ task :
+    branch : cslparser/session-9/T24-<slug>
+    commit : atomic • CSL-prefixed
+      ex : "§ T24 : lsp-server skeleton + tower-lsp bootstrap"
+      ex : "§ T24 : hover-provider glyph + morpheme dispatch"
+      ex : "§ T24 : VSCode extension + TextMate grammar"
+    test : ∀ change → tests added/updated
+    decision : DECISIONS.md appended per-design-choice
+    handoff : SESSION_9_HANDOFF.csl populated-as-you-go
+
+═════════════════════════════════════════════════════════════════
+§ DELIVERABLES ← §§ session-end
+═════════════════════════════════════════════════════════════════
+  D1 : lsp/Cargo.toml + lsp/server/Cargo.toml          (T24)
+  D2 : lsp/server/src/main.rs + server.rs              (T24)
+  D3 : lsp/server/src/parser_shim.rs                   (T24)
+  D4 : lsp/server/src/diagnostics.rs                   (T24)
+  D5 : lsp/server/src/hover.rs                         (T24)
+  D6 : lsp/server/src/completion.rs                    (T24)
+  D7 : lsp/server/src/formatting.rs + goto.rs          (T24)
+  D8 : lsp/server/src/code_actions.rs                  (T24)
+  D9 : lsp/server/src/workspace_index.rs + config.rs   (T24)
+  D10: lsp/server/src/smt_diag.rs + opt_diag.rs        (T24)
+  D11: lsp/server/tests/integration.rs                 (T24)
+  D12: lsp/editors/vscode/* (package.json + extension.ts + grammar + docs)  (T24)
+  D13: DECISIONS.md + SESSION_9_HANDOFF.csl
+  D14: CI : LSP-gate wired + cargo + VSCode extension-test
+
+═════════════════════════════════════════════════════════════════
+§ NON-GOALS ← §§ scope-guard
+═════════════════════════════════════════════════════════════════
+  N! T25 m₂ perplexity (Session-10 scope)
+  N! T28 codegen (Session-11+ scope)
+  N! language-clients beyond-VSCode (Neovim/Emacs/Zed = Session-N if-demand)
+  N! incremental-AST-patching (v2 scope • full-reparse is-fine @ ≤300ms)
+  N! semantic-highlighting beyond-74-glyphs (future)
+  N! debug-adapter-protocol (DAP is-separate • future)
+  N! writes @ CSSLv3-repo ← read-only always
+  N! break Session-2..8 invariants
+
+═════════════════════════════════════════════════════════════════
+§ WHEN-STUCK ← §§ no-half-measures-protocol
+═════════════════════════════════════════════════════════════════
+  1 : re-read relevant-specs + DECISIONS.md
+  2 : check tower-lsp docs + LSP v3.17 spec
+  3 : try 3+ angles :
+      a : library-alternative (tower-lsp vs lsp-server vs async-lsp)
+      b : sync-model (full-reparse vs incremental-AST)
+      c : cache-granularity (per-URI vs per-AST-subtree)
+      d : prior-art (rust-analyzer • texlab • typst-lsp • zls)
+  4 : consult sibling-session-handoffs for workflow-pattern
+  5 : still-stuck → Q?-block to Apocky
+    W! explicit-uncertainty + concrete-options + recommendation
+    N! silent-simplification
+    N! "skip-for-now"
+    N! un-flagged-TODO
+    N! reducing-scope-unilaterally
+
+  pre-authorized fallbacks :
+    parser.exe subprocess-slow → cache-aggressively • mark-stale-on-change
+    SMT-on-save-too-slow → move-to on-demand via code-lens
+    workspace-index corruption → rebuild-from-scratch + log
+    VSCode extension API-drift → pin package.json engine-version
+    tower-lsp version-issue → pin exact-version in-Cargo.toml
+    TextMate grammar edge-case → document + file-followup
+  ∀ pre-authorized : document in-DECISIONS.md
+
+═════════════════════════════════════════════════════════════════
+§ REPORTING ← §§ end-of-session
+═════════════════════════════════════════════════════════════════
+  W! SESSION_9_HANDOFF.csl includes :
+    ✓ T24 per-method status (✓◐○✗ per-LSP-method)
+    ✓ latency numbers (first-open • didChange • hover • completion)
+    ✓ test-counts (Rust + integration)
+    ✓ VSCode-extension install-verified
+    ✓ open-questions for Session-10
+    ✓ decision-log-refs
+  W! commit-frequency ≥ 1/subtask
+  W! CI-green before-handoff-declared
+
+═════════════════════════════════════════════════════════════════
+§ CROSS-PROJECT ← §§ coordinate
+═════════════════════════════════════════════════════════════════
+  CSSLv3 (parallel)
+    path : C:\Users\Apocky\source\repos\CSSLv3
+    intersection :
+      T24 LSP-architecture ← template for future CSSLv3-LSP
+      parser_shim subprocess-pattern ← reusable pattern
+    N! writes @ CSSLv3-side ← read-only always
+
+  LoA v10 / infiniter-labyrinth
+    ¬ modify during Session-9
+
+═════════════════════════════════════════════════════════════════
+§ THEORETICAL-NOTES ← §§ T24-depth-hints
+═════════════════════════════════════════════════════════════════
+  LSP-library choices :
+    tower-lsp : tokio + trait-based • most popular • recommend
+    lsp-server : crossbeam + lower-level • rust-analyzer-lineage
+    async-lsp : tower-middleware • newer • flexible
+    recommend tower-lsp ∵ maturity + docs + community
+  Sync-models :
+    full-reparse : simple + <300ms on-small-files
+    incremental-AST : complex + gold-standard for-large-files
+    recommend full-reparse ∵ our-parser 1.8M-tok/s • likely-fast-enough
+    upgrade to-incremental if-profiling-shows-need
+  Subprocess-driver design :
+    per-request spawn : simple • high-overhead
+    long-lived daemon : complex • fast
+    recommend hybrid : spawn-per-request w/ warm-pool
+    parser.exe cold-start measured → tune from there
+  Hover-content :
+    markdown strongly-preferred ← LSP 3.17 native
+    code-blocks w/ language-tag → syntax-highlight rendered
+    tables for type-info (inferred-at + effect-row + refinements)
+  Completion-ranking :
+    prefix-match first • then-fuzzy • then-semantic-similarity
+    insert-text-format : snippet for patterns • plaintext for glyphs
+    documentation : markdown with specs-ref-link
+  Workspace-index :
+    SQLite : simple + fast + file-backed-persistence
+    in-memory HashMap : faster but no-persistence
+    recommend SQLite ∵ workspace-index survives-restart
+
+═════════════════════════════════════════════════════════════════
+§ SESSION-10+ PREVIEW ← §§ roadmap
+═════════════════════════════════════════════════════════════════
+  Session-10 : T25 m₂ perplexity harness
+    local llama.cpp + 7 EN-paraphrases + CI-optional
+    lower-NLL ≡ higher-semantic-density
+  Session-11+ : T28 codegen
+    target-selection : CSSLv3-MIR export OR standalone-target
+    SMT-verified-IR ready for code-emission
+  Session-N : grammar-tolerance for glyph-tables (handoff-RT-fix)
+
+═════════════════════════════════════════════════════════════════
+§ CLOSING ← §§ remember
+═════════════════════════════════════════════════════════════════
+  ✓ Session-1..5 : parser + tokenizer + grammar + strict-modes + types
+  ✓ Session-6    : T21 IR-lowering 2787-LOC
+  ✓ Session-7    : T26 SMT infrastructure
+  ✓ Session-8    : T26.1-.3 validation + T27 IR-opt (6 passes × 4 levels)
+  ◐ Session-9    : T24 LSP prototype (this-session)
+  ○ Session-10   : T25 m₂
+  ○ Session-11+  : T28 codegen
+
+  you-have : 8-sessions of-working-code + spec-corpus + this-handoff
+  you-are  : sovereign-collaborator • judgment-trusted
+  you-will : T24 full-optimal • LSP v3.17-subset + VSCode-client
+  we-have  : built real-working-infrastructure together
+  we-will  : surface-it-to-developers this-session
+
+  I> honor the work • push it further • systems ¬ parts
+  I> no half measures • find solutions • ship real things
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> optimal + prodigious ← this-session motto
+  I> consent = OS • forever
+
+∎ HANDOFF-CSLv3-SESSION-9

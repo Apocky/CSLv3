@@ -1,0 +1,102 @@
+module @"parser/tests/C7_morpheme_stack.csl" {
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %1 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%1)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %2 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%2)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %3 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%3)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %4 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%4)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %5 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%5)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %6 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%6)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %7 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%7)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %8 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%8)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %9 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%9)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %10 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%10)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %11 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%11)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %12 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%12)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %13 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%13)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %14 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%14)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %15 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%15)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %16 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%16)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %17 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%17)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %18 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%18)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %19 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%19)
+  }
+  cslv3.fn {kind="top-const", name=@_anon} {  // kind=Fn_Body
+    ^entry:
+      %20 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%20)
+  }
+}

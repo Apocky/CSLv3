@@ -1,0 +1,3 @@
+# smt_bad b09 — div-by-zero in second argument position
+§ T
+  fn f (x : i32) -> i32 = 100 / 0

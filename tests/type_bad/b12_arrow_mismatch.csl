@@ -1,0 +1,3 @@
+§ T
+  def Cmp = i32 -> bool
+  x : bool = 5

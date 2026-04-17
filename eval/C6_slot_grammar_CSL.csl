@@ -1,0 +1,50 @@
+# corpus-mode: pure-CSL
+# tests: full slot template [EV] [MOD] [DET] [SUBJ] [REL] [OBJ] [GATE] [SCOPE]
+# glyph-class: evidence markers, modal tokens, determinatives, relation operators
+# features: every slot position exercised; silent defaults omitted where natural
+
+§ slot.grammar.coverage
+
+§ MINIMAL
+  x : i32
+  y : u8
+
+§ EVIDENCE-ONLY
+  [x] a : i32
+  [~] b : i32
+  [ ] c : i32
+  [!] d : i32
+
+§ MODAL-ONLY
+  W! must-be-true : bool
+  R! should-hold : bool
+  M? may-happen : bool
+  N! must-not-fire : bool
+
+§ EVIDENCE-AND-MODAL
+  [x] W! required-and-proven : bool
+  [~] R! suggested-partial : bool
+  [!] N! forbidden-and-failed : bool
+
+§ DET-WITH-SUBJECT
+  ∫density : f32
+  ⊞chunk : u32
+
+§ RELATION-VARIANTS
+  a : i32
+  b :: entity
+  c = 10
+  x -> y
+  s <- src
+
+§ GATE-TRAILING
+  active : bool if ready
+  pending : bool when unblocked
+
+§ SCOPE-TRAILING
+  render : bool @frame
+  tick : bool @chunk
+
+§ FULL-SLOT
+  [~] W! ∫flux :: stream @frame
+  [x] R! ⊞voxel : u32 @chunk

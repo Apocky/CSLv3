@@ -1,0 +1,14 @@
+module @"parser/tests/C5_bridge_mode.csl" {
+  cslv3.fn {kind="top-const", name=@summary} {  // kind=Fn_Body
+    ^entry:
+      %1 = cslv3.const {value=@nil} : Unit
+      cslv3.return(%1)
+  }
+  cslv3.var_ref {kind="type-def", name=@Request}
+  cslv3.var_ref {kind="type-def", name=@Response}
+  cslv3.fn {name=@handle, sig=Ref[Request] -> Response} {  // kind=Fn_Body
+    ^entry(%2:req : α4):
+      %3 = cslv3.var_ref {name=@Response} : Response
+      cslv3.return(%3)
+  }
+}

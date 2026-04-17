@@ -1,0 +1,4 @@
+§ T
+  y : i32 = 1
+  z : bool = true
+  w : i32 = y + z

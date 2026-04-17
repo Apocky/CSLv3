@@ -1,0 +1,6 @@
+[12:41:03] safer_build start — target=parser/
+[12:41:04] free physical memory: 19691 MB
+[12:41:04] running: /c/odin/odin.exe build parser/ 
+[12:41:04] build finished in 0s (exit=0)
+[12:41:04] parser.exe ok (size=813056 bytes)
+[12:41:04] safer_build done

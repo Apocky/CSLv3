@@ -1,0 +1,3 @@
+§ T
+  x : str = "a"
+  y : str = x + x

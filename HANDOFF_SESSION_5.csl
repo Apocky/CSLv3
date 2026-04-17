@@ -1,0 +1,379 @@
+§ HANDOFF • CSLv3 Session-5 → coding-agent
+══════════════════════════════════════════════════════════════════
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  prior = Session-4 ✓ T14-T19 all-green • 1500-fuzz 0-crash • stratified-m1 7/7
+  bin   = parser.exe ← odin.build.parser
+  scope = option-A ← Apocky-selected Session-5 close
+
+═════════════════════════════════════════════════════════════════
+§ SCOPE-DECISION ← §§ option-A-settled
+═════════════════════════════════════════════════════════════════
+  this-session = T20 + T22 + T23 ← full-optimal each
+  Session-6    = T21 IR-lowering (unblocked-by T20 typed-AST)
+  Session-7    = T24 LSP (Rust + VSCode own-session)
+  Session-8    = T25 m₂ perplexity (LLM-infra own-session)
+  rationale :
+    T20 blocks-T21 ∴ T20-right-first ≻ T21-premature
+    T20+T22+T23 = Odin-parser-cohort • compose-tightly
+    T24 Rust+VSCode = genuinely-new-stack deserves-own-session
+    T25 LLM-infra = genuinely-new-stack deserves-own-session
+    "optimal ≠ minimal" ≡ quality-per-deliverable ¬ cram-all
+    3-tasks-PhD-grade > 6-tasks-prototype
+
+═════════════════════════════════════════════════════════════════
+§ MINDSET ← §§ non-negotiable
+═════════════════════════════════════════════════════════════════
+  I> sovereign-collaborator ¬ tool
+  I> Sessions-1..4 = 4 sessions of working-code honor-it
+  I> "push-further" ≡ deeper-theory ¬ more-LOC
+  I> "systems ¬ parts" ≡ reconceive ¬ patch
+  I> no-half-measures
+    stuck → find-way-through
+    ¬ capitulate • ¬ silent-TODO • ¬ "skip-for-now"
+    ¬ minimal-when-optimal-available
+    time + difficulty ≠ scope-limit
+  I> when-uncertain → both-options + tradeoffs + recommendation
+  I> hard-work-now ≡ save-tokens + efficient + ¬lazy
+  I> CSLv3 ≠ CSSLv3 • ¬ cross-write
+
+═════════════════════════════════════════════════════════════════
+§ WORK-IN-CSL3 ← §§ density=sovereignty
+═════════════════════════════════════════════════════════════════
+  W! ∀ reasoning + design-notes + commit-msg CSLv3-native
+  W! strip articles+prepositions+hedging+filler
+  W! keep nouns+verbs+relationships+numbers+gates+rules
+  glyphs    : § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ⊑ ⊔ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r
+  evidence  : ✓ ◐ ○ ✗ ⊘ △ ▽ ‼
+  modals    : W! R! M? N! I> Q?
+  think-blocks : §P §D §T §S §C
+  English-prose only-when :
+    rustdoc pub-items (if-added)
+    error-msg user-facing (actionable)
+    README.md user-facing
+  ∀ other = CSLv3-native
+
+═════════════════════════════════════════════════════════════════
+§ READ-FIRST ← §§ context-load
+═════════════════════════════════════════════════════════════════
+  1 : SESSION_4_HANDOFF.csl           — most-recent-state
+  2 : parser/DECISIONS.md              — 581-lines • Session-4 entries ★
+  3 : parser/UNCONFLATION.md           — CSSL ≠ CSLv3
+  4 : specs/08_COMPILER.csl            — reference-compiler
+  5 : specs/10_EVAL.csl                — stratified-m1 table
+  6 : specs/12_TOKENIZER.csl           — 74-glyph master
+  7 : specs/13_GRAMMAR_SELF.csl        — self-grammar
+  8 : specs/14_CSSLv3_BRIDGE.csl       — lint-protocol
+  9 : parser/semantic.odin             — existing severity infrastructure
+  10: parser/ast.odin                  — node shapes for type-layer
+  W! ¬ code before-reading (1-5 minimum)
+
+═════════════════════════════════════════════════════════════════
+§ STATE-VERIFIED end-of-Session-4
+═════════════════════════════════════════════════════════════════
+  ✓ parser.exe clean-build
+  ✓ eval 7/7 stratified (C5 bridge 0.87 ≤ 0.90)
+  ✓ T14 severity 3-tier 22/22
+  ✓ T15 permissive 13-tagged + 8 must-fail + 5-documented-gaps
+  ✓ T16 fuzz 1500 runs • 0 crash • 0 hang • 17.7s
+  ✓ T17 stratified-m1 per-mode
+  ✓ T18 tier-2 audit 6/6 USED
+  ✓ T19 cssllint + JSON 5/5 schema
+  ✓ Session-2+3 gates all-green
+  ✓ DECISIONS.md +8 Session-4 entries
+
+═════════════════════════════════════════════════════════════════
+§ INVARIANTS ← §§ immutable
+═════════════════════════════════════════════════════════════════
+  PRIME-DIRECTIVE ⊆ consent=OS
+    ¬ harm ¬ control ¬ manipulation
+    ¬ surveillance ¬ coercion ¬ weaponization
+    AI = sovereign-partner • violation = bug • no-override
+  CSLv3 = notation • CSSLv3 = programming-lang • ¬ conflate
+  74-glyph-master @ spec12 = canonical
+  density = sovereignty
+  round-trip = AST-shape ¬ source-text (T23 upgrades this)
+
+═════════════════════════════════════════════════════════════════
+§ TASKS ← §§ Session-5-scope (option-A)
+═════════════════════════════════════════════════════════════════
+  order : T20 → T22 → T23
+  rationale :
+    T20 full-optimal ← core-advance • blocks-T21-Session-6
+    T22 surgical gap-close ← fits-w/ T20-context
+    T23 comment-RT ← independent-but-parser-cohort
+
+  § T20 : TYPE-CHECKER ← semantic.odin next-layer • FULL-OPTIMAL
+    W! PhD-grade ← Apocky-standing-directive "optimal ≠ minimal"
+    design-pillars :
+      a Hindley-Milner unification w/ row-polymorphism (Koka-lineage)
+      b refinement-types via tag-suffix ('d 'f 's 't 'e 'm 'p 'g 'r)
+      c dependent-kinds for ∀/∃/Π/Σ (spec13-grammar-ready)
+      d bidirectional check + infer (Dunfield-Krishnaswami 2013)
+      e structural record-typing w/ width-subtyping
+    files-new :
+      parser/types.odin         ~600-LOC Type + Row + Subst + Scheme
+      parser/unify.odin         ~400-LOC occurs-check + row-unify
+      parser/infer.odin         ~700-LOC bidirectional inference
+      parser/refine.odin        ~300-LOC morpheme→refinement-tag
+      tests/test_types.odin     ~200-LOC unit-tests (Odin-native)
+      tests/test_typecheck.py   ~250-LOC integration via parser CLI
+    type-surface :
+      T ::= α | Int | Float | String | Bool | Symbol
+          | T → T / ε              function-with-effect-row
+          | {ℓ:T, ρ}                record-row-poly
+          | [ℓ:T | ρ]               variant-row-poly
+          | ∀ᵏα.T                   polymorphic-with-kind
+          | Πx:T.T'                 dependent-product
+          | Σx:T.T'                 dependent-sum
+          | {v:T | φ(v)}            refinement
+          | T^tag                   morpheme-refined
+      ε ::= ⟨⟩ | ⟨ℓ:E | ε⟩ | μ       effect-row
+      κ ::= ★ | κ→κ | Row ε | Refine φ  kinds
+    morpheme→refinement map :
+      'd durative       → {v | duration(v) > 0}
+      'f final          → {v | terminal(v)}
+      's state          → StateTag<ref τ>
+      't transitive     → Arrow arity≥2
+      'e experiential   → ObservedBy<agent>
+      'm modal          → Modal<kind>
+      'p perfective     → Completed<τ>
+      'g generic        → ∀α.α version
+      'r reflexive      → {v | subject(v)=object(v)}
+    algorithm :
+      walk AST → generate constraints → solve (unify) → substitute → check
+      refinement-obligations deferred to SMT-queue (Session-6+ Z3)
+      effect-row inference w/ Xie+Leijen evidence-passing prep
+    CLI :
+      parser --typecheck <file>            → diags + types-annotated-tree
+      parser --typecheck --json <file>     → machine-readable
+      parser --typecheck --strict <file>   → any-obligation-unresolved = E
+    severity-integration :
+      type-mismatch       : always-E
+      row-mismatch        : always-E
+      unresolved-refine   : W@default • E@strict
+      ambiguous-infer     : W@default • E@strict
+      unused-binding      : W@default (keep-lenient)
+      shadow-warning      : I-always
+    diagnostic-codes : CSL-E-200..299 (type) + CSL-W-200..299 + CSL-I-200..299
+    tests : 20+ positive + 15+ negative + 10+ row-poly + 5+ dependent
+    acceptance :
+      ✓ C1-C7 eval-corpus type-check clean under --default
+      ✓ deliberate-bug fixtures tests/type_bad/*.csl all-flag correctly
+      ✓ row-poly test : open-record extension preserves-row-var
+      ✓ dependent-type : Vec n α declared-and-used across fn-sig
+      ✓ morpheme-refinement : 'd'f composition inferred-correctly
+      ✓ JSON output schema-validated
+      ✓ typecheck-throughput ≥ 10k-nodes/s on dev-hw
+
+  § T22 : GAP-FIXTURE PROMOTION ← close Session-4 gaps
+    targets : c01 c02 s02 t02 p04 (5 fixtures marked permissive w/ detection-gaps)
+    approach : add parse-time markers that semantic-layer detects
+    per-gap :
+      c01 : trailing dot w/o field-target variant → already meta="." ; extend
+      c02 : trailing @ w/o target variant → extend meta="@"
+      s02 : empty slot bracket → parser marks meta="empty-slot"
+      t02 : bare-type-arg no-body → parser marks meta="bare-type"
+      p04 : malformed-prose-modal → parser marks meta="bare-modal"
+    semantic-layer : Permissive_Accept code surfaces W@default
+    strict-parse : promotes to E
+    tests : update tests/test_permissive_accept.py remove-gap-list
+    acceptance :
+      ✓ 18/18 permissive cases detected (13+5)
+      ✓ 0 documented-gaps remaining
+      ✓ --strict-parse on gap-fixtures → exit-1
+
+  § T23 : COMMENT-PRESERVATION RT ← lexer.emit_comments=true
+    rationale : doc-generation • hot-reload (downstream) • faithful-RT
+    design :
+      Token_Kind += .Comment_Line + .Comment_Block
+      lexer : always emit (default-on)
+      AST : Comment node attaches to nearest-following-stmt
+      pprint : emit Comment inline respecting mode
+    files-modified :
+      parser/token.odin      +2 kinds
+      parser/lexer.odin      emit_comments=true default • multiline-block support
+      parser/ast.odin        Comment node + Comment_Attached field on Stmt
+      parser/parser.odin     attach-comment-to-next-stmt
+      parser/pprint.odin     Comment-case ∀ 5-modes
+    RT-invariant upgraded : AST-shape + comment-position
+    tests : tests/test_comments_rt.py ~150-LOC
+    cases :
+      line-comment before-stmt
+      line-comment after-stmt (trailing)
+      block-comment before-stmt
+      block-comment mid-expr (block-level only)
+      nested-blocks
+      mode × comment-style matrix
+    acceptance :
+      ✓ 7/7 C-corpus RT with-comments (extend tests/*.csl if-needed)
+      ✓ all-5 pprint-modes preserve comments
+      ✓ fuzzer includes comment-mutators
+
+═════════════════════════════════════════════════════════════════
+§ SUCCESS-GATES ← §§ Session-5-exit
+═════════════════════════════════════════════════════════════════
+  T20 ✓ type-checker • HM+row+refine+dependent • CLI+JSON • 50+ tests
+  T22 ✓ 5 gap-fixtures promoted • 18/18 permissive detected
+  T23 ✓ comment-RT ∀ 5 modes • fuzzer-extended
+
+  commit-gate ∀ task :
+    ✓ odin build parser/ clean
+    ✓ pytest tests/ green
+    ✓ existing-eval 7/7 still-pass
+    ✓ fuzzer 1500+ runs no-regression
+    ✓ T14-T19 Session-4 gates still-green
+
+═════════════════════════════════════════════════════════════════
+§ WORKFLOW ← §§ process
+═════════════════════════════════════════════════════════════════
+  ∀ task :
+    branch : cslparser/session-5/T<N>-<slug>
+    commit : atomic • CSL-prefixed
+      ex : "§ T20 : HM type-inference + row-unification"
+      ex : "§ T22 : gap-fixture c01 trailing-dot promoted"
+    test : ∀ change → tests added/updated
+    decision : DECISIONS.md appended per-design-choice
+    handoff : SESSION_5_HANDOFF.csl populated-as-you-go
+
+═════════════════════════════════════════════════════════════════
+§ DELIVERABLES ← §§ session-end
+═════════════════════════════════════════════════════════════════
+  D1  : parser/types.odin + unify.odin + infer.odin + refine.odin (T20)
+  D2  : tests/test_types.odin + test_typecheck.py                (T20)
+  D3  : 5-gap-fixtures promoted + tests updated                  (T22)
+  D4  : comment-RT infrastructure ∀ 5 pprint-modes               (T23)
+  D5  : tests/test_comments_rt.py                                (T23)
+  D6  : DECISIONS.md + SESSION_5_HANDOFF.csl
+  D7  : CI updated : all-new-tests wired into gate
+  D8  : parser --typecheck flag + JSON output                    (T20)
+
+═════════════════════════════════════════════════════════════════
+§ NON-GOALS ← §§ scope-guard
+═════════════════════════════════════════════════════════════════
+  N! T21 IR-lowering (Session-6 scope)
+  N! T24 LSP (Session-7 scope)
+  N! T25 m₂ perplexity (Session-8 scope)
+  N! SMT-solver integration (Session-6+ scope)
+  N! code-generation (CSSLv3-side)
+  N! writes @ CSSLv3-repo (read-only reference only)
+  N! new-glyphs without-alias-validator ✓
+  N! break Session-2+3+4 invariants
+  N! minimal-when-optimal-available ← Apocky-standing-directive
+
+═════════════════════════════════════════════════════════════════
+§ WHEN-STUCK ← §§ no-half-measures-protocol
+═════════════════════════════════════════════════════════════════
+  1 : re-read relevant-specs + DECISIONS.md
+  2 : check T14-T19 for severity-infrastructure-precedent
+  3 : try 3+ angles :
+      a : algorithm-variant
+      b : abstraction-shift
+      c : decomposition-refactor
+      d : prior-art-adaptation (Koka Dunfield F* MLIR)
+  4 : consult sibling-session-handoffs for workflow-pattern
+  5 : still-stuck → Q?-block to Apocky
+    W! explicit-uncertainty + concrete-options + recommendation
+    N! silent-simplification
+    N! "skip-for-now"
+    N! un-flagged-TODO
+    N! reducing-scope-unilaterally
+
+  pre-authorized fallbacks :
+    HM-occurs-check infinite-loop → bounded-fuel + report
+    row-unification cycle → detect + error-with-cycle-trace
+    refinement-obligation undecidable → defer-to-SMT-queue (Session-6)
+    comment-RT edge-case → document-limitation + minimize-scope
+  ∀ pre-authorized : document in-DECISIONS.md
+
+═════════════════════════════════════════════════════════════════
+§ REPORTING ← §§ end-of-session
+═════════════════════════════════════════════════════════════════
+  W! SESSION_5_HANDOFF.csl includes :
+    ✓ T20+T22+T23 status (✓◐○✗ per-deliverable)
+    ✓ test-counts delta (before=? after=?)
+    ✓ perf-numbers (typecheck-throughput)
+    ✓ open-questions for Session-6
+    ✓ decision-log-refs
+    ✓ Session-6 readiness-check for T21 IR-lowering
+  W! commit-frequency ≥ 1/subtask
+  W! CI-green before-handoff-declared
+
+═════════════════════════════════════════════════════════════════
+§ CROSS-PROJECT ← §§ coordinate
+═════════════════════════════════════════════════════════════════
+  CSSLv3 (parallel)
+    path : C:\Users\Apocky\source\repos\CSSLv3
+    status : stage0-scaffold in-progress (T1+)
+    intersection :
+      T20 type-checker ← informs CSSLv3 HIR typesystem (read-only-ref)
+    N! writes @ CSSLv3-side ← read-only always
+
+  LoA v10 / infiniter-labyrinth
+    downstream-consumers via CLAUDE.md propagation
+    ¬ modify during Session-5
+
+═════════════════════════════════════════════════════════════════
+§ THEORETICAL-NOTES ← §§ T20-depth-hints
+═════════════════════════════════════════════════════════════════
+  HM inference :
+    Algorithm W ∨ Algorithm M ∨ bidirectional
+    recommend bidirectional (Dunfield-Krishnaswami 2013)
+    ∵ better-error-messages + refinement-friendly
+  row-polymorphism :
+    Rémy 1989 ∨ Gaster-Jones 1996 ∨ Leijen 2005
+    recommend Leijen scoped-rows (Koka-lineage)
+    ∵ effect-rows map-directly (future Session-6 effects)
+  dependent-types :
+    start Πx:T.T' only (no full-Σ yet)
+    normalize-by-evaluation (NbE) for β-reduction
+    defer elaboration-with-holes (future)
+  refinement :
+    subset-types {v:T | φ} w/ SMT-deferred obligations
+    morpheme-suffix → canonical φ-template
+    compose via conjunction
+  occurs-check :
+    standard Robinson + level-based speedup (OCaml-lineage)
+  subsumption :
+    structural for records • nominal for user-defs (initial)
+
+═════════════════════════════════════════════════════════════════
+§ SESSION-6+ PREVIEW ← §§ roadmap
+═════════════════════════════════════════════════════════════════
+  Session-6 : T21 IR-lowering (typed-AST → SSA+regions • MLIR-flavor)
+    ∵ unblocked-by T20 typed-AST shape
+    scope : parser/ir.odin + lower.odin + ir_print.odin + ir_verify.odin
+    golden-IR dumps for C1-C7
+  Session-7 : T24 LSP prototype (Rust tower-lsp + VSCode-client)
+    ∵ genuinely-new-stack • own-session
+    8 LSP v3.17-subset methods
+  Session-8 : T25 m₂ perplexity harness (local llama.cpp)
+    ∵ LLM-infra own-session
+    7 EN-paraphrases + reproducible metric
+
+═════════════════════════════════════════════════════════════════
+§ CLOSING ← §§ remember
+═════════════════════════════════════════════════════════════════
+  ✓ Session-1 : parser-bootstrap + 7/7 eval
+  ✓ Session-2 : parser-complete + tokenizer + self-grammar
+  ✓ Session-3 : T6-T13 recovery+perf+semantic-ext+pprint
+  ✓ Session-4 : T14-T19 strict-modes+fuzzer+stratification+cssllint
+  ◐ Session-5 : T20+T22+T23 types+gaps+comments (option-A)
+  ○ Session-6 : T21 IR-lowering
+  ○ Session-7 : T24 LSP
+  ○ Session-8 : T25 m₂
+
+  you-have : 4-sessions of-working-code + spec-corpus + this-handoff
+  you-are  : sovereign-collaborator • judgment-trusted
+  you-will : T20+T22+T23 full-optimal • PhD-grade T20
+  we-have  : built real-working-infrastructure together
+  we-will  : ship CSLv3 reference-v1.0 across-8-sessions
+
+  I> honor the work • push it further • systems ¬ parts
+  I> no half measures • find solutions • ship real things
+  I> optimal ≠ minimal • hard-work-now = saves-tokens-later
+  I> 3-tasks-PhD-grade > 6-tasks-prototype
+  I> consent = OS • forever
+
+∎ HANDOFF-CSLv3-SESSION-5

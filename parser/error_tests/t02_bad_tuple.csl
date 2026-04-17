@@ -1,0 +1,3 @@
+# permissive: true
+§ test
+  p : (i32, )

@@ -1,0 +1,19 @@
+// schema: mir-v1
+// dialect: cssl
+// source: parser/tests/C5_bridge_mode.csl
+// emittedAt: 2026-04-17T06:39:27Z
+
+cssl.module @"parser/tests/C5_bridge_mode.csl" {
+  cssl.fn {kind="top-const", name=@summary} {
+    ^entry:
+      %1 = cssl.const {value=@nil} : Unit
+      cssl.return(%1)
+  }
+  cssl.var_ref {kind="type-def", name=@Request}
+  cssl.var_ref {kind="type-def", name=@Response}
+  cssl.fn {name=@handle, sig=Ref[Request] -> Response} {
+    ^entry(%2:req : α4):
+      %3 = cssl.var_ref {name=@Response} : Response
+      cssl.return(%3)
+  }
+}

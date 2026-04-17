@@ -1,0 +1,215 @@
+§ CSLv3 UNIFIED GLYPH INVENTORY
+I> merged from 3 divergent v2 sources → single canonical table
+I> every glyph W! have ASCII alias (J-style, §12 tokenizer compliance)
+R! ← Iverson (APL): 1 glyph = 1 op • tokenizer-aligned
+R! ← Egyptian determinatives: type-marker glyphs = pure semantic
+R! ← Peirce Alpha: enclosure = negation
+R! ← J: ASCII fallback everywhere
+
+§ TIER-0 STRUCTURAL (flow/scope) — memorize first
+| glyph | ASCII   | semantics                         |
+|-------|---------|-----------------------------------|
+| §     | S:      | section/module/domain boundary    |
+| →     | ->      | then / yields / maps-to / flow    |
+| ←     | <-      | from / sourced / derives          |
+| ↔     | <->     | bidirectional / isomorphic        |
+| ⇒     | =>      | implies (logical)                 |
+| ⊢     | \|-     | entails / proves                  |
+| ∴     | .:.     | therefore                         |
+| ∵     | :..     | because                           |
+| ∎     | QED     | block-end / proof-end             |
+
+§ TIER-0 MODAL (must/may/should)
+| glyph | semantics                                |
+|-------|------------------------------------------|
+| W!    | MUST (hard requirement, inviolable)       |
+| R!    | SHOULD (strong recommend, override needs reason) |
+| M?    | MAY (optional, designer discretion)       |
+| N!    | MUST NOT (prohibition)                    |
+| I>    | INSIGHT / key claim / important note      |
+| Q?    | QUESTION / open question                  |
+| P>    | PUSH FURTHER — deeper grounding requested |
+| D>    | DECISION NEEDED                           |
+| TODO  | unfinished, needs work                    |
+| FIXME | known broken                              |
+
+§ TIER-0 STATUS/EVIDENCE
+I> merged: v2-pasted (✓◐○✗) + v2-specs (⊘△▽) + v2-root (‼)
+| glyph | ASCII  | semantics                          |
+|-------|--------|-------------------------------------|
+| ✓     | [x]    | confirmed / true / done / verified  |
+| ◐     | [~]    | partial / probable / in-progress    |
+| ○     | [ ]    | pending / possible / unknown        |
+| ✗     | [!]    | failed / false / blocked / rejected |
+| ⊘     | [?]    | no evidence either way / TBD        |
+| △     | [^]    | hypothetical / proposed             |
+| ▽     | [v]    | deprecated / was-true-no-longer     |
+| ‼     | [!!]   | proven / tested / immutable         |
+
+§ TIER-0 RELATION
+| glyph | semantics                              |
+|-------|----------------------------------------|
+| .     | tatpurusha compound (Y of X)           |
+| +     | dvandva compound (X and Y)             |
+| -     | karmadhāraya compound (Y that is X)    |
+| ⊗     | bahuvrihi compound (having X-Y)        |
+| @     | avyayibhava (at/per/in scope of)       |
+| :     | bind / has / definition                |
+| ::    | type-of / inherits                     |
+| =     | equals / assign                        |
+| !=    | not-equal                              |
+| ..    | range (0..100)                         |
+| ...   | continuation / variadic                |
+| \|    | or / alternative / disjunction         |
+| &     | explicit and (when adjacency-AND insufficient) |
+| !     | emit / imperative (postfix: emit!death)|
+| ?     | query / conditional / optional         |
+| #     | annotation / tag / count               |
+| *     | wildcard / many / collection           |
+| &     | ref / pointer / alias                  |
+| ^     | parent / supertype / escalate          |
+| _     | slot / placeholder / anonymous         |
+| /     | per / divide / reduce (APL)            |
+| %     | modulo / percent                       |
+| $     | variable / slot / interpolation        |
+| ,     | sequence / list separator              |
+| ;     | statement terminator                   |
+
+§ TIER-0 SET/LOGIC
+| glyph | ASCII  | semantics                     |
+|-------|--------|-------------------------------|
+| ∀     | all    | for all / universal           |
+| ∃     | any    | exists / existential          |
+| ∈     | in     | member-of                     |
+| ∉     | !in    | not-member                    |
+| ∪     | \|+    | union                         |
+| ∩     | &+     | intersect                     |
+| ⊂     | <:     | subset                        |
+| ⊃     | :>     | superset                      |
+| ¬     | ~      | not / negation                |
+| ∧     | &&     | logical and                   |
+| ∨     | \|\|   | logical or                    |
+| ⊕     | xor    | exclusive or                  |
+| ≡     | ===    | structurally identical        |
+| ≈     | ~=     | approximately equal           |
+| ≥     | >=     | greater-or-equal              |
+| ≤     | <=     | less-or-equal                 |
+| ∞     | inf    | unbounded                     |
+| ∅     | nil    | empty set / nothing           |
+
+§ TIER-0 ENCLOSURE (bracket semantics)
+| pair   | semantics                                |
+|--------|------------------------------------------|
+| ( )    | grouping                                 |
+| [ ]    | list / array / index                     |
+| { }    | set / block / scope                      |
+| ⟨ ⟩    | tuple / record / entity-property         |
+| ⟦ ⟧    | formula / equation / meaning-of          |
+| « »    | quotation / external-API / mentioned     |
+| ⌈ ⌉    | constraint / upper-bound / invariant     |
+| ⌊ ⌋    | floor / lower-bound / precondition       |
+| ⟪ ⟫    | temporal / phase                         |
+
+§ TIER-1 DOMAIN DETERMINATIVES (Egyptian model)
+I> silent classifiers: disambiguate category, 0 semantic load
+I> cost: 1 glyph → save 5-10 tokens of context disambiguation
+| glyph | domain             | example                          |
+|-------|--------------------|----------------------------------|
+| §     | system/module      | §render, §physics, §audio        |
+| ∫     | field/continuous   | ∫density, ∫temperature, ∫flow    |
+| ⊞     | spatial/discrete   | ⊞voxel, ⊞chunk, ⊞grid           |
+| ⟨ ⟩   | entity/property    | ⟨health⟩, ⟨pos⟩, ⟨vel⟩          |
+| ⌈ ⌉   | constraint/bound   | ⌈max:1024⌉, ⌈fps≥60⌉            |
+| ⟦ ⟧   | formula/equation   | ⟦F=ma⟧, ⟦∇²φ=ρ⟧                 |
+| « »   | external/API       | «wgpu», «vulkan», «tokio»        |
+| ⟪ ⟫   | temporal/phase     | ⟪init⟫, ⟪tick⟫, ⟪shutdown⟫      |
+
+§ TIER-1 TYPE SUFFIXES (determinative, ASCII)
+I> postfix on identifiers → disambiguate without context
+I> use when ambiguity exists; silent-default when unambiguous
+| suffix | type              | example                          |
+|--------|-------------------|----------------------------------|
+| 'd     | data/value        | hp'd = "hp (a data value)"       |
+| 'f     | function/process  | render'f = "render (a function)" |
+| 's     | system/module     | physics's = "physics (a system)" |
+| 't     | type/category     | Material't = "Material (a type)" |
+| 'e     | entity/instance   | player'e = "player (an entity)"  |
+| 'm     | material/substance| iron'm = "iron (a material)"     |
+| 'p     | property/attribute| density'p = "density (a prop)"   |
+| 'g     | gate/condition    | alive'g = "alive (a bool gate)"  |
+| 'r     | rule/constraint   | max_hp'r = "max_hp (a rule)"     |
+
+§ TIER-1 TYPE CLASS MARKERS (unicode, optional)
+I> from pasted v2; use when unicode budget allows
+| glyph | class             | ASCII alias |
+|-------|-------------------|-------------|
+| :T    | postfix type ann  | ::T         |
+| ::K   | kind annotation   | :::K        |
+| ʈ     | trait/interface    | 'i          |
+| ɴ     | numeric class     | 'n          |
+| ꜱ     | string/symbol     | 'str        |
+| ʙ     | bool class        | 'b          |
+| ᴠ     | vector/array      | 'vec        |
+| ᴍ     | map/assoc         | 'map        |
+
+§ TIER-1 TEMPORAL
+| glyph | ASCII  | semantics                        |
+|-------|--------|----------------------------------|
+| t→    | t>     | future                           |
+| t←    | t<     | past                             |
+| t=    | t=     | now                              |
+| t∞    | t!     | eternal / invariant              |
+| Δ     | D      | change / delta                   |
+| ∂     | d/     | partial derivative / local-change|
+
+§ TIER-1 PIPELINE/DATAFLOW
+| glyph | ASCII  | semantics                        |
+|-------|--------|----------------------------------|
+| ~>    | ~>     | causes / triggers                |
+| \|>   | \|>    | pipeline / forward-compose       |
+| <\|   | <\|    | backward-compose                 |
+| >>    | >>     | dispatch / send                  |
+| <<    | <<     | receive / consume                |
+
+§ TIER-1 APL-DERIVED OPERATORS
+| glyph | ASCII  | semantics                        |
+|-------|--------|----------------------------------|
+| /     | /      | reduce / fold / aggregate        |
+| \     | \      | scan / running accumulation      |
+| ¨     | ''     | each / map over elements         |
+| ⍟     | @.     | compose / function composition   |
+| ⍋     | sort   | order by criterion               |
+| ⍳     | iota   | generate indices / find position |
+
+§ TIER-1 REASONING EXTENSION (§05 substrate)
+| glyph | ASCII  | semantics                        |
+|-------|--------|----------------------------------|
+| ?!    | ?!     | surprising / counterintuitive    |
+| !?    | !?     | suspect / needs-verify           |
+| ⟲     | loop   | iterate / loop back              |
+| ⤓     | vv     | dive deeper                      |
+| ⤒     | ^^     | lift / abstract up               |
+| ⟐     | <>     | pivot / reframe                  |
+| ⚠     | W!     | pitfall / common-error / warning |
+| ★     | *!     | key insight                      |
+| ✎     | //     | note-to-self                     |
+
+§ TIER-2 PHYSICS/MATERIAL (LoA domain extension)
+| glyph | semantics                               |
+|-------|-----------------------------------------|
+| ρ     | density                                 |
+| μ     | friction / viscosity                    |
+| σ     | stress / conductivity                   |
+| κ     | curvature / thermal conductivity        |
+| ε     | strain / permittivity                   |
+| λ     | wavelength / decay rate                 |
+| τ     | torque / time constant                  |
+| ∇     | gradient operator                       |
+| ∂     | partial derivative                      |
+| Δ     | change / difference                     |
+
+§ TIER SYSTEM
+  tier-0: W! memorize → core spec R/W + reasoning
+  tier-1: R! learn-as-needed → domain-specific, extended ops
+  tier-2: M? LoA-specific → physics/material domain glyphs
+∎

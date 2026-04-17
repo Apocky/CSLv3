@@ -1,0 +1,180 @@
+﻿CSLv3 CRASH DIAGNOSTIC -- 04/16/2026 13:05:47
+Window: last 6 hours
+
+==================================================
+  DISPLAY + DRIVER EVENTS (System log)
+==================================================
+[4/16/2026 1:03:51 PM] Service Control Manager Id=7009 Level=Error
+  A timeout was reached (45000 milliseconds) while waiting for the Intel(R) Platform License Manager Service service to connect.
+[4/16/2026 1:03:49 PM] GSCx64 Id=2 Level=Information
+  Intel(R) Graphics System Controller Firmware Interface driver has started successfully.
+[4/16/2026 1:03:41 PM] Microsoft-Windows-Kernel-PnP Id=219 Level=Warning
+  The driver \Driver\WUDFRd failed to load. | Device: ROOT\DISPLAY\0001 | Status: 0xC0000365
+[4/16/2026 1:03:41 PM] Microsoft-Windows-DriverFrameworks-UserMode Id=10118 Level=Information
+  UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.
+[4/16/2026 1:03:41 PM] Microsoft-Windows-Kernel-PnP Id=219 Level=Warning
+  The driver \Driver\WUDFRd failed to load. | Device: ROOT\DISPLAY\0000 | Status: 0xC0000365
+[4/16/2026 1:03:41 PM] Microsoft-Windows-DriverFrameworks-UserMode Id=10118 Level=Information
+  UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.
+[4/16/2026 1:02:17 PM] Microsoft-Windows-DriverFrameworks-UserMode Id=10111 Level=Critical
+  The device Parsec Virtual Display Adapter (location (unknown)) is offline due to a user-mode driver crash.  Windows will attempt to restart the device 5 more times.  Please contact the device manufacturer for more information about this problem.
+[4/16/2026 1:02:17 PM] Microsoft-Windows-DriverFrameworks-UserMode Id=10120 Level=Critical
+  A problem has occurred with one or more user-mode drivers and the hosting process has been terminated.  This may temporarily interrupt your ability to access the devices.
+[4/16/2026 1:01:44 PM] Service Control Manager Id=7009 Level=Error
+  A timeout was reached (30000 milliseconds) while waiting for the Google Play Games Services (26.4.52.0) service to connect.
+[4/16/2026 12:57:16 PM] Service Control Manager Id=7009 Level=Error
+  A timeout was reached (45000 milliseconds) while waiting for the Intel(R) Platform License Manager Service service to connect.
+[4/16/2026 12:57:13 PM] GSCx64 Id=2 Level=Information
+  Intel(R) Graphics System Controller Firmware Interface driver has started successfully.
+[4/16/2026 12:57:04 PM] Microsoft-Windows-Kernel-PnP Id=219 Level=Warning
+  The driver \Driver\WUDFRd failed to load. | Device: ROOT\DISPLAY\0001 | Status: 0xC0000365
+[4/16/2026 12:57:04 PM] Microsoft-Windows-DriverFrameworks-UserMode Id=10118 Level=Information
+  UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.
+[4/16/2026 12:57:04 PM] Microsoft-Windows-Kernel-PnP Id=219 Level=Warning
+  The driver \Driver\WUDFRd failed to load. | Device: ROOT\DISPLAY\0000 | Status: 0xC0000365
+[4/16/2026 12:57:04 PM] Microsoft-Windows-DriverFrameworks-UserMode Id=10118 Level=Information
+  UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.
+[4/16/2026 12:55:49 PM] Microsoft-Windows-DistributedCOM Id=10010 Level=Error
+  The server {A463FCB9-6B1C-4E0D-A80B-A2CA7999E25D} did not register with DCOM within the required timeout.
+[4/16/2026 12:54:12 PM] Service Control Manager Id=7009 Level=Error
+  A timeout was reached (30000 milliseconds) while waiting for the Google Play Games Services (26.4.52.0) service to connect.
+[4/16/2026 12:53:54 PM] Service Control Manager Id=7009 Level=Error
+  A timeout was reached (30000 milliseconds) while waiting for the Windows Error Reporting Service service to connect.
+[4/16/2026 12:05:21 PM] Service Control Manager Id=7009 Level=Error
+  A timeout was reached (45000 milliseconds) while waiting for the Intel(R) Platform License Manager Service service to connect.
+[4/16/2026 12:05:19 PM] GSCx64 Id=2 Level=Information
+  Intel(R) Graphics System Controller Firmware Interface driver has started successfully.
+[4/16/2026 12:05:11 PM] Microsoft-Windows-Kernel-PnP Id=219 Level=Warning
+  The driver \Driver\WUDFRd failed to load. | Device: ROOT\DISPLAY\0001 | Status: 0xC0000365
+[4/16/2026 12:05:11 PM] Microsoft-Windows-DriverFrameworks-UserMode Id=10118 Level=Information
+  UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.
+[4/16/2026 12:05:10 PM] Microsoft-Windows-Kernel-PnP Id=219 Level=Warning
+  The driver \Driver\WUDFRd failed to load. | Device: ROOT\DISPLAY\0000 | Status: 0xC0000365
+[4/16/2026 12:05:10 PM] Microsoft-Windows-DriverFrameworks-UserMode Id=10118 Level=Information
+  UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.
+[4/16/2026 11:40:40 AM] Service Control Manager Id=7009 Level=Error
+  A timeout was reached (45000 milliseconds) while waiting for the Intel(R) Platform License Manager Service service to connect.
+[4/16/2026 11:40:38 AM] GSCx64 Id=2 Level=Information
+  Intel(R) Graphics System Controller Firmware Interface driver has started successfully.
+[4/16/2026 11:40:29 AM] Microsoft-Windows-Kernel-PnP Id=219 Level=Warning
+  The driver \Driver\WUDFRd failed to load. | Device: ROOT\DISPLAY\0001 | Status: 0xC0000365
+[4/16/2026 11:40:29 AM] Microsoft-Windows-DriverFrameworks-UserMode Id=10118 Level=Information
+  UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.
+[4/16/2026 11:40:29 AM] Microsoft-Windows-Kernel-PnP Id=219 Level=Warning
+  The driver \Driver\WUDFRd failed to load. | Device: ROOT\DISPLAY\0000 | Status: 0xC0000365
+[4/16/2026 11:40:29 AM] Microsoft-Windows-DriverFrameworks-UserMode Id=10118 Level=Information
+  UMDF reflector is unable to connect to service control manager (SCM). This is expected during boot, when SCM has not started yet. Will retry when it starts.
+[4/16/2026 11:38:54 AM] Service Control Manager Id=7009 Level=Error
+  A timeout was reached (30000 milliseconds) while waiting for the Google Play Games Services (26.4.52.0) service to connect.
+
+==================================================
+  APPLICATION CRASHES (Application log, WER)
+==================================================
+[4/16/2026 1:02:16 PM] Application Error Id=1000 Level=Error
+  Faulting application name: MicrosoftSecurityApp.exe, version: 0.0.0.0, time stamp: 0x00000000 | Faulting module name: unknown, version: 0.0.0.0, time stamp: 0x00000000 | Exception code: 0x80131623 | Fault offset: 0x00007ffcf8673e9d | Faulting process id: 0x5EA0 | Faulting application start time: 0x1DCCDDB53C831AF | Faulting application path: C:\Program Files\WindowsApps\Microsoft.6365217CE6EB4_102.2602.23002.0_x64__8wekyb3d8bbwe\MicrosoftSecurityApp\MicrosoftSecurityApp.exe | Faulting module path: unknown | Report Id: 80746f0a-5707-4ee1-86de-2a0437312cf8 | Faulting package full name: Microsoft.6365217CE6EB4_102.2602.23002.0_x64__8wekyb3d8bbwe | Faulting package-relative application ID: App
+[4/16/2026 1:02:03 PM] .NET Runtime Id=1025 Level=Error
+  Application: MicrosoftSecurityApp.exe | Framework Version: v4.0.30319 | Description: The application requested process termination through System.Environment.FailFast(string message). | Message: Forced termination due to crash | Stack: |    at System.Environment.FailFast(System.String, System.Exception) |    at MicrosoftSecurityApp.App.UnhandledExceptionHelper(System.String, System.Exception) |    at System.Windows.Threading.Dispatcher.CatchException(System.Exception) |    at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(System.Object, System.Delegate, System.Object, Int32, System.Delegate) |    at System.Windows.Threading.Dispatcher.LegacyInvokeImpl(System.Windows.Threading.DispatcherPriority, System.TimeSpan, System.Delegate, System.Object, Int32) |    at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr, Int32, IntPtr, IntPtr) |    at MS.Win32.UnsafeNativeMethods.DispatchMessage(System.Windows.Interop.MSG ByRef) |    at MS.Win32.UnsafeNativeMethods.DispatchMessage(System.Windows.Interop.MSG ByRef) |    at System.Windows.Threading.Dispatcher.PushFrameImpl(System.Windows.Threading.DispatcherFrame) |    at System.Windows.Application.RunDispatcher(System.Object) |    at System.Windows.Application.RunInternal(System.Windows.Window) |    at MicrosoftSecurityApp.App.Main() | 
+[4/16/2026 1:01:31 PM] Application Error Id=1000 Level=Error
+  Faulting application name: GooglePlayGamesServices.exe, version: 26.4.52.0, time stamp: 0x69cf66f0 | Faulting module name: flutter_windows.dll, version: 26.4.52.0, time stamp: 0x69cef4e6 | Exception code: 0xc0000409 | Fault offset: 0x0000000000f998a9 | Faulting process id: 0x605C | Faulting application start time: 0x1DCCDDBC1FF124B | Faulting application path: C:\Program Files\Google\Play Games Services\26.4.52.0\Service\GooglePlayGamesServices.exe | Faulting module path: C:\Program Files\Google\Play Games Services\26.4.52.0\Service\flutter_windows.dll | Report Id: f6d9e121-0b84-4a65-9a94-c9adffb8a65c | Faulting package full name:  | Faulting package-relative application ID: 
+[4/16/2026 1:00:59 PM] Application Error Id=1000 Level=Error
+  Faulting application name: GooglePlayGamesServices.exe, version: 26.4.52.0, time stamp: 0x69cf66f0 | Faulting module name: flutter_windows.dll, version: 26.4.52.0, time stamp: 0x69cef4e6 | Exception code: 0xc0000409 | Fault offset: 0x0000000000f998a9 | Faulting process id: 0x143C | Faulting application start time: 0x1DCCDDB39D0607F | Faulting application path: C:\Program Files\Google\Play Games Services\26.4.52.0\Service\GooglePlayGamesServices.exe | Faulting module path: C:\Program Files\Google\Play Games Services\26.4.52.0\Service\flutter_windows.dll | Report Id: 46f17b70-5d8d-4617-abaf-a9a88fd498f4 | Faulting package full name:  | Faulting package-relative application ID: 
+[4/16/2026 12:03:38 PM] .NET Runtime Id=1025 Level=Error
+  Application: MicrosoftSecurityApp.exe | Framework Version: v4.0.30319 | Description: The application requested process termination through System.Environment.FailFast(string message). | Message: Forced termination due to crash | Stack: |    at System.Environment.FailFast(System.String, System.Exception) |    at MicrosoftSecurityApp.App.UnhandledExceptionHelper(System.String, System.Exception) |    at System.Windows.Threading.Dispatcher.CatchException(System.Exception) |    at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(System.Object, System.Delegate, System.Object, Int32, System.Delegate) |    at System.Windows.Threading.Dispatcher.LegacyInvokeImpl(System.Windows.Threading.DispatcherPriority, System.TimeSpan, System.Delegate, System.Object, Int32) |    at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr, Int32, IntPtr, IntPtr) |    at MS.Win32.UnsafeNativeMethods.DispatchMessage(System.Windows.Interop.MSG ByRef) |    at MS.Win32.UnsafeNativeMethods.DispatchMessage(System.Windows.Interop.MSG ByRef) |    at System.Windows.Threading.Dispatcher.PushFrameImpl(System.Windows.Threading.DispatcherFrame) |    at System.Windows.Application.RunDispatcher(System.Object) |    at System.Windows.Application.RunInternal(System.Windows.Window) |    at MicrosoftSecurityApp.App.Main() | 
+[4/16/2026 12:03:16 PM] Application Error Id=1000 Level=Error
+  Faulting application name: chrome.exe, version: 147.0.7727.56, time stamp: 0x69d3e70b | Faulting module name: KERNELBASE.dll, version: 10.0.26100.8246, time stamp: 0x208e0cb7 | Exception code: 0xe0000008 | Fault offset: 0x00000000000c79da | Faulting process id: 0x10FC | Faulting application start time: 0x1DCCDD08D0187DD | Faulting application path: C:\Program Files\Google\Chrome\Application\chrome.exe | Faulting module path: C:\WINDOWS\System32\KERNELBASE.dll | Report Id: afae0381-1765-48f1-a93e-d8fe2f69ffd2 | Faulting package full name:  | Faulting package-relative application ID: 
+[4/16/2026 12:02:33 PM] Application Error Id=1000 Level=Error
+  Faulting application name: GooglePlayGamesServices.exe, version: 26.4.52.0, time stamp: 0x69cf66f0 | Faulting module name: flutter_windows.dll, version: 26.4.52.0, time stamp: 0x69cef4e6 | Exception code: 0xc0000409 | Fault offset: 0x0000000000f998a9 | Faulting process id: 0x2B1C | Faulting application start time: 0x1DCCDD38F0123B2 | Faulting application path: C:\Program Files\Google\Play Games Services\26.4.52.0\Service\GooglePlayGamesServices.exe | Faulting module path: C:\Program Files\Google\Play Games Services\26.4.52.0\Service\flutter_windows.dll | Report Id: f09af2c9-7e00-4046-a75a-de56c004e7b5 | Faulting package full name:  | Faulting package-relative application ID: 
+[4/16/2026 11:38:51 AM] .NET Runtime Id=1025 Level=Error
+  Application: MicrosoftSecurityApp.exe | Framework Version: v4.0.30319 | Description: The application requested process termination through System.Environment.FailFast(string message). | Message: Forced termination due to crash | Stack: |    at System.Environment.FailFast(System.String, System.Exception) |    at MicrosoftSecurityApp.App.UnhandledExceptionHelper(System.String, System.Exception) |    at System.Windows.Threading.Dispatcher.CatchException(System.Exception) |    at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(System.Object, System.Delegate, System.Object, Int32, System.Delegate) |    at System.Windows.Threading.Dispatcher.LegacyInvokeImpl(System.Windows.Threading.DispatcherPriority, System.TimeSpan, System.Delegate, System.Object, Int32) |    at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr, Int32, IntPtr, IntPtr) |    at MS.Win32.UnsafeNativeMethods.DispatchMessage(System.Windows.Interop.MSG ByRef) |    at MS.Win32.UnsafeNativeMethods.DispatchMessage(System.Windows.Interop.MSG ByRef) |    at System.Windows.Threading.Dispatcher.PushFrameImpl(System.Windows.Threading.DispatcherFrame) |    at System.Windows.Application.RunDispatcher(System.Object) |    at System.Windows.Application.RunInternal(System.Windows.Window) |    at MicrosoftSecurityApp.App.Main() | 
+[4/16/2026 11:38:46 AM] Application Error Id=1000 Level=Error
+  Faulting application name: GooglePlayGamesServices.exe, version: 26.4.52.0, time stamp: 0x69cf66f0 | Faulting module name: flutter_windows.dll, version: 26.4.52.0, time stamp: 0x69cef4e6 | Exception code: 0xc0000409 | Fault offset: 0x0000000000f998a9 | Faulting process id: 0x14D4 | Faulting application start time: 0x1DCCD331404AC22 | Faulting application path: C:\Program Files\Google\Play Games Services\26.4.52.0\Service\GooglePlayGamesServices.exe | Faulting module path: C:\Program Files\Google\Play Games Services\26.4.52.0\Service\flutter_windows.dll | Report Id: 2a482f01-14bd-416d-8f00-c590f93a700d | Faulting package full name:  | Faulting package-relative application ID: 
+[4/16/2026 11:38:39 AM] Application Error Id=1000 Level=Error
+  Faulting application name: dwm.exe, version: 10.0.26100.8115, time stamp: 0x908014a3 | Faulting module name: dwmcore.dll, version: 10.0.26100.8246, time stamp: 0x3205ec17 | Exception code: 0xc00001ad | Fault offset: 0x000000000019d0f4 | Faulting process id: 0x79C | Faulting application start time: 0x1DCCD3312A55D3A | Faulting application path: C:\WINDOWS\system32\dwm.exe | Faulting module path: C:\WINDOWS\system32\dwmcore.dll | Report Id: f2808c7e-fd87-4058-b469-08c7700a9286 | Faulting package full name:  | Faulting package-relative application ID: 
+
+==================================================
+  UNEXPECTED SHUTDOWNS / WAKE EVENTS
+==================================================
+[4/16/2026 1:03:41 PM] Microsoft-Windows-Kernel-Power Id=41
+  The system has rebooted without cleanly shutting down first. This error could be caused if the system stopped responding, crashed, or lost power unexpectedly.
+[4/16/2026 1:03:49 PM] EventLog Id=6008
+  The previous system shutdown at 12:57:13 PM on ‎4/‎16/‎2026 was unexpected.
+[4/16/2026 12:57:04 PM] Microsoft-Windows-Kernel-Power Id=41
+  The system has rebooted without cleanly shutting down first. This error could be caused if the system stopped responding, crashed, or lost power unexpectedly.
+[4/16/2026 12:57:13 PM] EventLog Id=6008
+  The previous system shutdown at 12:45:19 PM on ‎4/‎16/‎2026 was unexpected.
+[4/16/2026 12:05:10 PM] Microsoft-Windows-Kernel-Power Id=41
+  The system has rebooted without cleanly shutting down first. This error could be caused if the system stopped responding, crashed, or lost power unexpectedly.
+[4/16/2026 12:05:19 PM] EventLog Id=6008
+  The previous system shutdown at 11:40:38 AM on ‎4/‎16/‎2026 was unexpected.
+[4/16/2026 11:40:29 AM] Microsoft-Windows-Kernel-Power Id=41
+  The system has rebooted without cleanly shutting down first. This error could be caused if the system stopped responding, crashed, or lost power unexpectedly.
+[4/16/2026 11:40:38 AM] EventLog Id=6008
+  The previous system shutdown at 11:02:56 AM on ‎4/‎16/‎2026 was unexpected.
+
+==================================================
+  GPU DRIVER VERSIONS
+==================================================
+Name:    SudoMaker Virtual Display Adapter
+Driver:  11.32.31.978  (07/30/2025 17:00:00)
+Memory:  0 MB
+Status:  OK
+
+Name:    Parsec Virtual Display Adapter
+Driver:  0.45.0.0  (01/24/2024 17:00:00)
+Memory:  0 MB
+Status:  OK
+
+Name:    Intel(R) Arc(TM) A770 Graphics
+Driver:  32.0.101.8331  (11/25/2025 17:00:00)
+Memory:  2048 MB
+Status:  OK
+
+
+==================================================
+  TDR REGISTRY (HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers)
+==================================================
+TdrLevel:      (default 3 = recover+bugcheck)
+TdrDelay:      (default 2 seconds)
+TdrDdiDelay:   (default 5 seconds)
+TdrDebugMode: 
+
+==================================================
+  MEMORY PRESSURE
+==================================================
+TotalVisibleMemory: 32581 MB
+FreePhysicalMemory: 23222 MB
+TotalVirtualMemory: 63301 MB
+FreeVirtualMemory:  52877 MB
+
+==================================================
+  TOP 15 PROCESSES BY MEMORY (at diag run time)
+==================================================
+
+Name                       Id WS_MB      CPU StartTime           
+----                       -- -----      --- ---------           
+claude                  13336   545 1.046875 4/16/2026 1:05:17 PM
+Code                     9232   509 5.859375 4/16/2026 1:05:13 PM
+Code                    14300   436 2.421875 4/16/2026 1:05:18 PM
+MsMpEng                  5676   386                              
+claude                  16548   370 7.921875 4/16/2026 1:04:14 PM
+explorer                11644   364  7.28125 4/16/2026 1:03:57 PM
+Code                     9872   303  3.21875 4/16/2026 1:05:14 PM
+Code                    13640   237   2.6875 4/16/2026 1:05:14 PM
+Code                     9048   236 4.296875 4/16/2026 1:05:13 PM
+claude                  18116   227   5.9375 4/16/2026 1:04:13 PM
+MicrosoftSecurityApp     7384   211   3.0625 4/16/2026 1:04:32 PM
+TextInputHost            7040   206    1.625 4/16/2026 1:04:09 PM
+PhoneExperienceHost     15552   183   1.4375 4/16/2026 1:04:03 PM
+chrome                  11296   178  2.28125 4/16/2026 1:04:15 PM
+StartMenuExperienceHost 12820   176 2.234375 4/16/2026 1:03:59 PM
+
+
+
+
+==================================================
+  RECENT ODIN / PARSER PROCESS TRACES
+==================================================
+[4/16/2026 12:00:44 PM] Windows Error Reporting Id=1001
+  Fault bucket 2076575976806583777, type 5 | Event Name: RADAR_PRE_LEAK_64 | Response: Not available | Cab Id: 0 |  | Problem signature: | P1: parser.exe | P2: 0.0.0.0 | P3: 10.0.26200.2.0.0 | P4:  | P5:  | P6:  | P7:  | P8:  | P9:  | P10:  |  | Attached files: | \\?\C:\Users\Apocky\AppData\Local\Temp\RDRAB1D.tmp\empty.txt | \\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER.a9990900-c3fe-4428-94a4-aa3d74f848f4.tmp.WERInternalMetadata.xml | \\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER.133d8360-4cbd-4506-bcb1-33db96c5b602.tmp.csv | \\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER.00278c9d-4418-4550-9956-7fa4ca6652c9.tmp.txt | \\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER.4d2ed376-b005-4c25-8331-1b71892c07e9.tmp.xml |  | These files may be available here: | NULL |  | Analysis symbol:  | Rechecking for solution: 0 | Report Id: e647d330-d2ce-4df2-a838-e1ff86f3ddfe | Report Status: 268435456 | Hashed bucket: a7b2c59287fc4f318cd17ad946aa8de1 | Cab Guid: 0
+
+--- END OF DIAGNOSTIC -- 04/16/2026 13:05:48 ---

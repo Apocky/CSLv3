@@ -1,0 +1,42 @@
+{
+  "comments": {
+    "lineComment": "#"
+  },
+  "brackets": [
+    ["⟨", "⟩"],
+    ["⌈", "⌉"],
+    ["⟦", "⟧"],
+    ["«", "»"],
+    ["⟪", "⟫"],
+    ["(", ")"],
+    ["[", "]"],
+    ["{", "}"]
+  ],
+  "autoClosingPairs": [
+    { "open": "⟨", "close": "⟩" },
+    { "open": "⌈", "close": "⌉" },
+    { "open": "⟦", "close": "⟧" },
+    { "open": "«", "close": "»" },
+    { "open": "⟪", "close": "⟫" },
+    { "open": "(", "close": ")" },
+    { "open": "[", "close": "]" },
+    { "open": "{", "close": "}" },
+    { "open": "\"", "close": "\"", "notIn": ["string"] }
+  ],
+  "surroundingPairs": [
+    ["⟨", "⟩"],
+    ["⌈", "⌉"],
+    ["⟦", "⟧"],
+    ["«", "»"],
+    ["⟪", "⟫"],
+    ["(", ")"],
+    ["[", "]"],
+    ["{", "}"],
+    ["\"", "\""]
+  ],
+  "wordPattern": "([A-Za-z_][A-Za-z0-9_\\-]*('[dfs tempgr]){0,4})",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(§|fn|def|enum|record|match|forall|exists)",
+    "decreaseIndentPattern": "^\\s*$"
+  }
+}

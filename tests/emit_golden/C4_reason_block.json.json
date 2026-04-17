@@ -1,0 +1,63 @@
+{
+  "schema": "cslv3-emit-json",
+  "schemaVersion": "json-v1",
+  "emittedAt": "2026-04-17T06:39:25Z",
+  "source": {
+    "file": "parser/tests/C4_reason_block.csl",
+    "bytes": 787,
+    "sha256": "fa43255e61cda07039373f83ecb0006f096e576c0430ebc390708d787b0f8895"
+  },
+  "ast": {
+    "kind": "Document",
+    "text": "",
+    "pos": {"line":1,"col":1,"byte":0},
+    "children": [
+      {
+        "kind": "Section",
+        "text": "reasoning.trace",
+        "pos": {"line":5,"col":1,"byte":191},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "P",
+        "pos": {"line":7,"col":1,"byte":211},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "D",
+        "pos": {"line":11,"col":1,"byte":322},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "T",
+        "pos": {"line":14,"col":1,"byte":394},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "S",
+        "pos": {"line":19,"col":1,"byte":555},
+        "children": []
+      },
+      {
+        "kind": "Section",
+        "text": "C",
+        "pos": {"line":23,"col":1,"byte":653},
+        "children": []
+      }
+    ]
+  },
+  "types": {
+    "refine_obligations": 0,
+    "strict_parse": false,
+    "diagnostics": []
+  },
+  "ir": {
+  "module": "parser/tests/C4_reason_block.csl",
+  "ops": []
+}
+
+}

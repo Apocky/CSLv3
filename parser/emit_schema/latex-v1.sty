@@ -1,0 +1,54 @@
+% CSLv3 LaTeX Emit Style (latex-v1)
+% Use with a XeLaTeX or LuaLaTeX compiler ; pdflatex won't render the
+% glyphs without fallback macros.
+\ProvidesPackage{cslv3}[2026/04/16 CSLv3 style]
+\RequirePackage{listings}
+\RequirePackage{xcolor}
+\RequirePackage{unicode-math}
+\RequirePackage{amsmath}
+\RequirePackage{hyperref}
+
+\definecolor{cslkw}{HTML}{CC66CC}
+\definecolor{cslop}{HTML}{FFCC66}
+\definecolor{cslgl}{HTML}{FFFF88}
+\definecolor{cslmo}{HTML}{66CCCC}
+\definecolor{cslev}{HTML}{99CC66}
+\definecolor{cslty}{HTML}{88CCFF}
+\definecolor{cslcm}{HTML}{666666}
+
+\lstdefinelanguage{csl}{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{cslkw}\bfseries,
+  commentstyle=\color{cslcm}\itshape,
+  stringstyle=\color{cslev},
+  morecomment=[l]{\#},
+  morestring=[b]",
+  showstringspaces=false,
+  keepspaces=true,
+  columns=fullflexible,
+  upquote=true,
+  literate=
+    {§}{{\S}}1 {¶}{{\P}}1
+    {≤}{{\ensuremath{\leq}}}1 {≥}{{\ensuremath{\geq}}}1
+    {≠}{{\ensuremath{\neq}}}1 {→}{{\ensuremath{\to}}}1
+    {←}{{\ensuremath{\leftarrow}}}1 {↔}{{\ensuremath{\leftrightarrow}}}1
+    {∧}{{\ensuremath{\land}}}1 {∨}{{\ensuremath{\lor}}}1
+    {¬}{{\ensuremath{\neg}}}1 {∀}{{\ensuremath{\forall}}}1
+    {∃}{{\ensuremath{\exists}}}1 {∈}{{\ensuremath{\in}}}1
+    {⊆}{{\ensuremath{\subseteq}}}1 {⊂}{{\ensuremath{\subset}}}1
+    {∪}{{\ensuremath{\cup}}}1 {∩}{{\ensuremath{\cap}}}1
+    {⇒}{{\ensuremath{\Rightarrow}}}1 {∵}{{\ensuremath{\because}}}1
+    {∴}{{\ensuremath{\therefore}}}1 {⊗}{{\ensuremath{\otimes}}}1
+    {⊕}{{\ensuremath{\oplus}}}1 {⊑}{{\ensuremath{\sqsubseteq}}}1
+    {⊔}{{\ensuremath{\sqcup}}}1 {⊓}{{\ensuremath{\sqcap}}}1
+    {✓}{{\checkmark}}1 {✗}{{\ensuremath{\times}}}1
+    {◐}{$\bullet$}1 {○}{$\circ$}1
+    {⟨}{{\ensuremath{\langle}}}1 {⟩}{{\ensuremath{\rangle}}}1
+    {⌈}{{\ensuremath{\lceil}}}1 {⌉}{{\ensuremath{\rceil}}}1
+    {⟦}{{\ensuremath{\llbracket}}}1 {⟧}{{\ensuremath{\rrbracket}}}1
+    {«}{{\ensuremath{\langle\!\langle}}}2 {»}{{\ensuremath{\rangle\!\rangle}}}2
+}
+
+\newcommand{\cslmorph}[1]{\textsubscript{\color{cslmo}\textquotesingle #1}}
+\newcommand{\cslmodal}[1]{\textcolor{cslkw}{\textbf{#1}}}
+\newcommand{\cslref}[2]{\hyperref[#1]{#2}}

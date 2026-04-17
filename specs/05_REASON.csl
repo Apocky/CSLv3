@@ -1,0 +1,103 @@
+§ CSLv3 AGENT REASONING SUBSTRATE
+I> token↓ per step → step-count↑ per budget → depth↑
+I> CoT in CSL = denser → same context window = more reasoning steps
+I> reconciled: pasted (§P/§D/§T/§S/§C structured blocks), specs/ (§9 simpler)
+I> v3 adopts structured think-blocks (richer) + compression evidence (both)
+
+§ THOUGHT-BLOCK GRAMMAR
+  W! all agent reasoning uses this structure inside <think> tags
+
+<think>
+§ P (PROBLEM)
+  given: ⟨facts⟩
+  goal:  G
+
+§ D (DECOMPOSITION)
+  G → [sub₁, sub₂, ...]
+
+§ T (TRACE)
+  sub₁ ~> approach_a ✓ → partial₁
+  sub₂ ~> approach_b ✗ ∵ ⟨reason⟩
+        → retry(approach_c) ✓ → partial₂
+
+§ S (SYNTHESIS)
+  partial₁ ⊕ partial₂ ⇒ answer :T
+
+§ C (CHECK)
+  answer ⊨ G? ✓
+  edge: ⟨case⟩ → handles? ✓
+∎
+</think>
+
+§ REASONING GLYPHS (§01 extension)
+  ?!      → surprising / counterintuitive
+  !?      → suspect / needs-verify
+  ⟲       → iterate / loop back
+  ⤓       → dive deeper
+  ⤒       → lift / abstract up
+  ⟐       → pivot / reframe
+  ⚠       → pitfall / common-error
+  ★       → key insight
+  ✎       → note-to-self
+
+§ BELIEF CALCULUS
+  p₀.₉    → probability 0.9
+  p↑      → increasing confidence
+  p↓      → decreasing confidence
+  p⊥      → contradictory evidence → W! resolve before proceeding
+
+§ DENSE TRACE EXAMPLE
+<think>
+§ P
+  voxel engine stutter @ chunk boundary
+  hw: Intel 12-14gen + Arc A770
+§ D
+  stutter → [mesh.regen, alloc.spike, gpu.stall]
+§ T
+  mesh.regen ~> profile → 2ms ✓ ¬culprit
+  alloc.spike ~> heap-trace → 47MB burst ?!
+    ⤓ source = chunk-LOD-promote ✓ found
+  gpu.stall ~> pipeline-stats → idle 0 ✓ clean
+§ S
+  culprit = alloc.spike ∵ LOD-promote allocates fresh
+  fix → pool.LOD-buffers + ring.allocator
+§ C
+  ✓ eliminates 47MB spike
+  ⚠ edge: extreme LOD jumps → pool-overflow? → cap+fallback
+∎
+</think>
+
+§ COMPRESSION EVIDENCE
+  EN reasoning: ~45 tokens (typical 5-step chain)
+  CSLv3 reasoning: ~18 tokens (same chain)
+  ratio: 2.5× (reasoning compresses less than spec ∵ less structural regularity)
+  
+  EN spec: ~200 tokens (constraint block)
+  CSLv3 spec: ~40 tokens
+  ratio: 5× (specs compress well ∵ high structural regularity)
+
+§ DRIFT MITIGATION
+  ⚠ agent-drift: LLM may translate-back to EN internally
+  mitigation:
+    W! system-prompt: "reason in CSL"
+    W! reinforce via §P/§D/§T/§S/§C structure
+    R! when reasoning block > 10 lines → check for EN drift
+    R! if EN drift detected → ⟐ pivot back to CSL glyphs
+
+§ CSLv3 REASONING vs EN REASONING
+I> from v2 specs/ §9.2:
+  Q? arch → hot-reload?
+    arch = ECS + archetype-storage
+    hot-reload needs: serialize → reload-module → deserialize
+    archetype-storage ⇒ contiguous-memory ⇒ serialize=easy
+    ✓ arch → hot-reload supported
+  
+  EN equivalent (45 tokens):
+  "I need to figure out whether this architecture supports hot-reloading.
+   The system uses component-based design with ECS. Components stored in
+   archetypes. Hot-reloading requires serializing state, reloading module,
+   then deserializing. Archetype storage makes serialization easy because
+   contiguous memory. Therefore yes, supports hot-reloading."
+  
+  CSLv3: 18 tokens. same semantic content. 2.5× compression.
+∎

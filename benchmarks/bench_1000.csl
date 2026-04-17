@@ -1,0 +1,120 @@
+§ block_0
+  def Row0't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle0 (r : &Row0't) -> bool = true
+  fn process0 (r : &Row0't, dt : f32) -> bool = true
+  fn score0 (r : &Row0't) -> f32 = 0.0
+§ block_1
+  def Row1't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle1 (r : &Row1't) -> bool = true
+  fn process1 (r : &Row1't, dt : f32) -> bool = true
+  fn score1 (r : &Row1't) -> f32 = 0.0
+§ block_2
+  def Row2't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle2 (r : &Row2't) -> bool = true
+  fn process2 (r : &Row2't, dt : f32) -> bool = true
+  fn score2 (r : &Row2't) -> f32 = 0.0
+§ block_3
+  def Row3't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle3 (r : &Row3't) -> bool = true
+  fn process3 (r : &Row3't, dt : f32) -> bool = true
+  fn score3 (r : &Row3't) -> f32 = 0.0
+§ block_4
+  def Row4't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle4 (r : &Row4't) -> bool = true
+  fn process4 (r : &Row4't, dt : f32) -> bool = true
+  fn score4 (r : &Row4't) -> f32 = 0.0
+§ block_5
+  def Row5't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle5 (r : &Row5't) -> bool = true
+  fn process5 (r : &Row5't, dt : f32) -> bool = true
+  fn score5 (r : &Row5't) -> f32 = 0.0
+§ block_6
+  def Row6't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle6 (r : &Row6't) -> bool = true
+  fn process6 (r : &Row6't, dt : f32) -> bool = true
+  fn score6 (r : &Row6't) -> f32 = 0.0
+§ block_7
+  def Row7't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle7 (r : &Row7't) -> bool = true
+  fn process7 (r : &Row7't, dt : f32) -> bool = true
+  fn score7 (r : &Row7't) -> f32 = 0.0
+§ block_8
+  def Row8't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle8 (r : &Row8't) -> bool = true
+  fn process8 (r : &Row8't, dt : f32) -> bool = true
+  fn score8 (r : &Row8't) -> f32 = 0.0
+§ block_9
+  def Row9't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle9 (r : &Row9't) -> bool = true
+  fn process9 (r : &Row9't, dt : f32) -> bool = true
+  fn score9 (r : &Row9't) -> f32 = 0.0
+§ block_10
+  def Row10't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle10 (r : &Row10't) -> bool = true
+  fn process10 (r : &Row10't, dt : f32) -> bool = true
+  fn score10 (r : &Row10't) -> f32 = 0.0
+§ block_11
+  def Row11't ⟨
+    id       : u32
+    name     : str
+    value    : f32 ⌈0..1⌉
+    active   : bool
+  ⟩
+  fn handle11 (r : &Row11't) -> bool = true
+  fn process11 (r : &Row11't, dt : f32) -> bool = true
+  fn score11 (r : &Row11't) -> f32 = 0.0

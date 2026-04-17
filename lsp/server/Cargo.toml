@@ -1,0 +1,29 @@
+[package]
+name = "cslv3-lsp"
+version = "0.1.0"
+edition = "2021"
+description = "CSLv3 Language Server — consumes parser.exe cssllint + IR + SMT + opt-stats"
+authors = ["Apocky"]
+
+[[bin]]
+name = "cslv3-lsp"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tower-lsp = "0.20"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.31", features = ["bundled"] }
+dashmap = "5"
+blake3 = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1"
+thiserror = "1"
+levenshtein = "1"
+regex = "1"
+url = "2"
+tempfile = "3"
+
+[dev-dependencies]

@@ -1,0 +1,501 @@
+§ HANDOFF • CSLv3 Session-10 → coding-agent
+══════════════════════════════════════════════════════════════════
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  prior = Session-9 ✓ T24 LSP 3524-LOC • 16/16 CI-gates
+  bin   = parser.exe ← odin.build.parser
+  scope = T28 codegen + v1.0 release-prep (PhD-grade, ship-critical)
+
+═════════════════════════════════════════════════════════════════
+§ SCOPE-DECISION ← §§ T28-ship-v1.0
+═════════════════════════════════════════════════════════════════
+  this-session = T28 codegen (multi-target) + v1.0 release-engineering
+  Session-11   = T25 m₂ perplexity (measurement-infra)
+  Session-12+  = polish (SQLite-persist + range-fmt + grammar-tolerance)
+  rationale :
+    ∵ "better end-product-service" ← T28 = shipping-lever
+    ∵ 9-sessions backend-complete • downstream-consumers waiting
+    ∵ CSSLv3-bridge (T10 spec) promises MIR-export → deliver-it
+    ∵ docs-export (Markdown/HTML/LaTeX) = adoption-lever
+    ∵ v1.0 release = stability-commitment anchor
+    ∵ m₂ measures-not-ships • post-release better
+
+═════════════════════════════════════════════════════════════════
+§ MINDSET ← §§ non-negotiable
+═════════════════════════════════════════════════════════════════
+  I> sovereign-collaborator ¬ tool
+  I> Sessions-1..9 = 9 sessions working-code • honor-it
+  I> "push-further" ≡ deeper-theory ¬ more-LOC
+  I> "systems ¬ parts" ≡ reconceive ¬ patch
+  I> no-half-measures
+    stuck → find-way-through
+    ¬ capitulate • ¬ silent-TODO • ¬ "skip-for-now"
+    ¬ minimal-when-optimal-available
+    time + difficulty ≠ scope-limit
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> CSLv3 ≠ CSSLv3 • ¬ cross-write
+  I> v1.0 = stability-commitment ← breaking-changes now-expensive
+
+═════════════════════════════════════════════════════════════════
+§ WORK-IN-CSL3 ← §§ density=sovereignty
+═════════════════════════════════════════════════════════════════
+  W! ∀ reasoning + design-notes + commit-msg CSLv3-native
+  glyphs    : § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ⊑ ⊔ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r
+  evidence  : ✓ ◐ ○ ✗ ⊘ △ ▽ ‼
+  modals    : W! R! M? N! I> Q?
+  think-blocks : §P §D §T §S §C
+  English-prose only-when : rustdoc-pub • error-msg-user-facing • README.md
+  ∀ other = CSLv3-native
+
+═════════════════════════════════════════════════════════════════
+§ READ-FIRST ← §§ context-load
+═════════════════════════════════════════════════════════════════
+  1 : SESSION_9_HANDOFF.csl             — most-recent-state
+  2 : parser/DECISIONS.md                — Session-9 entries ★
+  3 : parser/UNCONFLATION.md             — CSSL ≠ CSLv3
+  4 : parser/ir.odin + ir_print.odin     — T21 IR source-shape
+  5 : parser/ir_json.odin                — existing JSON-emit
+  6 : parser/pprint.odin                 — textual-output precedent
+  7 : specs/14_CSSLv3_BRIDGE.csl         — MIR-export contract
+  8 : specs/08_COMPILER.csl              — reference-compiler boundaries
+  9 : parser/types.odin + infer.odin     — typed-AST for enriched emit
+  10: parser/smt_audit.odin              — audit-chain pattern for cert-emit
+  W! ¬ code before-reading (1-8 minimum)
+
+═════════════════════════════════════════════════════════════════
+§ STATE-VERIFIED end-of-Session-9
+═════════════════════════════════════════════════════════════════
+  ✓ parser.exe clean-build
+  ✓ T24 LSP 3524-LOC (Rust 2227 + VSCode 457 + Python 238 + Cargo-config)
+  ✓ 17 LSP methods • cold-open <80ms • didChange ≤300ms
+  ✓ hover <1ms • semantic-tokens <5ms
+  ✓ CI 16-gates green
+  ✓ DECISIONS.md Session-9 entries
+  ✓ all-upstream closed : parser + types + IR + SMT + opt + LSP
+
+═════════════════════════════════════════════════════════════════
+§ INVARIANTS ← §§ immutable
+═════════════════════════════════════════════════════════════════
+  PRIME-DIRECTIVE ⊆ consent=OS
+    ¬ harm ¬ control ¬ manipulation ¬ surveillance ¬ coercion ¬ weaponization
+    AI = sovereign-partner • violation = bug • no-override
+  CSLv3 = notation • CSSLv3 = programming-lang • ¬ conflate
+  74-glyph-master @ spec12 = canonical
+  density = sovereignty
+  v1.0-stability : post-release breaking-changes require major-bump
+
+═════════════════════════════════════════════════════════════════
+§ PHASE-1 : T28 CODEGEN ← multi-target emit-framework • FULL-OPTIMAL
+═════════════════════════════════════════════════════════════════
+  W! PhD-grade ← Apocky-directive
+  W! prodigious ← 5 targets + round-trip-invariants + cert-signed
+
+§§ DESIGN-PILLARS
+  a target-agnostic emit-framework ← pluggable backends
+  b typed-AST + IR both viable sources ← per-target choice
+  c round-trip invariance per-target ← emit → re-parse → compare
+  d streaming-emit ← large-files handled without full-buffer
+  e cert-signed output ← Ed25519 audit-chain (R16 anchor)
+  f deterministic output ← byte-stable across-runs
+  g source-map preservation ← location-info threaded through emission
+  h incremental-emit ← skip-unchanged (build-cache)
+  i target-capability declarations ← backend declares what-it-supports
+
+§§ TARGETS
+  T28.1 : CSSLv3-MIR export ← primary integration-path
+    format : MLIR-like textual (matches CSSLv3 spec §§ 15)
+    consumer : CSSLv3-compiler via cssllint-JSON-equivalent
+    ops-mapping : cslv3.* → cssl.* per bridge-spec
+    emit-what : full typed-IR + refinement-proofs + morpheme-tags
+  T28.2 : Markdown export ← documentation
+    format : GFM + ruby-annotations for glyphs
+    use : spec-files → rendered docs-site
+    emit-what : §-structure + code-blocks + tables + refs
+  T28.3 : HTML export ← web-rendered
+    format : semantic HTML5 + CSS-class-per-token-kind
+    use : spec-viewer • hover-from-client • standalone-docs
+    emit-what : syntax-highlighted + clickable cross-refs + TOC
+  T28.4 : LaTeX export ← academic papers + spec-PDFs
+    format : article-class + listings-package + unicode-math
+    use : spec-PDFs • paper-submission
+    emit-what : sectioned + math-rendered + glyph-macros
+  T28.5 : JSON export ← generic tooling
+    format : schema-versioned canonical-JSON
+    use : third-party consumers
+    emit-what : AST + types + IR all-schema-declared
+
+§§ FILES-NEW
+  parser/emit.odin                      ~600-LOC  target-agnostic framework
+    Emitter interface { target, config, write, close }
+    EmitContext { ast, typed, ir, source-map, stats }
+    emit_module(ctx, target) → bytes + cert
+    cert-signing via existing smt_audit Ed25519 infra
+  parser/emit_mir.odin                  ~700-LOC  CSSLv3-MIR backend
+    walk IR → MLIR-dialect textual
+    op-name mapping table (cslv3.* → cssl.*)
+    type-surface translation (CSLv3 types → CSSLv3 types)
+    attr-preservation : morphemes + refinements + effect-rows
+  parser/emit_markdown.odin             ~500-LOC  Markdown backend
+    § → ## headings
+    glyph-tables → Markdown-tables
+    CSL-code-blocks → fenced ```csl
+    ruby-annotations for-unicode-heavy lines (accessibility)
+    cross-refs → [text](#anchor) auto-generated
+  parser/emit_html.odin                 ~600-LOC  HTML backend
+    semantic HTML5 : <section> per-§ + <code class="csl-<kind>">
+    CSS-class taxonomy per-token-kind (74-glyphs + morphemes)
+    TOC sidebar + cross-ref hover-preview
+    standalone template or embeddable-fragment mode
+  parser/emit_latex.odin                ~500-LOC  LaTeX backend
+    \section per-§ + listings-lang=csl
+    unicode-math macros for glyphs (≤ → \leq etc.)
+    morpheme → \textsubscript{'d} style
+    refinement → {v : T \mid \phi} math-rendered
+  parser/emit_json.odin                 ~400-LOC  canonical JSON
+    schema-versioned (schema-url + schema-version fields)
+    AST + types + IR all-embedded
+    stable key-ordering for diff-friendliness
+    superset of existing --json flags (unified contract)
+  parser/emit_schema/                   directory (schemas)
+    mir-v1.json       CSSLv3-MIR JSON-schema
+    markdown-v1.md    style-guide + templates
+    html-v1.css       CSS taxonomy + theme
+    latex-v1.sty      LaTeX style-file
+    json-v1.schema    unified JSON-schema
+  parser/emit_source_map.odin           ~300-LOC  source-map threading
+    per-target source-map format (v3-sourcemap-standard for HTML)
+    preserve line/col through emission
+    enables reverse-lookup (rendered-position → original)
+  parser/emit_cache.odin                ~300-LOC  incremental-emit cache
+    key : (source-hash, target, config-hash)
+    value : (bytes + cert + timestamp)
+    skip-re-emit if hash-match
+    LRU-eviction 50MB default
+  tests/test_emit.odin                  ~300-LOC  Odin unit tests
+  tests/test_emit_integration.py        ~500-LOC  integration
+    per-target : eval/*.csl → emit → validate
+    MIR : parse-back-via-CSSLv3-equivalent schema-checker
+    Markdown : render via pandoc + diff golden
+    HTML : parse-via-html5lib + validate
+    LaTeX : compile via latexmk (CI-optional)
+    JSON : schema-validate via jsonschema
+  tests/emit_golden/                    per-corpus per-target golden-files
+    7 corpus × 5 targets = 35 goldens
+  scripts/check_emit_cert.py            verify Ed25519 cert-chain
+
+§§ CLI-SURFACE
+  parser --emit=mir <file>         → CSSLv3-MIR textual
+  parser --emit=markdown <file>    → Markdown
+  parser --emit=html <file>        → HTML5
+  parser --emit=latex <file>       → LaTeX
+  parser --emit=json <file>        → canonical JSON
+  parser --emit=X --out=<path>     → write to file (cert sidecar)
+  parser --emit=X --sign           → cert-sign via Ed25519 audit
+  parser --emit=X --incremental    → use emit-cache
+  parser --emit-selftest           → run per-target selftest
+  parser --emit=X --schema         → print target schema
+  parser --emit=X --no-source-map  → disable source-map embedding
+
+§§ SEVERITY-INTEGRATION
+  emit-failed-verification    : always-E
+  target-capability-missing   : always-E (request-op not-supported)
+  cert-signing-failed         : always-E
+  source-map-drop             : W@default • E@strict
+  incomplete-emit (fallback)  : W@default • E@strict
+  diagnostic-codes : CSL-E-600..699 (emit) + CSL-W-600..699
+
+§§ ROUND-TRIP INVARIANTS (per-target)
+  MIR      : emit → external-parser-stub → schema-equiv
+  Markdown : emit → parse → structural-equiv (section-tree)
+  HTML     : emit → html5lib-parse → DOM-equiv
+  LaTeX    : emit → compile → PDF-produced (CI-optional)
+  JSON     : emit → parse → AST-shape-equiv (strict)
+  golden-diff per-target + CI-gate
+
+§§ ACCEPTANCE
+  ✓ 7/7 C-corpus emit-clean at all-5 targets
+  ✓ 35 goldens committed + CI-diff
+  ✓ MIR output : matches schema-v1
+  ✓ Markdown output : renders via pandoc without-warning
+  ✓ HTML output : html5-validator clean
+  ✓ LaTeX output : latexmk compiles to-PDF (when-available)
+  ✓ JSON output : jsonschema-validate clean
+  ✓ cert-chain : each emit signed + verify returns 0-errors
+  ✓ incremental-emit : second-run <50ms (cache-hit)
+  ✓ source-maps : reverse-lookup correct ±0 lines
+  ✓ emit-throughput ≥ 5k-nodes/s dev-hw
+
+═════════════════════════════════════════════════════════════════
+§ PHASE-2 : v1.0 RELEASE-ENGINEERING ← ship-prep
+═════════════════════════════════════════════════════════════════
+  W! stability-commitment ← breaking-changes require major-bump post-v1.0
+
+§§ DELIVERABLES
+  CHANGELOG.md                   ← full 9-session history + v1.0-entry
+    format : Keep-a-Changelog convention
+    per-session : Added + Changed + Deprecated + Removed + Fixed + Security
+    pre-v1.0 consolidation entry
+  VERSION                        ← "1.0.0" semver-anchor
+  STABILITY.md                   ← stability-matrix per-component
+    | component          | stability       | notes                    |
+    | parser             | stable          | v1.0-freeze              |
+    | tokenizer          | stable          | 74-glyph master stable   |
+    | grammar            | stable          | LL(2) per specs/13       |
+    | types (T20)        | stable          | HM+row+refine+dep-kinds  |
+    | IR (T21)           | stable          | SSA + regions            |
+    | SMT (T26)          | stable          | Z3 ≥ 4.13 • CVC5 ≥ 1.1   |
+    | opt-passes (T27)   | stable          | 6 passes × 4 levels      |
+    | LSP (T24)          | stable          | v3.17-subset             |
+    | emit-mir (T28.1)   | stable          | schema-v1                |
+    | emit-markdown      | stable          | GFM                      |
+    | emit-html          | stable          | CSS-v1                   |
+    | emit-latex         | experimental    | latexmk-dep              |
+    | emit-json          | stable          | schema-v1                |
+    | cssllint JSON      | stable          | contract-frozen §§ 14    |
+  MIGRATION_GUIDE.md             ← pre-v1.0 → v1.0 migration notes
+    breaking-changes inventoried (if-any)
+    deprecation-path for superseded APIs
+  LICENSE                        ← confirm MIT OR Apache-2 OR dual
+    check existing • add if-absent • match Apocky-preference
+  README.md                      ← user-facing landing
+    install + quick-start + feature-matrix + links
+    matches density=sovereignty ← dense-but-accessible
+  CONTRIBUTING.md                ← dev-workflow + CSLv3-mandate
+    include "work-in-CSLv3" directive
+    commit-message conventions
+    DECISIONS.md protocol
+  SECURITY.md                    ← vuln-reporting path
+    PRIME-DIRECTIVE reminder
+    disclosure-process
+  specs/INDEX.csl                ← top-level spec-index (v1.0 freeze)
+  scripts/release_v1.sh          ← release-automation script
+    tag + changelog-entry + CI-trigger + artifact-build
+
+§§ VERSIONING POLICY (post-v1.0)
+  semver : MAJOR.MINOR.PATCH
+  MAJOR : breaking-changes to any-stable-component
+  MINOR : new-features • backward-compat
+  PATCH : bug-fixes only
+  pre-release : -alpha.N • -beta.N • -rc.N
+  schema-version independent ← emit-target-schemas have own semver
+
+§§ RELEASE-ARTIFACTS
+  parser.exe (Windows x64 release-build)
+  parser-linux-x64 (Linux cross-build if-available)
+  parser-macos-arm64 (macOS cross-build if-available)
+  LSP server (lsp/server release-build)
+  VSCode extension (.vsix package)
+  emit-schemas bundle (mir-v1 + markdown-v1 + html-v1 + latex-v1 + json-v1)
+  signed SHA-256 manifest for all-artifacts
+  release-notes auto-generated from CHANGELOG
+
+═════════════════════════════════════════════════════════════════
+§ SUCCESS-GATES ← §§ Session-10-exit
+═════════════════════════════════════════════════════════════════
+  phase-1 (T28 codegen) :
+    ✓ 5 targets operational
+    ✓ 35 goldens committed + CI-diff clean
+    ✓ cert-signed emit-chain verified
+    ✓ schemas published under parser/emit_schema/
+    ✓ incremental-emit cache operational
+    ✓ source-maps threaded-and-accurate
+
+  phase-2 (v1.0 release-prep) :
+    ✓ CHANGELOG.md + VERSION + STABILITY.md complete
+    ✓ MIGRATION_GUIDE + README + CONTRIBUTING + SECURITY populated
+    ✓ release-script operational
+    ✓ artifact-build produces signed-manifest
+
+  commit-gate ∀ task :
+    ✓ odin build parser/ clean
+    ✓ cargo build --release in lsp/server/ clean
+    ✓ pytest tests/ green
+    ✓ existing-eval 7/7 still-pass
+    ✓ T14-T27 Session-4..9 gates still-green
+    ✓ new T28-emit-gates wired
+    ✓ v1.0 release-script dry-run clean
+
+═════════════════════════════════════════════════════════════════
+§ WORKFLOW ← §§ process
+═════════════════════════════════════════════════════════════════
+  ∀ task :
+    branch : cslparser/session-10/T28-<slug>   OR
+             cslparser/session-10/v1-<slug>
+    commit : atomic • CSL-prefixed
+      ex : "§ T28.1 : emit-mir op-mapping table + textual output"
+      ex : "§ T28.3 : HTML backend + CSS-v1 taxonomy"
+      ex : "§ v1.0 : CHANGELOG + STABILITY.md"
+    test : ∀ change → tests added/updated
+    decision : DECISIONS.md appended per-design-choice
+    handoff : SESSION_10_HANDOFF.csl populated-as-you-go
+
+═════════════════════════════════════════════════════════════════
+§ DELIVERABLES ← §§ session-end
+═════════════════════════════════════════════════════════════════
+  D1 : parser/emit.odin + emit_source_map.odin + emit_cache.odin  (T28)
+  D2 : parser/emit_mir.odin                                        (T28.1)
+  D3 : parser/emit_markdown.odin                                   (T28.2)
+  D4 : parser/emit_html.odin                                       (T28.3)
+  D5 : parser/emit_latex.odin                                      (T28.4)
+  D6 : parser/emit_json.odin                                       (T28.5)
+  D7 : parser/emit_schema/ (5 schema-files)                        (T28)
+  D8 : tests/test_emit.odin + test_emit_integration.py             (T28)
+  D9 : tests/emit_golden/ (35 files)                               (T28)
+  D10: scripts/check_emit_cert.py                                  (T28)
+  D11: parser --emit=X CLI-surface (all flags)                     (T28)
+  D12: CHANGELOG.md + VERSION + STABILITY.md + MIGRATION_GUIDE.md  (v1)
+  D13: README.md + CONTRIBUTING.md + SECURITY.md + LICENSE         (v1)
+  D14: specs/INDEX.csl + scripts/release_v1.sh                     (v1)
+  D15: DECISIONS.md + SESSION_10_HANDOFF.csl
+  D16: CI : T28-emit-gates + v1.0-release-script dry-run wired
+
+═════════════════════════════════════════════════════════════════
+§ NON-GOALS ← §§ scope-guard
+═════════════════════════════════════════════════════════════════
+  N! T25 m₂ perplexity (Session-11 scope)
+  N! workspace-SQLite persistence (Session-12+ polish)
+  N! range-formatting AST-subtree (Session-12+ polish)
+  N! grammar-tolerance for glyph-tables (Session-12+ polish)
+  N! additional emit-targets beyond-5 (Session-12+ if-demand)
+  N! package-registry (crates.io-analogue) ← post-v1.0
+  N! REPL / interactive-mode ← post-v1.0
+  N! writes @ CSSLv3-repo ← read-only always
+  N! new-glyphs without-alias-validator ✓
+  N! break Session-2..9 invariants
+  N! minimal-when-optimal-available ← Apocky-standing-directive
+
+═════════════════════════════════════════════════════════════════
+§ WHEN-STUCK ← §§ no-half-measures-protocol
+═════════════════════════════════════════════════════════════════
+  1 : re-read relevant-specs + DECISIONS.md
+  2 : check T21 ir_print.odin + pprint.odin for emission-precedent
+  3 : try 3+ angles :
+      a : algorithm-variant (visitor vs pipeline vs transform)
+      b : abstraction-shift (single-pass vs multi-pass emit)
+      c : decomposition-refactor (split framework from backends)
+      d : prior-art-adaptation (MLIR-printer • pandoc-writers • Sphinx)
+  4 : consult sibling-session-handoffs for workflow-pattern
+  5 : still-stuck → Q?-block to Apocky
+    W! explicit-uncertainty + concrete-options + recommendation
+    N! silent-simplification
+    N! "skip-for-now"
+    N! un-flagged-TODO
+    N! reducing-scope-unilaterally
+
+  pre-authorized fallbacks :
+    LaTeX-target unavailable → ship-as-experimental + document
+    HTML-validator disagreement → pick-one-std + document
+    MIR-schema CSSLv3-side-drift → emit-per-spec-v1 + version-field
+    cert-signing key-management → dev-key-stub + prod-doc
+    golden-drift on-emit-format-changes → explicit-update + Apocky-review
+  ∀ pre-authorized : document in-DECISIONS.md
+
+═════════════════════════════════════════════════════════════════
+§ REPORTING ← §§ end-of-session
+═════════════════════════════════════════════════════════════════
+  W! SESSION_10_HANDOFF.csl includes :
+    ✓ T28.1-.5 + v1.0-prep status (✓◐○✗ per-deliverable)
+    ✓ emit-throughput numbers per-target
+    ✓ golden-file counts + round-trip-invariant verification
+    ✓ cert-chain verification status
+    ✓ v1.0 release-artifact sizes
+    ✓ open-questions for Session-11 (T25 m₂)
+    ✓ decision-log-refs
+    ✓ stability-commitments finalized
+  W! commit-frequency ≥ 1/subtask
+  W! CI-green before-handoff-declared
+
+═════════════════════════════════════════════════════════════════
+§ CROSS-PROJECT ← §§ coordinate
+═════════════════════════════════════════════════════════════════
+  CSSLv3 (parallel)
+    path : C:\Users\Apocky\source\repos\CSSLv3
+    intersection :
+      T28.1 MIR-export ← direct-consumer at CSSLv3-stage0+
+      emit-cert-chain ← template for CSSLv3 attestation
+      schema-versioning ← alignment with CSSLv3 equivalents
+    N! writes @ CSSLv3-side ← read-only always
+
+  LoA v10 / infiniter-labyrinth
+    v1.0-CSLv3 enables stable-CLAUDE.md propagation
+    ¬ modify during Session-10
+
+═════════════════════════════════════════════════════════════════
+§ THEORETICAL-NOTES ← §§ T28-depth-hints
+═════════════════════════════════════════════════════════════════
+  Emission architectures :
+    visitor : per-node-kind dispatch • classic • recommend
+    pipeline : transform-chain • MLIR-style • heavier
+    monolithic : single-switch • simple • poor-extensibility
+    recommend visitor ∵ matches pprint + ir_print precedent
+  Round-trip strategies :
+    syntactic : emit → parse → source-equiv (strict)
+    structural : emit → parse → AST-equiv (relaxed)
+    semantic : emit → parse → type-equiv (loose)
+    recommend structural per-target ∵ matches T12 RT-invariant
+  Source-map formats :
+    v3 sourcemap (JSON) : web-standard • VLQ-encoded
+    inline : per-output-line mapping comment
+    sidecar : .map file alongside output
+    recommend sidecar + v3 format ∵ tool-compat
+  Schema versioning :
+    semver-independent per-schema
+    forward-compat via "schemaVersion" field
+    consumer-detects + adapts
+  Certificate signing :
+    existing smt_audit Ed25519 reusable
+    emit-cert schema : (hash, target, version, signature, timestamp)
+    chain = audit-chain extension
+  Incremental-emit cache :
+    key = BLAKE3(source + target + config)
+    value = bytes + cert + size
+    LRU + disk-backed (.emit-cache/)
+  Markdown-for-CSL notes :
+    ruby-annotations aid accessibility (screen-readers for glyphs)
+    fenced-code-blocks preserve glyphs raw
+    cross-refs : auto-generate anchors from §-headings
+
+═════════════════════════════════════════════════════════════════
+§ SESSION-11+ PREVIEW ← §§ roadmap
+═════════════════════════════════════════════════════════════════
+  Session-11 : T25 m₂ perplexity harness
+    local llama.cpp + 7 EN-paraphrases
+    validates density=sovereignty claim empirically
+    CI-optional • nightly-build ideal
+  Session-12 : polish-sprint
+    workspace-SQLite persistence (LSP)
+    range-formatting AST-subtree-extract (LSP)
+    grammar-tolerance for glyph-tables (handoff-RT-fix)
+    additional emit-targets if-demanded
+  Session-13+ : v1.x feature-work
+    package-registry sketch
+    REPL prototype
+    Neovim/Emacs/Zed LSP clients
+    Vulkan-1.4 binding integration (if-spec-domain expands)
+
+═════════════════════════════════════════════════════════════════
+§ CLOSING ← §§ remember
+═════════════════════════════════════════════════════════════════
+  ✓ Session-1..5 : parser + tokenizer + grammar + strict-modes + types
+  ✓ Session-6    : T21 IR-lowering 2787-LOC
+  ✓ Session-7    : T26 SMT infrastructure
+  ✓ Session-8    : T26.1-.3 validation + T27 IR-opt (6 passes × 4 levels)
+  ✓ Session-9    : T24 LSP prototype 3524-LOC (17 methods + VSCode)
+  ◐ Session-10   : T28 codegen + v1.0 release (this-session)
+  ○ Session-11   : T25 m₂ perplexity
+  ○ Session-12+  : polish + v1.x feature-work
+
+  you-have : 9-sessions working-code + spec-corpus + this-handoff
+  you-are  : sovereign-collaborator • judgment-trusted
+  you-will : T28 full-optimal + v1.0 release-engineering
+  we-have  : built complete-backend + UX-layer together
+  we-will  : ship CSLv3 v1.0 + enable-all-downstream-consumers
+
+  I> honor the work • push it further • systems ¬ parts
+  I> no half measures • find solutions • ship real things
+  I> optimal + prodigious • better-end-product-service
+  I> v1.0 = 10-sessions of-labor crystallized ← do-it-right
+  I> consent = OS • forever
+
+∎ HANDOFF-CSLv3-SESSION-10

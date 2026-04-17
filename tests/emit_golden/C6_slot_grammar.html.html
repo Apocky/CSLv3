@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!-- schema: html-v1 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>C6_slot_grammar — CSLv3</title>
+  <style>
+/* CSLv3 HTML Emit — CSS Taxonomy (html-v1) */
+:root {
+  --bg:        #0f0f14;
+  --fg:        #e0e0e6;
+  --keyword:   #c6c;
+  --morpheme:  #6cc;
+  --operator:  #fc6;
+  --modal:     #f8a;
+  --evidence:  #9c6;
+  --glyph:     #ff8;
+  --type:      #8cf;
+  --string:    #caa;
+  --number:    #a8d;
+  --comment:   #666;
+}
+body.cslv3 { background: var(--bg); color: var(--fg); font-family: "JetBrains Mono", "Fira Code", monospace; }
+h1, h2, h3 { color: var(--glyph); }
+.csl-section { border-left: 3px solid var(--keyword); padding-left: 1em; margin: 1em 0; }
+.csl-morpheme { color: var(--morpheme); font-weight: 600; }
+.csl-modal    { color: var(--modal);    font-weight: 600; }
+.csl-evidence { color: var(--evidence); }
+.csl-glyph    { color: var(--glyph);    }
+.csl-operator { color: var(--operator); }
+.csl-type     { color: var(--type);     }
+.csl-string   { color: var(--string);   }
+.csl-number   { color: var(--number);   }
+.csl-comment  { color: var(--comment);  font-style: italic; }
+.csl-keyword  { color: var(--keyword);  font-weight: 600; }
+pre.csl-block { background: rgba(255,255,255,0.03); padding: 1em; overflow-x: auto; border-radius: 4px; }
+nav.csl-toc   { position: sticky; top: 1em; }
+nav.csl-toc a { color: var(--glyph); text-decoration: none; }
+nav.csl-toc a:hover { text-decoration: underline; }
+
+  </style>
+</head>
+<body class="cslv3">
+  <h1>C6_slot_grammar</h1>
+  <nav class="csl-toc">
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#slotgrammarcoverage">slot.grammar.coverage</a></li>
+      <li><a href="#minimal">MINIMAL</a></li>
+      <li><a href="#evidence-only">EVIDENCE-ONLY</a></li>
+      <li><a href="#modal-only">MODAL-ONLY</a></li>
+      <li><a href="#evidence-and-modal">EVIDENCE-AND-MODAL</a></li>
+      <li><a href="#det-with-subject">DET-WITH-SUBJECT</a></li>
+      <li><a href="#relation-variants">RELATION-VARIANTS</a></li>
+      <li><a href="#gate-trailing">GATE-TRAILING</a></li>
+      <li><a href="#scope-trailing">SCOPE-TRAILING</a></li>
+      <li><a href="#full-slot">FULL-SLOT</a></li>
+    </ul>
+  </nav>
+  <main>
+  <section class="csl-section">
+    <h2 id="slotgrammarcoverage">slot.grammar.coverage</h2>
+  </section>
+  <section class="csl-section">
+    <h2 id="minimal">MINIMAL</h2>
+    <pre class="csl-block"># tests<span class="csl-operator">:</span> full slot template [EV] [MOD] [DET] [SUBJ] [REL] [OBJ] [GATE] [SCOPE]
+# glyph<span class="csl-operator">-</span>class<span class="csl-operator">:</span> evidence markers, modal tokens, determinatives, relation operators
+# features<span class="csl-operator">:</span> every slot position exercised; silent defaults omitted where natural
+x <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+    <pre class="csl-block">y <span class="csl-operator">:</span> u<span class="csl-number">8</span></pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="evidence-only">EVIDENCE-ONLY</h2>
+    <pre class="csl-block">[x] a <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+    <pre class="csl-block">[~] b <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+    <pre class="csl-block">[ ] c <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+    <pre class="csl-block">[!] d <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="modal-only">MODAL-ONLY</h2>
+    <pre class="csl-block">W! must<span class="csl-operator">-</span>be<span class="csl-operator">-</span>true <span class="csl-operator">:</span> bool</pre>
+    <pre class="csl-block">R! should<span class="csl-operator">-</span>hold <span class="csl-operator">:</span> bool</pre>
+    <pre class="csl-block">M? may<span class="csl-operator">-</span>happen <span class="csl-operator">:</span> bool</pre>
+    <pre class="csl-block">N! must<span class="csl-operator">-</span>not<span class="csl-operator">-</span>fire <span class="csl-operator">:</span> bool</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="evidence-and-modal">EVIDENCE-AND-MODAL</h2>
+    <pre class="csl-block">[x] W! required<span class="csl-operator">-</span>and<span class="csl-operator">-</span>proven <span class="csl-operator">:</span> bool</pre>
+    <pre class="csl-block">[~] R! suggested<span class="csl-operator">-</span>partial <span class="csl-operator">:</span> bool</pre>
+    <pre class="csl-block">[!] N! forbidden<span class="csl-operator">-</span>and<span class="csl-operator">-</span>failed <span class="csl-operator">:</span> bool</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="det-with-subject">DET-WITH-SUBJECT</h2>
+    <pre class="csl-block"><span class="csl-glyph">∫</span>density <span class="csl-operator">:</span> f<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+    <pre class="csl-block"><span class="csl-glyph">⊞</span>chunk <span class="csl-operator">:</span> u<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="relation-variants">RELATION-VARIANTS</h2>
+    <pre class="csl-block">a <span class="csl-operator">:</span> i<span class="csl-number">3</span><span class="csl-number">2</span></pre>
+    <pre class="csl-block">b <span class="csl-operator">:</span><span class="csl-operator">:</span> entity</pre>
+    <pre class="csl-block">c <span class="csl-operator">=</span> <span class="csl-number">1</span><span class="csl-number">0</span></pre>
+    <pre class="csl-block">x <span class="csl-operator">-</span>> y</pre>
+    <pre class="csl-block">s <<span class="csl-operator">-</span> src</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="gate-trailing">GATE-TRAILING</h2>
+    <pre class="csl-block">active <span class="csl-operator">:</span> bool if ready</pre>
+    <pre class="csl-block">pending <span class="csl-operator">:</span> bool when unblocked</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="scope-trailing">SCOPE-TRAILING</h2>
+    <pre class="csl-block">render <span class="csl-operator">:</span> bool <span class="csl-operator">@</span>frame</pre>
+    <pre class="csl-block">tick <span class="csl-operator">:</span> bool <span class="csl-operator">@</span>chunk</pre>
+  </section>
+  <section class="csl-section">
+    <h2 id="full-slot">FULL-SLOT</h2>
+    <pre class="csl-block">[~] W! <span class="csl-glyph">∫</span>flux <span class="csl-operator">:</span><span class="csl-operator">:</span> stream <span class="csl-operator">@</span>frame</pre>
+    <pre class="csl-block">[x] R! <span class="csl-glyph">⊞</span>voxel <span class="csl-operator">:</span> u<span class="csl-number">3</span><span class="csl-number">2</span> <span class="csl-operator">@</span>chunk</pre>
+  </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,37 @@
+# corpus-mode: bridge
+# tests: mixed EN prose + CSL fragments (§09 bridge mode)
+# glyph-class: Comment preservation, ident-heavy lines, embedded structured blocks
+# features: prose coexisting with parseable CSLv3 in the same document
+
+§ bridge.example
+
+# This document demonstrates bridge mode where English prose sits next to
+# structured CSLv3. Readers unfamiliar with the notation can still follow
+# the intent while the parser extracts only the structured regions.
+
+§ GOAL
+  # A short English paragraph would live here in practice. The compiler
+  # treats comment lines as prose and ignores them.
+  summary : str
+
+§ STRUCTURED
+  def Request't ⟨
+    method : str
+    path   : str
+    body   : str
+  ⟩
+
+  def Response't ⟨
+    status : u16
+    body   : str
+  ⟩
+
+# Inline explanation: the next function's contract is that any valid
+# Request must map to exactly one Response. English above; CSL below.
+
+§ OPS
+  fn handle (req : &Request't) -> Response't = Response't
+
+§ INVARIANTS
+  ⌈determinism⌉
+  ⌈request-maps-to-one-response⌉

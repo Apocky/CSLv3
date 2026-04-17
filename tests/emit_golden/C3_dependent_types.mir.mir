@@ -1,0 +1,35 @@
+// schema: mir-v1
+// dialect: cssl
+// source: parser/tests/C3_dependent_types.csl
+// emittedAt: 2026-04-17T06:39:26Z
+
+cssl.module @"parser/tests/C3_dependent_types.csl" {
+  cssl.var_ref {kind="type-def", name=@PosFloat}
+  cssl.var_ref {kind="type-def", name=@UnitVec}
+  cssl.var_ref {kind="type-def", name=@BoundHp}
+  cssl.fn {name=@make-vector, sig=u32 -> vec3} {
+    ^entry(%1:n : α8):
+      %2 = cssl.const {value=vec3} : vec3
+      cssl.return(%2)
+  }
+  cssl.fn {name=@pair-len-and-data, sig=u32 -> vec3} {
+    ^entry(%3:n : α9):
+      %4 = cssl.const {value=vec3} : vec3
+      cssl.return(%4)
+  }
+  cssl.fn {name=@normalize, sig=Ref[vec3] -> bool} {
+    ^entry(%5:v : α10):
+      %6 = cssl.const {value=true} : bool
+      cssl.return(%6)
+  }
+  cssl.fn {name=@borrow-shared, sig=Ref[str] -> bool} {
+    ^entry(%7:r : α11):
+      %8 = cssl.const {value=true} : bool
+      cssl.return(%8)
+  }
+  cssl.fn {name=@borrow-mut, sig=Ref[str] -> bool} {
+    ^entry(%9:r : α12):
+      %10 = cssl.const {value=true} : bool
+      cssl.return(%10)
+  }
+}
