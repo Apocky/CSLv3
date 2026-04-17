@@ -88,6 +88,39 @@ main :: proc() {
         json_selftest()
         return
     }
+    // Session-14 A2 : `--blake3-selftest` runs reference test vectors.
+    if len(args) >= 2 && args[1] == "--blake3-selftest" {
+        blake3_selftest()
+        return
+    }
+    // Session-14 A7 : `--uri-selftest` runs RFC 3986 vectors.
+    if len(args) >= 2 && args[1] == "--uri-selftest" {
+        uri_selftest()
+        return
+    }
+    // Session-14 A7 : `--uri-parse <uri>` prints component breakdown.
+    if len(args) >= 3 && args[1] == "--uri-parse" {
+        u, _ := uri_parse(args[2])
+        fmt.printf("scheme   : %s\n", u.scheme)
+        fmt.printf("userinfo : %s\n", u.userinfo)
+        fmt.printf("host     : %s\n", u.host)
+        fmt.printf("port     : %s\n", u.port)
+        fmt.printf("path     : %s\n", u.path)
+        fmt.printf("query    : %s\n", u.query)
+        fmt.printf("fragment : %s\n", u.fragment)
+        os.exit(0)
+    }
+    // Session-14 A2 : `--blake3 <file>` prints BLAKE3 hex.
+    if len(args) >= 3 && args[1] == "--blake3" {
+        data, err := os.read_entire_file_from_path(args[2], context.allocator)
+        if err != nil {
+            fmt.eprintf("blake3: cannot read %s\n", args[2])
+            os.exit(1)
+        }
+        fmt.printf("%s  %s\n", blake3_hex(data), args[2])
+        delete(data)
+        os.exit(0)
+    }
     // Session-14 A4 : `--json-validate <file>` exits 0 if valid, 1 if not.
     if len(args) >= 3 && args[1] == "--json-validate" {
         data, read_err := os.read_entire_file_from_path(args[2], context.allocator)
