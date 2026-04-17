@@ -1,7 +1,0 @@
-{
-  "hash": "0c881391cf242d0df69226f1fc37d00a029c3bc19859efd46a9316b4ddc72591",
-  "result": "sat",
-  "solver": "z3",
-  "timestamp": "2026-04-17T07:14:54Z",
-  "canonical_head": "(set-logic QF_LIA)\n(set-option :produce-models true)\n(declare-const b Int)\n(assert (= b 0))\n(check-sat)\n"
-}

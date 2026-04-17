@@ -19,6 +19,7 @@
   12_TOKENIZER.csl       ← BPE-aware optimization + alias decision table
   13_GRAMMAR_SELF.csl    ← self-parsing grammar (LL(2) canonical form)
   14_CSSLv3_BRIDGE.csl   ← cssllint JSON contract + MIR-export schema
+  15_M2_METRIC.csl       ← m₂ perplexity metric (v1.1.0 — post-v1.0 ADD)
 
 §§ READ-ORDER ← for new contributors
   1 PRIME_DIRECTIVE.md   ← ethical foundation (load first)
@@ -44,5 +45,6 @@
   00                                      stable (index + manifest)
   08                                      stable (compiler boundary fixed)
   11                                      living (research synthesis grows)
+  15                                      v1.1.0 experimental → stable on-acceptance
 
-∎ INDEX v1.0
+∎ INDEX v1.0 + 15(v1.1.0)

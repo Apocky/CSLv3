@@ -4,6 +4,88 @@ All notable changes to CSLv3 are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/). This project adheres
 to [Semantic Versioning](https://semver.org/) starting at `1.0.0`.
 
+## [1.1.0-rc.1] — 2026-04-17
+
+Release candidate 1 for v1.1.0. Infrastructure complete under the
+**mock backend** ; promotion to final 1.1.0 gated on Session-12 P1
+real-backend validation (3 reference models × 7 corpus files = 21
+measurements). All changes are **additive** under the v1.0 stability
+commitment.
+
+The rc.1 tag exists so the infrastructure is publicly exercisable
+while paraphrases await Apocky review and the 3-model reference set
+is measured with real GGUF weights. See the **1.1.0 (unreleased)**
+entry below for the feature list that rc.1 ships.
+
+## [1.1.0] — 2026-04-17 (unreleased, pending P1 validation)
+
+**T25 m₂ perplexity harness** — research-grade measurement infrastructure
+for empirically validating the *density = sovereignty* claim. All
+changes are **additive** under the v1.0 stability commitment ; no
+existing APIs, schemas, or CLI flags are modified.
+
+### Added
+
+- **m₂ metric formalization** (`specs/15_M2_METRIC.csl`) — definition,
+  stratified-target table per corpus-mode, reproducibility protocol,
+  model-set, bootstrap-CI methodology.
+- **Core harness** (`scripts/compute_m2.py`) — multi-model dispatch,
+  teacher-forced per-token NLL, bootstrap 95% CI (1000 resamples
+  default), deterministic seed + temp=0 enforcement, `real` backend via
+  `llama-cpp-python` + `mock` backend for CI.
+- **Model registry** (`scripts/m2_models.py`, `m2_install_models.sh`) —
+  3-model reference set (Qwen2.5-1.5B, Llama-3.2-3B, Mistral-7B-v0.3),
+  SHA-256 pinning, download-or-verify, cache-dir at
+  `~/.cslv3-m2-models/`.
+- **Paraphrase corpus** (`eval/paraphrases/C{1..7}.en` + `README.md`) —
+  plain-text EN paraphrases of the seven corpus files, calibrated for
+  m₂ comparison (no Markdown syntax tokens polluting the measurement).
+- **Paraphrase-quality scorer** (`scripts/m2_quality.py`) — embedding-
+  cosine via sentence-transformers with character-5-gram-Jaccard
+  fallback, plus entity-recall via identifier-extraction + stemming.
+  Backend-aware thresholds.
+- **Signed audit-chain** (`scripts/m2_audit.py`) — Python-native
+  Ed25519 (via `cryptography`), JSONL append-only log at
+  `.m2-chain/runs.jsonl`, per-entry signatures verify the complete
+  chain. Genesis entry seeds the chain.
+- **HTML visualizer** (`scripts/m2_visualize.py`) — summary table +
+  stratified-target banner + per-token NLL heatmap + side-by-side
+  CSL/EN rendering.
+- **Comparison harness** (`scripts/m2_compare.py`) — CSLv3 vs APL/J/k
+  vs Lojban vs English-prose on 5 algorithm reference passages. Notes
+  the LLM-unfamiliarity caveat prominently.
+- **Tests** (`tests/test_m2_harness.py`, `tests/test_m2_audit.py`,
+  `tests/m2_fixtures/`) — 8-gate harness suite, 6-gate audit suite,
+  all green without real-model weights (mock backend).
+- **Interpretation doc** (`diag/M2_INTERPRETATION.md`) — how to read m₂,
+  common misreadings, reproducibility anchors.
+- **Benchmarks** (`benchmarks/m2_throughput.md`,
+  `benchmarks/m2_comparison.md`) — mock-backend throughput table +
+  CSL vs APL/Lojban/prose density comparison.
+- **Spec index update** (`specs/INDEX.csl`) — §15 added.
+
+### Changed
+
+- `STABILITY.md` — new section lists T25 components as v1.1.0-tracked.
+- `VERSION` — bumped 1.0.0 → 1.1.0.
+
+### Non-breaking
+
+- No existing CLI flags modified.
+- No existing JSON schemas modified.
+- No existing diagnostic codes renumbered.
+- No removal of any v1.0 public surface.
+- v1.0 test matrix (17 gates) remains green.
+
+### Notes
+
+- m₂ is a *relative* measurement ; pre-trained LLMs will always score
+  English more predictable than CSL due to training-corpus bias.
+  m₂ ≈ 1.0-1.5 is the expected target range, not 1.0.
+- The audit-chain Ed25519 key in `.m2-chain/keys/` is a dev-stub.
+  Production deployments should replace it with an organization-signed
+  root before publishing signed measurements.
+
 ## [1.0.0] — 2026-04-16
 
 First stable release. This consolidates the complete 10-session arc from

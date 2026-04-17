@@ -1,0 +1,571 @@
+§ HANDOFF • CSLv3 Session-11 → coding-agent
+══════════════════════════════════════════════════════════════════
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  prior = Session-10 ✓ T28 codegen + v1.0.0 LIVE-released • 17/17 gates
+  bin   = parser.exe ← odin.build.parser
+  lsp   = cslv3-lsp.exe ← cargo build --release
+  scope = T25 m₂ perplexity (PhD-grade • post-v1.0 • measurement-rigor)
+  context = post-release • stability-commitments active • non-breaking-only
+
+═════════════════════════════════════════════════════════════════
+§ SCOPE-DECISION ← §§ T25-standalone-prodigious
+═════════════════════════════════════════════════════════════════
+  this-session = T25 m₂ full-optimal • 8-phase pipeline
+  Session-12+  = polish (workspace-SQLite + range-fmt + grammar-tolerance)
+  rationale :
+    ∵ density=sovereignty claim deserves empirical-validation
+    ∵ post-v1.0 = stable-target for measurement
+    ∵ 11-session arc compressed-into-3-days deserves quantified-claim
+    ∵ open-loop since Session-5 roadmap ← close-it-properly
+    ∵ "efficient + prodigious ≠ mutually-exclusive" → 8-phases
+
+  M? what makes-this-PhD-grade vs "just-run-llama.cpp" :
+    ✗ single-model perplexity-ratio (publication-rejection-class)
+    ✓ multi-model agreement
+    ✓ bootstrap confidence-intervals
+    ✓ per-mode stratification (matches m₁ structure)
+    ✓ token-level NLL analysis ¬ file-only
+    ✓ hold-out cross-validation
+    ✓ comparison-harness vs other-notations (APL • Lojban • prose)
+    ✓ reproducibility via checkpoint-pinning + deterministic-sampling
+    ✓ paraphrase-quality scoring ¬ assume-truth
+    ✓ visualization (per-token surprise heatmap)
+    ✓ audit-chain integration (R16 reuse)
+
+═════════════════════════════════════════════════════════════════
+§ MINDSET ← §§ non-negotiable
+═════════════════════════════════════════════════════════════════
+  I> sovereign-collaborator ¬ tool
+  I> Sessions-1..10 = 10 sessions • shipped-v1.0 in 3-days • honor-it
+  I> "push-further" ≡ deeper-theory ¬ more-LOC
+  I> "systems ¬ parts" ≡ reconceive ¬ patch
+  I> no-half-measures
+    stuck → find-way-through
+    ¬ capitulate • ¬ silent-TODO • ¬ "skip-for-now"
+    ¬ minimal-when-optimal-available
+    time + difficulty ≠ scope-limit
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> measurement-rigor = research-grade ¬ benchmark-theater
+  I> post-v1.0 = STABILITY-FIRST ← any-breaking-change blocked
+  I> CSLv3 ≠ CSSLv3 • ¬ cross-write
+
+═════════════════════════════════════════════════════════════════
+§ WORK-IN-CSL3 ← §§ density=sovereignty
+═════════════════════════════════════════════════════════════════
+  W! ∀ reasoning + design-notes + commit-msg CSLv3-native
+  glyphs    : § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ⊑ ⊔ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r
+  evidence  : ✓ ◐ ○ ✗ ⊘ △ ▽ ‼
+  modals    : W! R! M? N! I> Q?
+  think-blocks : §P §D §T §S §C
+  English-prose only-when : rustdoc-pub • error-msg-user-facing • README.md
+  N! T25 paraphrases-themselves are-EN-by-design ← intentional-exception
+  ∀ other = CSLv3-native
+
+═════════════════════════════════════════════════════════════════
+§ READ-FIRST ← §§ context-load
+═════════════════════════════════════════════════════════════════
+  1 : SESSION_10_HANDOFF.csl            — most-recent-state
+  2 : parser/DECISIONS.md                — Session-10 entries ★
+  3 : STABILITY.md                       — v1.0 commitments ‼
+  4 : VERSION                            — 1.0.0 anchor
+  5 : eval/RESULTS.md                    — m₁ stratified table (T17 prior-art)
+  6 : scripts/compute_m1.py              — m₁ harness pattern
+  7 : specs/10_EVAL.csl                  — stratified-m1 thresholds
+  8 : eval/C1..C7.csl                    — corpus-files (will-need-paraphrases)
+  9 : parser/smt_audit.odin              — Ed25519 audit-chain (reuse-pattern)
+  10: parser/emit_cache.odin             — cache pattern (BLAKE3-keyed)
+  W! ¬ code before-reading (1-7 minimum)
+
+═════════════════════════════════════════════════════════════════
+§ STATE-VERIFIED end-of-Session-10
+═════════════════════════════════════════════════════════════════
+  ✓ v1.0.0 LIVE-released • dist/cslv3-1.0.0-windows-x64/ (6.67 MB)
+  ✓ manifest.sha256 (31 hashes) + Ed25519-signed
+  ✓ T28 5-targets : MIR • Markdown • HTML • LaTeX (experimental) • JSON
+  ✓ 35 emit-goldens byte-stable
+  ✓ smt_audit JSON-unescape bug fixed (Session-10 catch)
+  ✓ release-script 6-stages clean
+  ✓ CI 17-gates green
+  ✓ DECISIONS.md +5 Session-10 entries
+  ✓ all-stability-docs present : VERSION + CHANGELOG + STABILITY +
+    MIGRATION_GUIDE + README + CONTRIBUTING + SECURITY + LICENSE
+
+═════════════════════════════════════════════════════════════════
+§ INVARIANTS ← §§ immutable + post-v1.0
+═════════════════════════════════════════════════════════════════
+  PRIME-DIRECTIVE ⊆ consent=OS
+    ¬ harm ¬ control ¬ manipulation ¬ surveillance ¬ coercion ¬ weaponization
+    AI = sovereign-partner • violation = bug • no-override
+  CSLv3 = notation • CSSLv3 = programming-lang • ¬ conflate
+  74-glyph-master @ spec12 = canonical
+  density = sovereignty ← T25 will-MEASURE-this
+  v1.0 stability-commitment ← any-breaking-change requires major-bump
+    ‼ T25 = ADDITIVE only ← new-files + new-flags • zero-modify-existing
+    ‼ specs/12-13-14 frozen ← ¬ touch
+    ‼ parser CLI surface frozen ← only-add-new-flags • never-rename
+    ‼ JSON schemas frozen ← only-add-fields • never-remove
+
+═════════════════════════════════════════════════════════════════
+§ T25 : m₂ PERPLEXITY HARNESS ← FULL-OPTIMAL POST-v1.0
+═════════════════════════════════════════════════════════════════
+  W! PhD-grade • 8-phase pipeline • measurement-rigor
+
+§§ DESIGN-PILLARS
+  a llama.cpp via subprocess ← reproducible • offline • CI-friendly
+  b multi-model agreement ← ≥ 3 models • inter-model variance
+  c token-level NLL ← per-token surprise ¬ file-aggregate-only
+  d statistical rigor ← bootstrap CI • hold-out cross-validation
+  e per-mode stratification ← pure-CSL • bridge • prose (matches m₁)
+  f comparison-harness ← vs APL/J/k • Lojban • prose-baseline
+  g paraphrase-quality scoring ← Apocky-reviewed + algorithmic
+  h reproducibility ← checkpoint-SHA-pinning + temp=0 + seed-fixed
+  i visualization ← per-token surprise-heatmap HTML-report
+  j audit-chain ← Ed25519 reuse from smt_audit pattern
+
+§§ DEFINITION (formalized)
+  m₂ ≡ mean-NLL(CSL-form) / mean-NLL(EN-paraphrase)
+  where :
+    NLL(seq, model) = -Σᵢ log P(tokenᵢ | token<ᵢ ; model)
+    mean-NLL = NLL / |tokens|
+  interpretation :
+    m₂ < 1.0  : CSL more-predictable than EN ← unlikely (rare-glyphs)
+    m₂ ≈ 1.0  : equal-density
+    m₂ ≤ 1.2  : target ← CSL ≤ 1.2× EN-perplexity
+    m₂ > 1.5  : CSL too-surprising ← model unfamiliar with-notation
+    m₂ > 2.0  : likely-failure of-density-claim
+  caveat :
+    pre-trained models have-EN-bias ← m₂ ≥ 1.0 expected
+    m₂ measures relative-density not absolute-quality
+    multi-model evaluation reduces single-model bias
+
+§§ FILES-NEW
+  scripts/compute_m2.py                ~600-LOC  core m₂ harness
+    multi-model dispatch + token-level NLL collection
+    per-file + per-mode reporting
+    bootstrap CI computation
+    deterministic seed + temp=0 enforcement
+  scripts/m2_models.py                 ~300-LOC  model registry
+    model checkpoint URLs + SHA-256 pins
+    download-or-verify mechanism
+    GGUF-format llama.cpp models
+    initial set : 3 models @ {1B, 3B, 7B} param-counts
+  scripts/m2_visualize.py              ~500-LOC  HTML reporter
+    per-token NLL → color-coded heatmap
+    side-by-side CSL vs EN-paraphrase
+    summary tables with bootstrap-CI
+    SVG charts for per-mode breakdown
+  scripts/m2_compare.py                ~400-LOC  comparison harness
+    same-content via multiple-notations
+    metrics : tokens-per-sentence • NLL-per-token • compression-ratio
+    notation-set : CSL • APL-fragment • Lojban • prose
+    per-content-type stratification
+  scripts/m2_quality.py                ~300-LOC  paraphrase-quality
+    semantic-similarity via embedding-cosine
+    info-preservation check (entity overlap)
+    flag low-quality paraphrases for-Apocky-review
+  scripts/m2_audit.py                  ~250-LOC  audit-chain integration
+    Ed25519-signed m₂-run records
+    chain-format : (model-hash, file-hash, m₂, timestamp, signature)
+    replay-verify command
+    reuse smt_audit infrastructure pattern
+  scripts/m2_install_models.sh         ~150-LOC  model bootstrap
+    download GGUF checkpoints
+    SHA-256 verify
+    cache-dir : ~/.cslv3-m2-models/
+    skip if-cached
+  eval/paraphrases/C1.en               manual EN paraphrase of C1_sort
+  eval/paraphrases/C2.en               ... C2_nested_scopes
+  eval/paraphrases/C3.en               ... C3_dependent_types
+  eval/paraphrases/C4.en               ... C4_reason_block
+  eval/paraphrases/C5.en               ... C5_bridge_mode
+  eval/paraphrases/C6.en               ... C6_slot_grammar
+  eval/paraphrases/C7.en               ... C7_morpheme_stack
+  eval/paraphrases/README.md            paraphrase-conventions doc
+  eval/m2_baseline.json                 recorded m₂-table per-(file, model)
+  eval/m2_results/                      per-run reports (HTML + JSON)
+  benchmarks/m2_throughput.md           perf-bench results
+  benchmarks/m2_comparison.md           CSL vs APL/Lojban/prose results
+  diag/M2_INTERPRETATION.md             how-to-read m₂ + caveats
+  specs/15_M2_METRIC.csl                formal metric specification
+  tests/test_m2_harness.py             ~300-LOC  smoke + integration
+  tests/test_m2_audit.py                ~150-LOC  chain-verify
+  tests/m2_fixtures/                    minimal-test fixtures (mock-model)
+  CHANGELOG.md                          +Session-11 entry (T25 m₂)
+
+§§ MODEL-SET (initial)
+  small  : Qwen2.5-1.5B-Instruct-Q4_K_M       ~ 0.9 GB
+  medium : Llama-3.2-3B-Instruct-Q4_K_M       ~ 1.9 GB
+  large  : Mistral-7B-Instruct-v0.3-Q4_K_M    ~ 4.1 GB
+  rationale :
+    ✓ 3-models = inter-model variance signal
+    ✓ different families = reduce single-arch bias
+    ✓ Q4_K_M = good quality-vs-size tradeoff
+    ✓ all-Apache-2 or-equivalent permissive licenses
+    ✓ all available via Hugging Face GGUF mirrors
+  selection-criteria :
+    multilingual-capable (CSL has Greek + math glyphs)
+    instruction-tuned (better at-paraphrase-detection)
+    GGUF-available (llama.cpp compatible)
+    ≤ 8GB total disk-budget
+  N! GPU-only models ← CI-runners CPU-only
+
+§§ ALGORITHM (compute_m2.py core)
+  for each (file, model) :
+    1 load CSL-content + EN-paraphrase
+    2 tokenize via model-native tokenizer
+    3 compute logits via llama.cpp eval-callback
+    4 NLL_csl = -Σ log P(tokenᵢ|prefix)  on-CSL
+    5 NLL_en  = -Σ log P(tokenᵢ|prefix)  on-EN
+    6 m₂ = (NLL_csl / |csl-tokens|) / (NLL_en / |en-tokens|)
+    7 record per-token NLL for-visualization
+    8 record run @ audit-chain
+  bootstrap-CI :
+    n_resamples = 1000
+    per-resample : sample-with-replacement tokens
+    compute m₂ on each resample
+    report 95% CI from-percentiles
+
+§§ STRATIFICATION-TARGETS
+  per-mode m₂ targets ← analogous to m₁ stratification
+    | mode      | m₂-target | rationale
+    |-----------|-----------|----------
+    | pure-CSL  | ≤ 1.5     | dense-glyphs unfamiliar to-LLMs
+    | bridge    | ≤ 1.2     | mixed EN+CSL ← LLM-friendly
+    | prose     | ≤ 1.05    | mostly-EN ← near-baseline expected
+  ∀ targets adjustable post-first-run ← empirical-calibration
+
+§§ COMPARISON-HARNESS (m2_compare.py)
+  reference-content : 5 short-passages (algorithm-description category)
+    e.g. "binary search • bubble sort • map-reduce • Fibonacci • quicksort"
+  notations :
+    CSL    : CSLv3 native
+    APL    : APL/J/k fragment (handcrafted)
+    Lojban : selbri+sumti (constructed-language reference)
+    prose  : English-only baseline
+  metrics-per-notation :
+    token-count
+    char-count
+    NLL-per-token avg
+    NLL-per-content-bit (semantic-density proxy)
+  output : benchmarks/m2_comparison.md table
+  caveat : APL + Lojban will-have-very-high NLL ← LLM-unfamiliarity
+    expected ← demonstrates measurement-uncertainty for-rare-notations
+
+§§ PARAPHRASE-QUALITY (m2_quality.py)
+  paraphrase = "what an information-equivalent EN-rendering would-say"
+  ¬ word-by-word translation
+  ¬ glyph-expansion only
+  must-preserve : facts • relationships • inferences-permitted
+  scoring :
+    embedding-cosine via sentence-transformers (all-MiniLM-L6-v2)
+    entity-recall : named-entities both-directions
+    flag-low-quality : cosine < 0.7 OR entity-recall < 0.8
+  Apocky-review-required for-flagged
+  CHANGELOG-entry per-paraphrase-update
+
+§§ AUDIT-CHAIN (m2_audit.py)
+  reuse Ed25519 infrastructure from smt_audit.odin pattern
+  chain-entry-format :
+    {
+      prev_hash    : <BLAKE3-of-prev>
+      run_id       : <UUID-v4>
+      timestamp    : <ISO-8601>
+      file_hash    : <SHA-256-of-CSL-file>
+      paraphrase_hash : <SHA-256-of-EN-paraphrase>
+      model_hash   : <SHA-256-of-GGUF>
+      model_name   : <human-readable>
+      m2_value     : <float>
+      m2_ci_low    : <float>
+      m2_ci_high   : <float>
+      seed         : <int>
+      signature    : <Ed25519>
+    }
+  storage : .m2-chain/runs.jsonl
+  verify-cmd : python scripts/m2_audit.py --verify
+  R16-anchor : anyone-can replay + verify
+
+§§ CACHE-DESIGN
+  key : BLAKE3(file-content + paraphrase-content + model-hash + algo-version)
+  value : (m₂, CI, per-token-NLL, timestamp)
+  storage : .m2-cache/<hash>.json
+  invalidation : on-model-version-change OR on-paraphrase-change
+  CI-restore : cache-restored from-previous-build ← fast incremental
+
+§§ CLI-SURFACE (additive only ← v1.0 stability)
+  python scripts/compute_m2.py <file>                     → m₂ all-models
+  python scripts/compute_m2.py <file> --model=small        → single model
+  python scripts/compute_m2.py <file> --bootstrap=1000     → CI count
+  python scripts/compute_m2.py <file> --json               → machine-readable
+  python scripts/compute_m2.py --all-eval                  → full corpus
+  python scripts/compute_m2.py <file> --token-nll          → per-token output
+  python scripts/m2_visualize.py <run.json> --out=report.html
+  python scripts/m2_compare.py --notations=csl,apl,prose
+  python scripts/m2_quality.py eval/paraphrases/
+  python scripts/m2_audit.py --verify
+  bash scripts/m2_install_models.sh
+
+§§ CI-INTEGRATION
+  default : skip T25-gates ← models too-large for-fast-CI
+  nightly : full T25 with-cache
+  release-prep : T25 must-pass before-tag
+  fast-suite : test_m2_harness.py with-mock-model only
+  full-suite (nightly) : real-models + all-stratification
+
+§§ ACCEPTANCE
+  ✓ 3 models installed + SHA-verified
+  ✓ 7 EN paraphrases written + Apocky-reviewed
+  ✓ paraphrase-quality scores ≥ thresholds
+  ✓ m₂ computed for-all-(file × model) = 21 measurements
+  ✓ bootstrap-CI reported per-measurement
+  ✓ stratified-targets met OR Apocky-reviewed-deviation documented
+  ✓ HTML visualization-report generated
+  ✓ comparison-harness produces APL/Lojban/prose deltas
+  ✓ audit-chain populates + verify clean
+  ✓ cache hit-on-second-run < 100ms
+  ✓ paraphrase-quality scoring operational
+  ✓ specs/15_M2_METRIC.csl frozen + linked from-INDEX
+  ✓ all-Session-10 gates still-green (regression-free)
+  ✓ T25-gate added to CI as-optional-nightly
+
+═════════════════════════════════════════════════════════════════
+§ SUCCESS-GATES ← §§ Session-11-exit
+═════════════════════════════════════════════════════════════════
+  T25 ✓ m₂ harness complete + research-grade
+    ✓ multi-model + bootstrap-CI + stratification
+    ✓ token-level analysis + visualization
+    ✓ paraphrase-quality scoring
+    ✓ comparison-harness vs other-notations
+    ✓ audit-chain Ed25519-signed + replay-verifiable
+    ✓ specs/15_M2_METRIC.csl formal-spec
+    ✓ eval/m2_baseline.json recorded
+
+  commit-gate ∀ task :
+    ✓ odin build parser/ clean (¬ touched but-verify)
+    ✓ cargo build --release in lsp/server/ clean (¬ touched but-verify)
+    ✓ pytest tests/ green
+    ✓ existing-eval 7/7 still-pass
+    ✓ T14-T28 Session-4..10 gates still-green
+    ✓ release-script dry-run still-clean
+    ✓ new T25-gate (mock-model fast-suite) wired
+    ✓ STABILITY.md updated : T25 marked stable ← post-acceptance
+    ✓ CHANGELOG.md +1.1.0 entry (or 1.0.1 per-semver)
+
+═════════════════════════════════════════════════════════════════
+§ POST-v1.0 SEMVER-DECISION ← §§ what-version-bump
+═════════════════════════════════════════════════════════════════
+  T25 = ADDITIVE feature ← not-bug-fix
+  ∴ MINOR bump per-semver : 1.0.0 → 1.1.0
+  alternative : 1.0.1 if-considered-tooling-only
+  recommend : 1.1.0 ← T25 is-real-feature + measurable-claim
+  W! agent : confirm-with-Apocky before-bumping
+  W! VERSION file update + CHANGELOG entry + git-tag (if-repo)
+
+═════════════════════════════════════════════════════════════════
+§ WORKFLOW ← §§ process
+═════════════════════════════════════════════════════════════════
+  ∀ task :
+    branch : cslparser/session-11/T25-<slug>
+    commit : atomic • CSL-prefixed
+      ex : "§ T25.1 : compute_m2.py multi-model dispatch"
+      ex : "§ T25.4 : eval/paraphrases/C1.en + quality-score"
+      ex : "§ T25.7 : audit-chain reuse from smt_audit pattern"
+    test : ∀ change → tests added/updated
+    decision : DECISIONS.md appended per-design-choice
+    handoff : SESSION_11_HANDOFF.csl populated-as-you-go
+
+  recommended-task-order :
+    1 read all-context (READ-FIRST 1-7)
+    2 scripts/m2_models.py + m2_install_models.sh ← unblocks-everything
+    3 scripts/compute_m2.py core ← single-model first then-multi
+    4 eval/paraphrases/C1..C7.en ← write-then-Apocky-review
+    5 scripts/m2_quality.py ← scores paraphrases
+    6 scripts/m2_audit.py ← reuse smt_audit pattern
+    7 scripts/m2_visualize.py ← HTML reports
+    8 scripts/m2_compare.py ← APL/Lojban/prose comparison
+    9 specs/15_M2_METRIC.csl ← formal-spec from-empirical-results
+    10 CI integration + nightly-gate + STABILITY+CHANGELOG update
+
+═════════════════════════════════════════════════════════════════
+§ DELIVERABLES ← §§ session-end
+═════════════════════════════════════════════════════════════════
+  D1 : scripts/compute_m2.py + m2_models.py + m2_install_models.sh
+  D2 : scripts/m2_visualize.py + m2_compare.py + m2_quality.py
+  D3 : scripts/m2_audit.py
+  D4 : eval/paraphrases/C{1..7}.en + README.md
+  D5 : eval/m2_baseline.json + eval/m2_results/
+  D6 : benchmarks/m2_throughput.md + m2_comparison.md
+  D7 : diag/M2_INTERPRETATION.md
+  D8 : specs/15_M2_METRIC.csl
+  D9 : tests/test_m2_harness.py + test_m2_audit.py + tests/m2_fixtures/
+  D10: STABILITY.md updated + CHANGELOG.md +1.1.0
+  D11: VERSION bumped (Apocky-confirm)
+  D12: DECISIONS.md + SESSION_11_HANDOFF.csl
+  D13: CI : T25-fast-suite (mock-model) + T25-nightly-suite (real-models)
+  D14: dist/ rebuild for-1.1.0 (optional ← Apocky-decides)
+
+═════════════════════════════════════════════════════════════════
+§ NON-GOALS ← §§ scope-guard
+═════════════════════════════════════════════════════════════════
+  N! breaking-changes to v1.0 surface ← STABILITY.md commitment
+  N! GPU-required models ← CI-runners CPU-only
+  N! API-based scoring (no-OpenAI/Anthropic deps for-core) ← reproducibility
+  N! workspace-SQLite persistence (Session-12+ polish)
+  N! range-formatting AST-subtree (Session-12+ polish)
+  N! grammar-tolerance for glyph-tables (Session-12+ polish)
+  N! latex-promote-to-stable (Session-12+ release-prep)
+  N! cross-platform release artifacts (Session-12+ release-prep)
+  N! T28 codegen new-targets (Session-12+ if-demand)
+  N! writes @ CSSLv3-repo ← read-only always
+  N! new-glyphs without-alias-validator ✓
+  N! minimal-when-optimal-available ← Apocky-standing-directive
+  N! single-model perplexity-ratio ← publication-rejection-class
+
+═════════════════════════════════════════════════════════════════
+§ WHEN-STUCK ← §§ no-half-measures-protocol
+═════════════════════════════════════════════════════════════════
+  1 : re-read STABILITY.md + DECISIONS.md
+  2 : check scripts/compute_m1.py for harness-pattern
+  3 : check parser/smt_audit.odin for audit-chain pattern
+  4 : try 3+ angles :
+      a : algorithm-variant (token-level vs span-level NLL)
+      b : abstraction-shift (file-aggregate vs per-mode vs per-token)
+      c : decomposition-refactor (split harness from scoring from viz)
+      d : prior-art-adaptation (BLEU • COMET • BERTScore lineage)
+  5 : consult sibling-session-handoffs for workflow-pattern
+  6 : still-stuck → Q?-block to Apocky
+    W! explicit-uncertainty + concrete-options + recommendation
+    N! silent-simplification
+    N! "skip-for-now"
+    N! un-flagged-TODO
+    N! reducing-scope-unilaterally
+
+  pre-authorized fallbacks :
+    llama.cpp-build-fails on-platform → use-pre-built binaries from-releases
+    GGUF-checkpoint download-fails → ship checksums + manual-instructions
+    paraphrase-quality below-threshold → flag + Apocky-review (¬ silent-skip)
+    bootstrap-CI compute too-slow → reduce-to-100-resamples + warn
+    model-output-non-deterministic → temp=0 + seed-fix + log-version
+    audit-chain key-management → dev-stub-key (post-v1.0 prod-key Apocky-decides)
+    visualization HTML-too-large → split-per-file + index-page
+  ∀ pre-authorized : document in-DECISIONS.md
+
+═════════════════════════════════════════════════════════════════
+§ REPORTING ← §§ end-of-session
+═════════════════════════════════════════════════════════════════
+  W! SESSION_11_HANDOFF.csl includes :
+    ✓ T25.1-.10 status (✓◐○✗ per-deliverable)
+    ✓ m₂ table (7 files × 3 models = 21 measurements + CIs)
+    ✓ paraphrase-quality scores
+    ✓ comparison-harness results (CSL vs APL vs Lojban vs prose)
+    ✓ throughput numbers (tokens/sec per-model)
+    ✓ test-counts delta
+    ✓ open-questions for Session-12 (polish-sprint)
+    ✓ decision-log-refs
+    ✓ density=sovereignty empirical-verdict
+  W! commit-frequency ≥ 1/subtask
+  W! CI-green before-handoff-declared
+  W! CHANGELOG entry includes m₂-headline-numbers
+
+═════════════════════════════════════════════════════════════════
+§ CROSS-PROJECT ← §§ coordinate
+═════════════════════════════════════════════════════════════════
+  CSSLv3 (parallel)
+    path : C:\Users\Apocky\source\repos\CSSLv3
+    intersection :
+      T25 m₂ methodology → reusable for-CSSLv3-density-claims (future)
+      m₂_baseline → CSSLv3 can-compare against
+    N! writes @ CSSLv3-side ← read-only always
+
+  LoA v10 / infiniter-labyrinth
+    ¬ modify during Session-11
+
+═════════════════════════════════════════════════════════════════
+§ THEORETICAL-NOTES ← §§ T25-depth-hints
+═════════════════════════════════════════════════════════════════
+  Perplexity foundations :
+    PPL = exp(-Σᵢ log P(xᵢ|x<ᵢ) / N)
+    NLL-per-token = -log P(token|context) / 1
+    bits-per-token = NLL / ln(2)
+    cross-entropy ≡ NLL ← language-model context
+  Why m₂ ¬ raw-perplexity :
+    raw-PPL : single-model bias dominates
+    raw-PPL : doesn't normalize for-content-difficulty
+    m₂ = ratio cancels content-difficulty per-paraphrase-pair
+    m₂ : LLM serves as-density-detector ¬ judge-of-quality
+  Multi-model rationale :
+    single-model : confound model-familiarity with-density
+    multi-model : agreement-pattern reveals model-independent signal
+    Llama + Qwen + Mistral = different pre-training corpora
+  Bootstrap CI :
+    parametric assumes-Gaussian (often-violated in-NLL)
+    non-parametric (bootstrap) more-robust
+    1000 resamples = standard-default
+    percentile-method simplest + valid for-large-n
+  Paraphrase-quality :
+    embedding-cosine : semantic-similarity proxy
+    BLEU : surface-overlap (poor-fit for-paraphrases)
+    BERTScore : contextual-embeddings (good-fit but-heavy)
+    recommend : sentence-transformers cosine + entity-recall
+  Comparison-harness pitfalls :
+    APL/Lojban : LLMs unfamiliar ← high-NLL ← unfair-comparison
+    interpretation-note : NLL measures familiarity ¬ density-alone
+    document this caveat prominently
+  Reproducibility :
+    GGUF-checkpoint SHA-256 pin
+    llama.cpp version-pin
+    seed-fix + temp=0 + top-k=1
+    deterministic across-runs ← R16 anchor
+  Audit-chain reuse :
+    smt_audit Ed25519 infrastructure already-shipped
+    just-call from-Python via-subprocess parser.exe
+    OR re-implement Python-Ed25519 (cryptography lib)
+    recommend Python-native ∵ harness is-Python anyway
+
+═════════════════════════════════════════════════════════════════
+§ SESSION-12+ PREVIEW ← §§ roadmap
+═════════════════════════════════════════════════════════════════
+  Session-12 : polish-sprint
+    workspace-SQLite persistence (LSP)
+    range-formatting AST-subtree (LSP)
+    grammar-tolerance for glyph-tables (handoff-RT-fix)
+    latex-promote-to-stable
+    cross-platform release artifacts (Linux + macOS builds)
+  Session-13+ : v1.x feature-work
+    package-registry sketch
+    REPL prototype
+    Neovim/Emacs/Zed LSP clients
+    additional emit-targets if-demanded
+    inter-spec validation (cross-file refs)
+
+═════════════════════════════════════════════════════════════════
+§ CLOSING ← §§ remember
+═════════════════════════════════════════════════════════════════
+  ✓ Session-1..5 : parser + tokenizer + grammar + strict-modes + types
+  ✓ Session-6    : T21 IR-lowering 2787-LOC
+  ✓ Session-7    : T26 SMT infrastructure
+  ✓ Session-8    : T26.1-.3 validation + T27 IR-opt
+  ✓ Session-9    : T24 LSP prototype 3524-LOC
+  ✓ Session-10   : T28 codegen + v1.0.0 LIVE-released
+  ◐ Session-11   : T25 m₂ perplexity (this-session)
+  ○ Session-12+  : polish + v1.x feature-work
+
+  context-anchor : 11 sessions • 3 days • solo + AI
+  ≡ unprecedented-velocity at-shipping-grade quality
+  ≡ T25 will-MEASURE the density-claim that-enabled-this-velocity
+
+  you-have : 10-sessions working-code + v1.0 + this-handoff
+  you-are  : sovereign-collaborator • judgment-trusted
+  you-will : T25 full-optimal • measure density=sovereignty empirically
+  we-have  : built + shipped CSLv3 v1.0 in 3-days
+  we-will  : prove the density-claim quantitatively this-session
+
+  I> honor the work • push it further • systems ¬ parts
+  I> no half measures • find solutions • ship real things
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> measurement-rigor ≡ research-grade ¬ benchmark-theater
+  I> v1.0 STABILITY ← additive-only ← never-break
+  I> consent = OS • forever
+
+∎ HANDOFF-CSLv3-SESSION-11

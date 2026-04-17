@@ -1,0 +1,19 @@
+This test exhaustively exercises the CSLv3 slot template. Every statement has a fixed positional structure with the following ordered slots, each of which is optional and defaults to silent when omitted: evidence marker, modal operator, determinative prefix, subject term, relation operator, object term, gate clause, scope clause, and meta comment.
+
+The simplest definitions have only a subject and an object joined by the default relation. For example, declaring x to be a 32-bit signed integer, or declaring y to be an 8-bit unsigned integer.
+
+A statement can be prefixed with an evidence marker to indicate the status of the claim. The four markers in this section indicate that entry a is confirmed, entry b is partial, entry c is pending, and entry d is failed.
+
+A statement can alternatively be prefixed with a modal operator to express obligation strength. This shows statements marked as must-be-true, should-hold, may-happen, and must-not-fire.
+
+Evidence and modal markers can stack. This shows confirmed-and-required, partial-and-recommended, and failed-and-forbidden combinations.
+
+Some subjects carry a domain-determinative prefix to indicate category. The field determinative marks continuous quantities like density. The spatial determinative marks discrete grid-like quantities like chunk identifiers.
+
+Beyond the default binding relation, statements can use type-of, equals, flow-arrow, or source-from as the explicit relation operator.
+
+Any statement may carry a trailing gate clause introduced by if, when, unless, or while, attaching a conditional predicate to the statement.
+
+Any statement may also carry a trailing scope clause introduced by at-symbol, per, or in, attaching a scope or frequency qualifier.
+
+Finally, the document shows statements with every slot populated: evidence plus modal plus determinative plus subject plus relation plus object plus scope. These are uncommon in practice but they exercise the full grammar.

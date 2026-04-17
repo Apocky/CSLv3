@@ -1,0 +1,11 @@
+The agent's reasoning substrate follows a five-part structure inspired by problem-solving methodology, consisting of Problem, Decomposition, Trace, Synthesis, and Check. This trace is an example chain-of-thought for a parser-speed regression.
+
+There is a parser-speed regression after the recent lexer rewrite. The goal of the investigation is to restore the ten-thousand-lines-per-second baseline throughput that was measured before the rewrite.
+
+The slowdown is broken into three candidate causes. It could be heap allocation overhead that increased, it could be the dispatch pattern in the main tokenizer switch becoming more expensive, or it could be rune-decoding in the UTF-8 handling path becoming slower.
+
+Heap allocation is profiled first. The profiler shows allocation volume is flat compared to before, so allocation is not the culprit. Dispatch is profiled next. The switch appears about eight percent worse than before, which is a small regression but not large enough to explain the total slowdown on its own. Finally rune decoding is micro-benchmarked. The decode path is forty percent slower than before, and that is the dominant cause.
+
+The synthesis of the investigation is that the primary culprit is the rune-decode path. The proposed fix is to add a fast path for ASCII characters that caches the UTF-8 width calculation, so single-byte characters can skip the general decoder entirely.
+
+After the fix, throughput is restored to within two percent of the original baseline. As an edge case, input that is heavily unicode remains about fifteen percent slower than the baseline. That is an accepted regression for the ASCII optimization. A second-phase SIMD decoder could address it later.

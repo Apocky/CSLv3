@@ -1,4 +1,4 @@
-# Stability Matrix — CSLv3 v1.0.0
+# Stability Matrix — CSLv3 v1.1.0
 
 Post-v1.0 contract: components marked **stable** require a MAJOR version
 bump for breaking changes. Components marked **experimental** may change
@@ -25,6 +25,9 @@ within a MINOR bump with deprecation notice.
 | emit-latex (T28.4)       | experimental  | `latex-v1` ; requires `latexmk`/XeLaTeX        |
 | emit-json (T28.5)        | stable        | `json-v1` unified schema                       |
 | cssllint JSON            | stable        | Contract frozen in `specs/14_CSSLv3_BRIDGE.csl`|
+| m₂ metric (T25)          | experimental  | v1.1.0-introduced ; promotes to stable on acceptance review |
+| m₂ harness scripts       | experimental  | `scripts/compute_m2.py` + friends ; additive-only post-v1.0 |
+| m₂ audit-chain           | experimental  | `.m2-chain/` Ed25519 JSONL ; shares key-mgmt with T26 |
 
 ## Diagnostic code namespace (frozen)
 
@@ -35,6 +38,7 @@ within a MINOR bump with deprecation notice.
 - **CSL-E/W/I-4xx** — SMT discharge (T26)
 - **CSL-E/W/I-5xx** — opt-pass diagnostics (T27)
 - **CSL-E/W/I-6xx** — emit (T28)
+- **CSL-I-7xx** — m₂ metric harness (T25, v1.1.0) — reserved; no codes emitted yet
 
 Any new code added within a namespace is a MINOR change. Renumbering
 existing codes within a namespace is a MAJOR change.

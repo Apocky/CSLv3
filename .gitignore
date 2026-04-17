@@ -1,0 +1,56 @@
+# CSLv3 ignored patterns
+
+# Build output
+parser.exe
+*.obj
+*.o
+*.pdb
+/dist/
+
+# LSP (Rust)
+/lsp/target/
+/lsp/editors/vscode/node_modules/
+/lsp/editors/vscode/out/
+/lsp/editors/vscode/*.vsix
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Runtime-generated caches + audit-chains
+/.proof/
+/.proof-cache/
+/.emit-cache/
+/.m2-cache/
+/.m2-chain/
+# Genesis keys — dev-stub ; commit public key if you want, skip private
+/.m2-chain/keys/private.key
+
+# Eval run output
+/eval/m2_results/
+/eval/m2_baseline.html
+/eval/m2_quality.json
+
+# LaTeX PDFs (large binary ; regenerate via latexmk)
+/eval/latex_pdfs/
+
+# Ollama / Qwen integration scratch (we shouldn't commit model weights anyway)
+/qwen/system_prompt.txt
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.bak
+/diag/*_temp.md

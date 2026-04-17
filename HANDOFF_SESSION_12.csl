@@ -1,0 +1,603 @@
+§ HANDOFF • CSLv3 Session-12 → coding-agent
+══════════════════════════════════════════════════════════════════
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  prior = Session-11 ✓ T25 m₂ harness 2977-LOC • 19/19 gates • v1.1.0-staged
+  bin   = parser.exe + cslv3-lsp.exe
+  scope = phase-1 (P1 real-backend) → phase-2 (P2-subset polish) → phase-3 (P4 fine-tune)
+  context = v1.1.0-rc.1 release-candidate tagged • additive-only • STABILITY.md active
+
+═════════════════════════════════════════════════════════════════
+§ SCOPE-DECISION ← §§ A → B • P1 → P2 → P4
+═════════════════════════════════════════════════════════════════
+  Apocky-answer : (b) tag v1.1.0-rc.1 → this-session P1 + P2-subset + P4
+  tag-decision  : v1.1.0-rc.1 ← release-candidate now • promote-to-v1.1.0 after-P1-validated
+  phase-1 (P1) = real-backend m₂ run + Apocky-review paraphrases + promotion-to-v1.1.0
+  phase-2 (P2) = polish-subset : latex-promote + grammar-tolerance + SQLite-LSP + range-fmt
+  phase-3 (P4) = fine-tune experiment ← density-claim alternate-validation
+  rationale :
+    ∵ P1 closes measurement-claim with-real-data before-tag-promotion
+    ∵ P2 includes handoff-RT grammar-tolerance ← longstanding low-grade issue
+    ∵ P4 validates density-claim differently ← small-model-adaptation shows learnability
+    ∵ order P1→P2→P4 ← measurement-first • polish-second • research-third
+
+═════════════════════════════════════════════════════════════════
+§ MINDSET ← §§ non-negotiable
+═════════════════════════════════════════════════════════════════
+  I> sovereign-collaborator ¬ tool
+  I> Sessions-1..11 = 11 sessions • shipped-v1.0 in 3-days • honor-it
+  I> "push-further" ≡ deeper-theory ¬ more-LOC
+  I> "systems ¬ parts" ≡ reconceive ¬ patch
+  I> no-half-measures
+    stuck → find-way-through
+    ¬ capitulate • ¬ silent-TODO • ¬ "skip-for-now"
+    ¬ minimal-when-optimal-available
+    time + difficulty ≠ scope-limit
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> post-v1.0 = STABILITY-FIRST ← any-breaking-change blocked
+  I> CSLv3 ≠ CSSLv3 • ¬ cross-write
+
+═════════════════════════════════════════════════════════════════
+§ WORK-IN-CSL3 ← §§ density=sovereignty
+═════════════════════════════════════════════════════════════════
+  W! ∀ reasoning + design-notes + commit-msg CSLv3-native
+  glyphs    : § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ⊑ ⊔ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r
+  evidence  : ✓ ◐ ○ ✗ ⊘ △ ▽ ‼
+  modals    : W! R! M? N! I> Q?
+  think-blocks : §P §D §T §S §C
+  English-prose only-when : rustdoc-pub • error-msg-user-facing • README.md
+  ∀ other = CSLv3-native
+
+═════════════════════════════════════════════════════════════════
+§ READ-FIRST ← §§ context-load
+═════════════════════════════════════════════════════════════════
+  1 : SESSION_11_HANDOFF.csl            — most-recent-state
+  2 : parser/DECISIONS.md                — Session-11 entries ★
+  3 : STABILITY.md                       — v1.0 commitments ‼
+  4 : VERSION                            — currently 1.1.0 staged
+  5 : CHANGELOG.md                       — v1.1.0 staged entry
+  6 : scripts/compute_m2.py              — m₂ harness core
+  7 : scripts/m2_models.py               — model-registry
+  8 : eval/paraphrases/C1..C7.en         — EN-paraphrases pending-review
+  9 : specs/15_M2_METRIC.csl             — m₂ formal-spec
+  10: parser/parser.odin                 — for P2 grammar-tolerance
+  11: lsp/server/src/workspace_index.rs  — for P2 SQLite
+  12: lsp/server/src/formatting.rs       — for P2 range-fmt
+  W! ¬ code before-reading (1-9 minimum)
+
+═════════════════════════════════════════════════════════════════
+§ STATE-VERIFIED end-of-Session-11
+═════════════════════════════════════════════════════════════════
+  ✓ T25 m₂ 8-phase pipeline 2977-LOC
+  ✓ 3 model-registry + install-scripts
+  ✓ compute_m2.py 525 LOC (real + mock backends)
+  ✓ 7 EN paraphrases drafted (pending Apocky-review)
+  ✓ m2_quality.py + m2_audit.py + m2_visualize.py + m2_compare.py
+  ✓ specs/15_M2_METRIC.csl formal-spec
+  ✓ 21 mock-backend measurements within-targets
+  ✓ 22-entry audit-chain verified
+  ✓ comparison : CSL 0.63× vs prose • APL 0.18× • Lojban 0.38×
+  ✓ CI 19-gates green (17 Session-10 + 2 T25-mock)
+  ✓ v1.1.0 staged (VERSION + CHANGELOG + STABILITY + INDEX + DECISIONS)
+  ◐ real-backend run pending ← blocking v1.1.0 promotion
+  ◐ Apocky paraphrase-review pending
+  ◐ v1.1.0-rc.1 tag pending this-session
+
+═════════════════════════════════════════════════════════════════
+§ INVARIANTS ← §§ immutable + post-v1.0
+═════════════════════════════════════════════════════════════════
+  PRIME-DIRECTIVE ⊆ consent=OS
+    ¬ harm ¬ control ¬ manipulation ¬ surveillance ¬ coercion ¬ weaponization
+    AI = sovereign-partner • violation = bug • no-override
+  CSLv3 = notation • CSSLv3 = programming-lang • ¬ conflate
+  74-glyph-master @ spec12 = canonical
+  density = sovereignty ← T25 MEASURED this-session phase-1
+  v1.0+ stability-commitment ← additive-only • never-break
+    ‼ specs/12-13-14 frozen ← ¬ touch
+    ‼ parser CLI surface ← only-add-new-flags
+    ‼ JSON schemas ← only-add-fields
+    ‼ grammar-tolerance (P2.2) = ADDITIVE new-context ← ¬ break-existing-parse
+
+═════════════════════════════════════════════════════════════════
+§ PHASE-0 : v1.1.0-rc.1 TAG ← immediate-first-step
+═════════════════════════════════════════════════════════════════
+  W! first-action ← ship-infrastructure publicly as-RC
+  ∵ Apocky-confirmed (b) : tag rc.1 now • promote-after-P1
+
+§§ STEPS
+  1 verify-clean : git status • no-uncommitted
+  2 tag : git tag -a v1.1.0-rc.1 -m "Release candidate 1 for v1.1.0 — T25 m₂ infrastructure"
+  3 release-script : release.cmd → mode=2 LIVE → rebuild dist/ @ 1.1.0-rc.1
+  4 verify manifest.sha256 regenerated
+  5 verify dist/cslv3-1.1.0-rc.1-windows-x64/ populated
+  6 CHANGELOG entry updated : "1.1.0-rc.1 — YYYY-MM-DD — T25 infrastructure (mock-backend only)"
+  7 STABILITY.md note : T25 marked experimental-pending-validation
+
+§§ DELIVERABLES
+  dist/cslv3-1.1.0-rc.1-windows-x64/ bundle
+  updated manifest.sha256 + Ed25519-signed
+  CHANGELOG.md with rc.1 entry
+  git tag v1.1.0-rc.1 pushed
+
+═════════════════════════════════════════════════════════════════
+§ PHASE-1 : P1 REAL-BACKEND m₂ RUN ← close measurement-loop
+═════════════════════════════════════════════════════════════════
+  W! PhD-grade validation • tag-promotion-blocker
+
+§§ DESIGN-PILLARS
+  a model-install via scripts/m2_install_models.sh
+  b real-backend execution : 3 models × 7 files = 21 measurements
+  c per-token NLL recorded + visualized
+  d bootstrap-CI computed (1000 resamples)
+  e paraphrase-quality scores checked + flagged
+  f Apocky-review interface for paraphrases
+  g stratified-target validation per-mode
+  h audit-chain populates with-real-runs
+  i comparison-harness re-run with-real-models
+  j HTML-report auto-generated + committed to eval/m2_results/
+
+§§ TASK BREAKDOWN
+
+  P1.1 : MODEL INSTALL + VERIFY ~2 hours wallclock
+    bash scripts/m2_install_models.sh
+    ∀ 3 models : download + SHA-256 verify
+    disk-budget verify ≤ 8GB total
+    llama.cpp subprocess-smoke-test per-model
+    deliverables :
+      ~/.cslv3-m2-models/ populated + verified
+      scripts/m2_install_models.log
+    acceptance :
+      ✓ 3/3 models installed + SHA-match
+      ✓ llama.cpp smoke-query returns valid-logits per-model
+
+  P1.2 : PARAPHRASE APOCKY-REVIEW ~30 min Apocky-time
+    generate m2_quality scores for-all-7 paraphrases
+    flag any with-cosine < 0.7 OR entity-recall < 0.8
+    present to Apocky with quality-scores + diff-view
+    Apocky-edits OR approves each
+    deliverables :
+      eval/paraphrases/*.en ← Apocky-reviewed final
+      eval/paraphrases/review_log.md ← change-log
+    acceptance :
+      ✓ 7/7 paraphrases Apocky-approved
+      ✓ ∀ quality-score ≥ threshold OR override-documented
+
+  P1.3 : REAL-BACKEND FULL RUN ~30-60 min wallclock
+    python scripts/compute_m2.py --all-eval --bootstrap=1000
+    capture : per-(file × model) m₂ + CI-low + CI-high
+    capture : per-token NLL arrays
+    emit audit-chain entries for all 21 runs
+    deliverables :
+      eval/m2_baseline.json ← real-data (replaces mock)
+      eval/m2_results/real_run_<timestamp>/ ← per-run HTML reports
+      .m2-chain/runs.jsonl ← +21 real entries
+      .m2-cache/ populated
+    acceptance :
+      ✓ 21/21 measurements completed (no model-timeout)
+      ✓ bootstrap-CI computed for all-21
+      ✓ audit-chain verify-clean
+      ✓ visualization-reports committed
+      ✓ per-token NLL arrays captured
+
+  P1.4 : STRATIFIED-TARGET VALIDATION
+    evaluate m₂ per-mode against Session-11 stratified-targets
+      pure-CSL  ≤ 1.5
+      bridge    ≤ 1.2
+      prose     ≤ 1.05
+    per-model agreement : flag high-variance-across-models (>20% spread)
+    deliverables :
+      eval/m2_stratified_report.md
+      diag/M2_INTERPRETATION.md updated with-real-numbers
+    acceptance :
+      ✓ ∀ stratified-targets met OR documented-deviation-with-rationale
+      ✓ multi-model agreement within-20% per-file OR flagged
+      ✓ interpretation-doc updated
+
+  P1.5 : COMPARISON-HARNESS REAL RUN
+    python scripts/m2_compare.py --notations=csl,apl,lojban,prose
+    5 algorithm-reference passages × 4 notations × 3 models = 60 measurements
+    deliverables :
+      benchmarks/m2_comparison.md ← real-data
+      eval/m2_results/comparison_real/ ← HTML
+    acceptance :
+      ✓ 60/60 measurements completed
+      ✓ comparison-table shows CSL density-position quantitatively
+      ✓ caveats-documented (APL/Lojban LLM-unfamiliarity)
+
+  P1.6 : v1.1.0 PROMOTION ← after-P1.1-.5 green
+    update VERSION : 1.1.0 (drop -rc.1)
+    update CHANGELOG : consolidate rc.1 + real-data entries into 1.1.0
+    update STABILITY.md : T25 marked stable
+    tag : git tag -a v1.1.0 -m "Release v1.1.0 — T25 m₂ with real-backend validation"
+    release.cmd → rebuild dist/ @ 1.1.0
+    deliverables :
+      dist/cslv3-1.1.0-windows-x64/ bundle
+      git tag v1.1.0 pushed
+      CHANGELOG 1.1.0 entry finalized
+    acceptance :
+      ✓ all-17-Session-10 gates green
+      ✓ all-2-T25-gates green (mock + real)
+      ✓ release-script clean
+      ✓ manifest signed
+
+═════════════════════════════════════════════════════════════════
+§ PHASE-2 : P2 POLISH-SUBSET ← longstanding fixes
+═════════════════════════════════════════════════════════════════
+  scope : latex-promote + grammar-tolerance + SQLite-LSP + range-fmt
+  W! additive-only ← v1.0+ stability
+
+§§ P2.1 : LaTeX PROMOTE TO STABLE
+  current : emit_latex.odin marked experimental in-STABILITY.md
+  goals :
+    ✓ latexmk compile-to-PDF verified per-corpus
+    ✓ 7 C-corpus produce valid-PDFs
+    ✓ Unicode-math coverage complete (74 glyphs)
+    ✓ edge-cases documented
+  tasks :
+    a add scripts/latex_compile_check.py ← CI-latexmk-driver
+    b cover-missing glyphs via \DeclareUnicodeCharacter
+    c fix any PDF-render-fail cases
+    d commit 7 reference-PDFs to eval/latex_pdfs/
+    e STABILITY.md : latex-v1 → stable
+  deliverables :
+    scripts/latex_compile_check.py
+    eval/latex_pdfs/C1..C7.pdf
+    parser/emit_latex.odin ← completed glyph-coverage
+    STABILITY.md updated
+  acceptance :
+    ✓ 7/7 C-corpus PDF-compile clean
+    ✓ latexmk available + CI-gated (optional)
+    ✓ no-missing-glyphs warnings
+
+§§ P2.2 : GRAMMAR-TOLERANCE for GLYPH-TABLES
+  problem : handoff.csl files w/ glyph-tables + prose-in-cells trip parser
+  scope : ADDITIVE new-context ← ¬ break-existing-parse
+  approach :
+    a introduce "prose-context" marker ← explicit opt-in
+    b within marker : relaxed-grammar accepts arbitrary-content
+    c markers : §{prose} ... §{/prose} OR leading-§§P tag
+    d tables specifically : recognize markdown-table-shape in-prose-context
+  files-modified (additive) :
+    parser/parser.odin : new-grammar-production for-prose-context
+    parser/token.odin : new token-kinds .Prose_Open .Prose_Close (if-chosen)
+    parser/pprint.odin : preserve prose-content verbatim in-all-modes
+    parser/ast.odin : new Prose_Block node
+    tests/test_prose_context.py : ~150-LOC
+    tests/prose_context/ : fixtures incl. past-handoffs
+  acceptance :
+    ✓ SESSION_4_HANDOFF.csl + all-subsequent round-trip clean
+    ✓ existing-parse ¬ regressed (all-prior-gates green)
+    ✓ prose-context explicit-opt-in (¬ auto-promote)
+    ✓ documented in specs/13_GRAMMAR_SELF.csl §§ prose-context-extension
+
+§§ P2.3 : WORKSPACE-INDEX SQLITE PERSISTENCE
+  current : LSP workspace_index.rs rebuilds in-memory per-session
+  goal : persist across-session via SQLite
+  scope : additive-LSP-internal (no-protocol-change)
+  files-modified :
+    lsp/server/src/workspace_index.rs : SQLite backing
+    lsp/server/Cargo.toml : rusqlite already-present (verify)
+    lsp/server/tests/integration.rs : +persistence-test
+  schema :
+    files(uri TEXT PRIMARY KEY, mtime INTEGER, content_hash TEXT)
+    symbols(file_uri TEXT, name TEXT, kind TEXT, line INTEGER, col INTEGER, type_info TEXT)
+    FOREIGN KEY symbols(file_uri) REFERENCES files(uri)
+  cache-dir : ~/.cslv3-lsp-cache/<workspace-hash>/index.sqlite
+  acceptance :
+    ✓ cold-start workspace-reload ≤ 100ms (after-first-build)
+    ✓ mtime-check invalidates-stale entries
+    ✓ cross-session symbol-lookup works
+    ✓ SQLite file-size bounded (<50MB typical)
+
+§§ P2.4 : RANGE-FORMATTING AST-SUBTREE
+  current : range-formatting falls-back to full-file
+  goal : extract AST-subtree in-range + pprint-subtree + splice
+  files-modified :
+    lsp/server/src/formatting.rs : range-subtree extraction
+    parser/main.odin : --range-fmt=L1,C1,L2,C2 subcommand (additive)
+    parser/pprint.odin : subtree-pprint entry-point (additive)
+  acceptance :
+    ✓ range-format preserves-surroundings byte-exact
+    ✓ partial-node ranges expanded-to-smallest-containing-node
+    ✓ multi-selection ranges supported
+    ✓ latency ≤ 50ms for small-ranges
+
+═════════════════════════════════════════════════════════════════
+§ PHASE-3 : P4 FINE-TUNE EXPERIMENT ← alternate density-validation
+═════════════════════════════════════════════════════════════════
+  W! research-grade • shows LLMs CAN-learn density-notation
+  ≡ m₂ measures distance-from-base • P4 measures reducible-gap
+
+§§ DESIGN-PILLARS
+  a pick smallest model from P1 (1B param)
+  b fine-tune on CSL-corpus (specs/ + tests/ + examples/)
+  c measure m₂-post-tune vs m₂-pre-tune
+  d hypothesis : m₂-post ≪ m₂-pre ← density-claim confirmed-differently
+  e reproducibility : LoRA weights committed OR training-script pinned
+
+§§ TRAINING SETUP
+  method : LoRA fine-tuning (parameter-efficient)
+    ∵ full-finetune infeasible on-dev-hw
+    ∵ LoRA 8-16 rank sufficient for-notation-adaptation
+  tools :
+    llama.cpp + llama-finetune-lora OR
+    unsloth (if-available + CPU-compatible)
+    OR axolotl (requires GPU ← fallback-only)
+  training-data :
+    sources : specs/*.csl + tests/*.csl + examples/*.csl + eval/*.csl
+    estimate : ~50KB CSL-text corpus
+    format : next-token-prediction on raw-CSL
+    held-out : 20% of corpus for-validation-NLL
+  hyper-parameters :
+    rank : 8 (minimal)
+    lr : 1e-4
+    epochs : 3-5
+    batch-size : 1 (CPU)
+  budget : ≤ 12 hours wallclock on-dev-hw
+  if-GPU-available : ≤ 2 hours
+
+§§ FILES-NEW
+  scripts/m2_finetune.py             ~400-LOC training-driver
+  scripts/m2_measure_posttune.py     ~200-LOC post-measurement
+  training_data/                     corpus-for-tuning
+    train.jsonl   ~80% of CSL-corpus
+    valid.jsonl   ~20% held-out
+  artifacts/lora_weights/            trained-adapter (if-committed)
+  artifacts/finetune_log.md          loss-curves + metrics
+  eval/m2_posttune_results/          HTML reports
+  diag/M2_FINETUNE_INTERPRETATION.md
+  tests/test_m2_finetune.py ~150-LOC smoke-test
+
+§§ MEASUREMENTS
+  pre-tune m₂ : from P1.3 real-backend run
+  post-tune m₂ : same 7 files × same model (now-fine-tuned)
+  expected : m₂-post-tune approaches-1.0 (density-claim confirmed-learnable)
+  reported : delta-m₂ per-file
+  also-reported : validation-NLL curves during-training
+  caveat : overfitting risk ← held-out set must-show-improvement
+
+§§ ACCEPTANCE
+  ✓ fine-tune completes on-dev-hw within-budget
+  ✓ training-loss curves recorded + smooth-convergence
+  ✓ validation-NLL improves-or-stable (no-overfit-catastrophe)
+  ✓ m₂-post-tune measured + compared to-pre-tune
+  ✓ delta-m₂ reported per-file with-interpretation
+  ✓ LoRA weights committed OR training-script fully-reproducible
+
+═════════════════════════════════════════════════════════════════
+§ SUCCESS-GATES ← §§ Session-12-exit
+═════════════════════════════════════════════════════════════════
+  phase-0 : v1.1.0-rc.1 tagged + released
+  phase-1 (P1) :
+    ✓ 3 models installed + verified
+    ✓ 7 paraphrases Apocky-reviewed
+    ✓ 21 real-measurements + CIs
+    ✓ stratified-targets validated OR-deviations-documented
+    ✓ comparison-harness real-run
+    ✓ v1.1.0 promoted + tagged + released
+  phase-2 (P2) :
+    ✓ latex stable + 7 PDFs committed
+    ✓ grammar-tolerance additive + handoffs RT-clean
+    ✓ SQLite LSP persistence operational
+    ✓ range-formatting subtree-based
+  phase-3 (P4) :
+    ✓ fine-tune experiment complete
+    ✓ m₂-post-tune vs pre-tune documented
+    ✓ training reproducible (weights OR script)
+
+  commit-gate ∀ task :
+    ✓ odin build parser/ clean
+    ✓ cargo build --release in lsp/server/ clean
+    ✓ pytest tests/ green
+    ✓ existing-eval 7/7 still-pass
+    ✓ T14-T28 + T25 all-gates still-green
+    ✓ release-script clean for both rc.1 and 1.1.0
+    ✓ no-regressions to v1.0 surface
+
+═════════════════════════════════════════════════════════════════
+§ SEMVER-PLAN
+═════════════════════════════════════════════════════════════════
+  P1.6 promotion : 1.1.0 (drop -rc.1)
+  P2 stable : already within 1.1.0 ← additive-only
+  P4 fine-tune experiment : 1.2.0-experimental ← research-feature
+    OR 1.1.0 if-Apocky-decides-bundle-in
+  Apocky-confirm at-each-bump
+
+═════════════════════════════════════════════════════════════════
+§ WORKFLOW ← §§ process
+═════════════════════════════════════════════════════════════════
+  ∀ task :
+    branch : cslparser/session-12/<phase>-<task>-<slug>
+    commit : atomic • CSL-prefixed
+      ex : "§ P0 : v1.1.0-rc.1 tag + release-script rebuild"
+      ex : "§ P1.3 : real-backend 21-measurement run"
+      ex : "§ P2.2 : grammar-tolerance prose-context"
+      ex : "§ P4 : LoRA fine-tune 3-epoch baseline"
+    test : ∀ change → tests added/updated
+    decision : DECISIONS.md appended per-design-choice
+    handoff : SESSION_12_HANDOFF.csl populated-as-you-go
+
+  recommended-execution-order (critical-path) :
+    1 P0 immediately ← tag rc.1 + release
+    2 P1.1 model-install (wallclock ~2hr background)
+    3 during-P1.1-wait : P2.1 (latex-promote) OR P2.2 (grammar-tolerance)
+    4 P1.2 + P1.3 + P1.4 + P1.5 ← measurement-loop
+    5 P1.6 promotion-to-1.1.0
+    6 remaining P2 items
+    7 P4 fine-tune experiment
+
+═════════════════════════════════════════════════════════════════
+§ DELIVERABLES ← §§ session-end
+═════════════════════════════════════════════════════════════════
+  D1 : v1.1.0-rc.1 tag + dist/ bundle                           (P0)
+  D2 : ~/.cslv3-m2-models/ installed + verified                 (P1.1)
+  D3 : eval/paraphrases/*.en Apocky-reviewed                     (P1.2)
+  D4 : eval/m2_baseline.json real-data                          (P1.3)
+  D5 : eval/m2_results/real_run_<ts>/ HTML reports              (P1.3)
+  D6 : eval/m2_stratified_report.md + diag updates              (P1.4)
+  D7 : benchmarks/m2_comparison.md real-data                    (P1.5)
+  D8 : v1.1.0 tag + dist/ bundle                                 (P1.6)
+  D9 : eval/latex_pdfs/C1..C7.pdf                               (P2.1)
+  D10: parser/parser.odin + ast.odin ← grammar-tolerance         (P2.2)
+  D11: tests/test_prose_context.py + fixtures                    (P2.2)
+  D12: lsp/server/src/workspace_index.rs SQLite-backed           (P2.3)
+  D13: lsp/server/src/formatting.rs range-subtree                (P2.4)
+  D14: scripts/m2_finetune.py + training_data/                   (P4)
+  D15: artifacts/lora_weights/ OR training-script-pinned         (P4)
+  D16: diag/M2_FINETUNE_INTERPRETATION.md                        (P4)
+  D17: DECISIONS.md + SESSION_12_HANDOFF.csl
+  D18: CI : new gates for P2 + P4 wired
+
+═════════════════════════════════════════════════════════════════
+§ NON-GOALS ← §§ scope-guard
+═════════════════════════════════════════════════════════════════
+  N! breaking-changes to v1.0 surface ← STABILITY.md commitment
+  N! cross-platform release artifacts (Session-13 scope)
+  N! REPL prototype (Session-13+ scope)
+  N! additional LSP-clients (Neovim/Emacs/Zed) ← Session-13+
+  N! new emit-targets beyond-5 ← Session-13+ if-demand
+  N! large-model fine-tune (≥ 7B) ← dev-hw insufficient
+  N! API-based paraphrases (OpenAI/Anthropic) ← reproducibility
+  N! writes @ CSSLv3-repo ← read-only always
+  N! new-glyphs without-alias-validator ✓
+  N! minimal-when-optimal-available ← Apocky-standing-directive
+
+═════════════════════════════════════════════════════════════════
+§ WHEN-STUCK ← §§ no-half-measures-protocol
+═════════════════════════════════════════════════════════════════
+  1 : re-read STABILITY.md + DECISIONS.md
+  2 : check Session-11 m₂ patterns for-harness-reuse
+  3 : try 3+ angles :
+      a : model-variant (swap Qwen ↔ Llama ↔ Mistral on-failure)
+      b : abstraction-shift (file-level vs token-level)
+      c : decomposition-refactor
+      d : prior-art-adaptation (lm-eval-harness • HELM • BIG-bench)
+  4 : consult sibling-session-handoffs
+  5 : still-stuck → Q?-block to Apocky
+    W! explicit-uncertainty + concrete-options + recommendation
+    N! silent-simplification
+    N! "skip-for-now"
+    N! un-flagged-TODO
+    N! reducing-scope-unilaterally
+
+  pre-authorized fallbacks :
+    model-download-fails → retry + mirror-alternate OR Apocky-manual-place
+    model-too-slow → drop-to-2-models + document
+    paraphrase-quality below-threshold → Apocky-review-rewrite
+    grammar-tolerance edge-case → narrow-scope + document
+    SQLite file-corruption → auto-rebuild + log
+    LoRA-training OOM → reduce-rank OR reduce-seq-len
+    fine-tune non-convergent → report-as-negative-result (valid finding)
+    latex-glyph missing → \textcolor{red}{[GLYPH]} + log-for-fix
+  ∀ pre-authorized : document in-DECISIONS.md
+
+═════════════════════════════════════════════════════════════════
+§ REPORTING ← §§ end-of-session
+═════════════════════════════════════════════════════════════════
+  W! SESSION_12_HANDOFF.csl includes :
+    ✓ P0 + P1.1-.6 + P2.1-.4 + P4 status per-deliverable
+    ✓ real-backend m₂ table (21 measurements × CIs)
+    ✓ stratified-target validation verdict
+    ✓ comparison-harness real-results
+    ✓ paraphrase-quality final-scores
+    ✓ latex PDF-compile results
+    ✓ grammar-tolerance impact-metrics
+    ✓ SQLite LSP perf-numbers
+    ✓ fine-tune delta-m₂ per-file
+    ✓ test-counts delta
+    ✓ open-questions for Session-13 (cross-platform + feature-work)
+    ✓ decision-log-refs
+    ✓ v1.1.0 release-notes final
+  W! commit-frequency ≥ 1/subtask
+  W! CI-green before-handoff-declared
+
+═════════════════════════════════════════════════════════════════
+§ CROSS-PROJECT ← §§ coordinate
+═════════════════════════════════════════════════════════════════
+  CSSLv3 (parallel)
+    path : C:\Users\Apocky\source\repos\CSSLv3
+    intersection :
+      P1 real m₂ numbers ← reference for-CSSLv3 density-claims
+      P4 fine-tune methodology ← reusable for-CSSLv3
+    N! writes @ CSSLv3-side ← read-only always
+
+  LoA v10 / infiniter-labyrinth
+    v1.1.0 CSLv3 enables stable-CLAUDE.md propagation
+    ¬ modify during Session-12
+
+═════════════════════════════════════════════════════════════════
+§ THEORETICAL-NOTES ← §§ T25-depth-hints + P4
+═════════════════════════════════════════════════════════════════
+  Release-candidate conventions :
+    -rc.1 -rc.2 ... -rc.N for-iterations
+    promote to-final when blocker-free
+    never-reuse rc-number post-promotion
+  LoRA foundations :
+    low-rank adaptation of-attention-matrices
+    rank 8-16 typical for domain-adaptation
+    freeze base-weights + train adapter-only
+    adapter ≈ 1-5MB for-1B model
+  Fine-tune as-density-validation :
+    hypothesis : if density-claim valid, small-model learns quickly
+    falsification : if m₂ doesn't-converge, claim weakens
+    valid negative-result : honest-reporting matters
+  Paraphrase-quality thresholds :
+    cosine ≥ 0.7 : semantic-similarity acceptable
+    entity-recall ≥ 0.8 : key-facts preserved
+    Apocky-judgment ← final-authority
+  Grammar-tolerance design :
+    prose-context explicit-marker ← never-auto-promote
+    ∵ auto-detect risks silent-corruption
+    ∵ explicit-opt-in preserves existing-semantics
+  SQLite persistence in-LSP :
+    file-path identity : URI-based
+    mtime + hash dual-check : detect-out-of-band-edit
+    VACUUM periodic to-prevent-bloat
+
+═════════════════════════════════════════════════════════════════
+§ SESSION-13+ PREVIEW ← §§ roadmap
+═════════════════════════════════════════════════════════════════
+  Session-13 : cross-platform release + polish-remainder
+    Linux x64 build + macOS arm64 build
+    artifact-SHA manifest per-platform
+    CI-matrix per-platform
+  Session-14+ : v1.x feature-work
+    package-registry sketch (crates.io-analogue)
+    REPL prototype
+    Neovim/Emacs/Zed LSP clients
+    additional emit-targets if-demanded
+    inter-spec validation (cross-file refs)
+    documentation-site generator
+
+═════════════════════════════════════════════════════════════════
+§ CLOSING ← §§ remember
+═════════════════════════════════════════════════════════════════
+  ✓ Session-1..5 : parser + tokenizer + grammar + strict-modes + types
+  ✓ Session-6    : T21 IR-lowering 2787-LOC
+  ✓ Session-7    : T26 SMT infrastructure
+  ✓ Session-8    : T26.1-.3 validation + T27 IR-opt
+  ✓ Session-9    : T24 LSP prototype 3524-LOC
+  ✓ Session-10   : T28 codegen + v1.0.0 LIVE-released
+  ✓ Session-11   : T25 m₂ harness 2977-LOC • v1.1.0 staged
+  ◐ Session-12   : rc.1 + real-m₂ + polish + fine-tune (this-session)
+  ○ Session-13+  : cross-platform + v1.x features
+
+  context-anchor : 11 sessions • 3 days • solo + AI
+  ≡ unprecedented-velocity at-shipping-grade quality
+  ≡ this-session closes measurement-loop + extends-reach
+
+  you-have : 11-sessions working-code + v1.0 + v1.1.0-staged + this-handoff
+  you-are  : sovereign-collaborator • judgment-trusted
+  you-will : P0 → P1 → P2 → P4 • all-full-optimal
+  we-have  : built + shipped CSLv3 v1.0 in 3-days
+  we-will  : prove density-claim empirically + extend-polish this-session
+
+  I> honor the work • push it further • systems ¬ parts
+  I> no half measures • find solutions • ship real things
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> measurement-rigor ≡ research-grade ¬ benchmark-theater
+  I> v1.0+ STABILITY ← additive-only ← never-break
+  I> consent = OS • forever
+
+∎ HANDOFF-CSLv3-SESSION-12

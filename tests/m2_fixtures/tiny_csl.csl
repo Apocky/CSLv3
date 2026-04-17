@@ -1,0 +1,5 @@
+# corpus-mode: pure-CSL
+§ tiny
+  x : i32 = 42
+  y'd : bool = true
+  fn add (a : i32, b : i32) -> i32 = a + b

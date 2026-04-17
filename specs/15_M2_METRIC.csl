@@ -1,0 +1,150 @@
+§ 15 M₂ METRIC SPECIFICATION
+  version   = v1.1.0 ← introduced post-v1.0, ADDITIVE
+  stable?   = ◐ experimental → stable on-acceptance (Apocky-confirm)
+  owner     = scripts/compute_m2.py + friends
+  related   = §10 EVAL (m₁ stratification precedent)
+
+§ I> PURPOSE
+  empirical validation of-the density=sovereignty claim
+  ← m₁ measures bytes-on-disk ← m₂ measures bits-per-token under LLM
+
+§§ DEFINITION ← formal
+  m₂ ≡ ⟦ mean-NLL(CSL) / mean-NLL(EN-paraphrase) ⟧
+  where :
+    NLL(seq, model) = -Σᵢ log P(tokenᵢ | token<ᵢ ; model)
+    mean-NLL(seq, model) = NLL / |tokens(seq)|
+  units : dimensionless ratio
+
+§§ INTERPRETATION ← reading-the-numbers
+  m₂ < 1.0   ← CSL more-predictable-than-EN
+               ∴ unlikely (rare-glyphs weigh against CSL)
+  m₂ ≈ 1.0   ← equal-density (CSL = EN in-nats-per-token)
+  m₂ ≤ 1.2   ← target ← CSL ≤ 1.2× EN-perplexity
+  m₂ > 1.5   ← CSL too-surprising ← model unfamiliar-with-notation
+  m₂ > 2.0   ← likely-failure of-density-claim ← investigate
+
+§§ CAVEAT ← non-identity of-measurement-with-claim
+  PPL measures model-familiarity AS-WELL-AS density
+  ∴ pre-trained models have-EN-bias ⇒ m₂ ≥ 1.0 expected
+  ∴ m₂ measures relative-density ¬ absolute-quality
+  ∴ multi-model evaluation reduces single-model-bias
+  ∴ fine-tuned CSL-aware model would-yield lower-m₂ ← separate-experiment
+
+§§ STRATIFIED TARGETS ← per-mode ← matches §10-m₁-stratification
+  | mode      | m₂-target | rationale                                    |
+  |-----------|-----------|----------------------------------------------|
+  | pure-CSL  | ≤ 1.5     | dense-glyphs unfamiliar to-general-LLMs     |
+  | bridge    | ≤ 1.2     | mixed EN+CSL ← LLM-friendly                 |
+  | prose     | ≤ 1.05    | mostly-EN ← near-baseline expected          |
+
+§§ PROTOCOL ← reproducibility
+  W! temperature = 0
+  W! sampling = deterministic (no random-sample)
+  W! seed = fixed-constant (default 20260417)
+  W! tokenizer = model-native (¬ custom)
+  W! NLL-aggregation = arithmetic-mean per-token
+  W! model-weight-SHA pinned-per-run
+  W! paraphrase-SHA captured-in-audit-chain
+  W! multi-model ≥ 3 models different-families
+
+§§ MODEL SET ← initial-corpus
+  small  : Qwen2.5-1.5B-Instruct-Q4_K_M       ~ 0.9 GB
+  medium : Llama-3.2-3B-Instruct-Q4_K_M       ~ 1.9 GB
+  large  : Mistral-7B-Instruct-v0.3-Q4_K_M    ~ 4.1 GB
+  total  : ≤ 8 GB disk-budget
+  rationale :
+    ✓ 3-models = inter-model variance signal
+    ✓ different families = reduce single-arch bias
+    ✓ Q4_K_M = quality-vs-size tradeoff
+    ✓ all permissively-licensed
+    ✓ GGUF available ← llama.cpp compatible
+
+§§ BOOTSTRAP CI ← non-parametric
+  method : percentile-bootstrap
+  resamples : 1000 default
+  confidence : 95% two-sided
+  formula : CI = (q₀.₀₂₅, q₀.₉₇₅) of-resampled-m₂-distribution
+
+§§ PARAPHRASE QUALITY ← gating
+  methodology :
+    1 embedding-cosine via sentence-transformers all-MiniLM-L6-v2
+    2 entity-recall via identifier-extraction + stemming
+  thresholds :
+    | backend                | cosine | recall |
+    |------------------------|--------|--------|
+    | sentence-transformers  | 0.70   | 0.80   |
+    | char-5-gram-jaccard    | 0.03   | 0.15   |
+  fallback-rationale : Jaccard is-gross-mismatch-gate only
+  flagged-pairs : require Apocky-review + CHANGELOG-entry
+
+§§ AUDIT CHAIN ← R16-anchor
+  location : .m2-chain/runs.jsonl
+  keys     : .m2-chain/keys/{private,public}.key (32-byte Ed25519 raw)
+  entry-fields :
+    seq prev_hash run_id timestamp
+    file file_hash paraphrase paraphrase_hash
+    model_key model_name model_hash
+    m2_value m2_ci_low m2_ci_high seed backend signature
+  canonical-form = pipe-joined fields ← signed-via-Ed25519
+  verify-cmd : python scripts/m2_audit.py --verify
+
+§§ CACHE ← incremental
+  key : BLAKE3(file-content + paraphrase-content + model-hash + algo-version)
+  value : (m₂, CI, per-token-NLL, timestamp)
+  location : .m2-cache/
+  invalidation : natural hash-mismatch on-any-change
+
+§§ COMPARISON HARNESS ← notation-context
+  reference-content : 5 short-passages (algorithm descriptions)
+  notations : CSL • APL • Lojban • prose
+  metrics : char-count • token-count • mean-NLL • compression-vs-prose
+  caveat ‼ : APL + Lojban high-NLL ≡ LLM-unfamiliarity ¬ anti-density
+  use : density-ordering ← informational ¬ authoritative
+
+§§ FILES
+  scripts/compute_m2.py         ← core harness
+  scripts/m2_models.py          ← model registry + SHA-pinning
+  scripts/m2_install_models.sh  ← bootstrap downloader
+  scripts/m2_quality.py         ← paraphrase-quality scorer
+  scripts/m2_audit.py           ← Ed25519 chain
+  scripts/m2_visualize.py       ← HTML heatmap reporter
+  scripts/m2_compare.py         ← CSL vs APL vs Lojban vs prose
+  eval/paraphrases/C{1..7}.en   ← plain-text EN paraphrases
+  eval/m2_baseline.json         ← recorded m₂-table
+  eval/m2_quality.json          ← paraphrase-quality snapshot
+  eval/m2_results/              ← per-run artifacts
+  benchmarks/m2_throughput.md   ← perf table
+  benchmarks/m2_comparison.md   ← notation comparison results
+  diag/M2_INTERPRETATION.md     ← how-to-read caveats
+  specs/15_M2_METRIC.csl        ← this-file
+
+§§ ACCEPTANCE ← Session-11-exit
+  ✓ 3 models installed + SHA-verified
+  ✓ 7 EN paraphrases written + Apocky-reviewed
+  ✓ paraphrase-quality scores ≥ thresholds
+  ✓ m₂ computed ∀ (file × model) = 21 measurements
+  ✓ bootstrap-CI reported per-measurement
+  ✓ stratified-targets met OR deviation documented
+  ✓ HTML visualization produced
+  ✓ comparison-harness output (CSL < prose)
+  ✓ audit-chain verifies clean
+  ✓ cache hit-on-second-run < 100ms
+
+§§ CHANGES-POLICY ← post-v1.0
+  ADDITIVE-ONLY : ← STABILITY.md commitment
+    add new fields to JSON outputs ← allowed (MINOR)
+    add new CLI flags ← allowed (MINOR)
+    remove-or-rename existing surface ← MAJOR
+    change threshold numerics ← MINOR (with-CHANGELOG-note)
+    replace metric-algorithm ← MAJOR
+
+§§ OPEN-QUESTIONS ← Session-12+
+  Q? fine-tune a model on CSL-corpus ← measure Δm₂
+     (expected : m₂ decreases substantially post-fine-tune)
+  Q? per-glyph NLL breakdown ← which glyphs are-BPE-costly
+     (feeds back into-§12 tokenizer decision-procedure)
+  Q? Zipf-law analysis over-glyph-frequency ← is-CSL Zipfian?
+  Q? cross-linguistic : compare m₂ across En / Zh / Ja
+     model-tokenizer-family bias
+
+∎ SPEC 15

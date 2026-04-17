@@ -1,0 +1,11 @@
+This document specifies an in-place comparison sorting algorithm. The design goal is a sorting routine with a predictable worst-case time complexity and with no heap allocations during execution. The algorithm is based on merge sort, following a divide-and-conquer strategy, and it falls back to insertion sort on small subarrays.
+
+The sorter operates on a dynamically sized array of 32-bit signed integers. The comparison function takes two such integers and returns a boolean that indicates whether the first argument is ordered before the second argument.
+
+The top-level sort operation takes a mutable reference to the array and the comparison function as its arguments, and it returns a boolean indicating success. A precondition of calling sort is that the array pointer must not be null. The merge-sort helper performs the recursive split on a subarray bounded by a low index and a high index, recursively sorts the left and right halves, and then invokes merge to combine them. The merge operation takes the array, a low index, a midpoint index, and a high index, assumes that the two halves are already sorted, and merges them in order.
+
+After sort returns, for every adjacent pair of elements in the array, the comparison function must report them in non-decreasing order. The algorithm must run in time bounded by n log n comparisons, and it must use no more than linear additional auxiliary space for the merge buffer.
+
+Case one asserts that sorting an empty array returns true without touching any memory. Case two asserts that sorting a single-element array is a no-op that also returns true. The edge case of interest is sorting an already-reversed input, which exercises the worst path through the recursion.
+
+Recursing on very small subarrays is a known inefficiency: the constant overhead of the recursive call exceeds the cost of simply insertion-sorting the small fragment. The preferred approach is to fall back to insertion sort when a subarray becomes shorter than sixteen elements.

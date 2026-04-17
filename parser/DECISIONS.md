@@ -1377,3 +1377,127 @@ features, PATCH for bug fixes.
 - Apache-2 — rejected for friction ; MIT is adequate at v1.0 scope.
 - Dual-license MIT + author-custom moral clause — considered unnecessary
   overhead without a specific abuse scenario requiring teeth.
+
+## 2026-04-17 — T25-adjacent : local Qwen3-Coder-Next bootstrap (Session-11 kickoff)
+
+**Decision:** Integrated Qwen3-Coder-Next (80B-A3B) via llama.cpp Vulkan
+backend for local inference on Intel Arc A770 + 32 GB RAM. Wrote
+`qwen/` integration directory : system-prompt builder, 3 launcher
+`.cmd` scripts (interactive chat / YaRN-1M variant / HTTP server),
+one-click menu, validation-loop Python harness that round-trips
+`user-prompt → Qwen → parser.exe cssllint → retry-on-error`.
+
+**Why this isn't the full T25 m₂ perplexity harness:** T25 measures
+token-cost(CSL3) vs token-cost(EN-paraphrase) via llama.cpp logprobs.
+That's empirical density validation. What we built instead measures
+*functional* CSL3 literacy (does the model produce valid CSL3 that
+`cssllint` accepts?). Useful + complementary ; proper T25 still
+deferred.
+
+**Why 80B at 64K-ctx + 14B at YaRN-1M both:**
+- 80B UD-Q3_K_M = 35.9 GB on-disk ; fits with partial GPU offload
+  (20 layers on A770, 44 on CPU). Best quality, practical ceiling
+  64K context due to KV-cache footprint.
+- 14B dense Q4_K_M = 9 GB ; full GPU offload + 1M context via YaRN
+  (rope-scale=4 over 256K native). Actually-runs-at-1M ; weaker
+  reasoning than 80B but covers the long-context use case the 80B
+  can't serve on this hardware.
+- Stored on D:\models (438 GB free) ; total ~45 GB for both.
+
+**Why Vulkan over SYCL:**
+- Vulkan binary is 56 MB, works out-of-box with Intel Arc driver.
+- SYCL needs Intel oneAPI runtime install (~1 GB), marginally faster.
+- Swap to SYCL only if Vulkan perf proves inadequate.
+
+**Why llama.cpp over ollama:**
+- ollama caps model size at 32 B ; 80B-A3B exceeds the ceiling.
+- ollama also lags llama.cpp for new MoE architectures.
+- Direct llama.cpp invocation gives full control over YaRN params.
+
+**Known-limitation:** llama.cpp's Qwen3-Next MoE path is currently
+un-optimized (see upstream issue #17751). Expected ~7.7 tok/s on
+consumer hardware vs 35+ tok/s for comparable MoE models. When the
+upstream fix lands we re-benchmark. Alternative : ik_llama.cpp fork
+claims ~1.9× speedup.
+
+**System-prompt scale:** The 15 specs + CLAUDE.md + PRIME_DIRECTIVE
++ glyph-alias table concatenate to ~87 KB / ~23 000 tokens — fits
+in either model's effective context with room for conversation.
+
+**Graceful-degrade path:** If 80B OOMs, fallback script switches to
+`UD-Q2_K_XL` (27 GB) or `Qwen3-Coder-30B-A3B` which fits ollama's
+32B cap. Documented in `qwen/README.md` Troubleshooting section.
+
+## 2026-04-17 — T25 m₂ perplexity harness (Session-11, v1.1.0)
+
+**Decision:** Shipped T25 as a PhD-grade, post-v1.0-additive feature
+bundle. Version bumps 1.0.0 → 1.1.0 per SemVer MINOR (new feature, no
+breaking change). 8 scripts + 1 formal spec + 7 paraphrases + 2 test
+suites + 2 doc files + 1 benchmark + 1 comparison harness + signed
+audit-chain. All under `scripts/m2_*.py`, `eval/paraphrases/`,
+`specs/15_M2_METRIC.csl`, `tests/test_m2_*.py`, `.m2-chain/`,
+`.m2-cache/`, `benchmarks/m2_*.md`, `diag/M2_INTERPRETATION.md`.
+
+**Why additive-only:** Handoff §§ INVARIANTS explicitly forbids breaking
+changes post-v1.0. The entire T25 surface is new files + new CLI
+subcommands ; zero modifications to existing parser/LSP/emit surfaces.
+Confirmed by regression : all 17 Session-10 gates remain green
+alongside 2 new T25 gates, for 19/19 total.
+
+**Why dual-backend (real + mock):** The `real` backend via
+`llama-cpp-python` requires ~7 GB of GGUF weights + native build
+toolchain. That's acceptable for local research runs + nightly CI but
+blocks fast-suite CI that must run in under a minute. The `mock`
+backend uses a deterministic character-class pseudo-NLL that exercises
+every code path (tokenization, bootstrap, audit-chain, cache, viz)
+without requiring any external artifacts. Tests use `mock` and are
+thus always-green in clean-checkout CI. Research measurements use
+`real` and go through the same harness.
+
+**Why Python-native Ed25519 (not subprocess to parser.exe):** The m₂
+harness is entirely Python — adding a subprocess dependency just to
+reuse the Odin-side `smt_audit` infrastructure would be architectural
+pain for zero benefit. `cryptography` provides `Ed25519PrivateKey`
+directly, the signing canonical-form is documented in
+`specs/15_M2_METRIC.csl §§ AUDIT CHAIN`, and the chain format is
+identical in spirit to `smt_audit`. Anyone with Python + `cryptography`
+can replay-verify.
+
+**Why backend-aware quality thresholds:** The `m2_quality` scorer
+defaults to sentence-transformers cosine (semantic) but falls back to
+char-5-gram Jaccard when sentence-transformers is unavailable (CI-
+minimal). Jaccard on CSL vs EN-paraphrase pairs scores in the
+0.03-0.22 range because of the glyph-vs-prose character asymmetry.
+Applying the semantic threshold (0.70) to Jaccard would false-flag
+all pairs. Backend-aware thresholds keep the gate meaningful across
+both environments. Documented in `specs/15_M2_METRIC.csl §§
+PARAPHRASE QUALITY`.
+
+**Why the APL/Lojban comparison with explicit caveat:** Handoff
+required a comparison harness. LLMs see essentially no APL or Lojban
+during training, so their perplexity on those notations is dominated
+by unfamiliarity, not density. Reporting the numbers without that
+caveat would be benchmark theater. The harness captures char-count +
+token-count as the LLM-independent density measures and flags the
+NLL column as an *interaction* between density and model-familiarity.
+`benchmarks/m2_comparison.md` leads with this caveat and expresses
+the CSLv3 positioning as the middle of the density-readability
+tradeoff surface.
+
+**Why 1000-resample bootstrap default:** Published standard for
+percentile-method non-parametric CI. At 1000 resamples the 95% CI
+endpoints stabilize to ±0.5% of their asymptotic value per the
+bootstrap-convergence literature. Lower resample counts (100, 500)
+remain available for smoke testing ; higher counts add noise reduction
+not worth the compute. Per-run bootstrap cost is ~20 ms on mock
+backend, dwarfed by model-inference cost on real backend.
+
+**Known limitation:** m₂ measures relative density vs a prose
+paraphrase under pre-trained LLMs. It doesn't measure absolute
+density, doesn't measure fine-tuned-model density, and doesn't
+measure human-comprehension density. Those are separate experiments
+documented in `specs/15_M2_METRIC.csl §§ OPEN-QUESTIONS` for
+Session-12+. What m₂ *does* do is give us a reproducible, signed,
+publishable number with confidence intervals that answers "how much
+does a stock LLM prefer English over CSLv3 for the same content?" —
+and that's the research-grade artifact the handoff requested.
