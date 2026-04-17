@@ -103,6 +103,11 @@ main :: proc() {
         schema_selftest()
         return
     }
+    // Session-14 B1 : `--lsp` enters LSP-server mode over stdin/stdout.
+    if len(args) >= 2 && args[1] == "--lsp" {
+        code := lsp_server_main()
+        os.exit(code)
+    }
     // Session-14 A5 : `--json-schema-validate <schema> <doc>`.
     if len(args) >= 4 && args[1] == "--json-schema-validate" {
         sch, se := os.read_entire_file_from_path(args[2], context.allocator)

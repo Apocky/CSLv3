@@ -61,7 +61,7 @@ schema_validate :: proc(schema_src, doc_src: string) -> Schema_Result {
     return r
 }
 
-@(private="file")
+// Public : also used by lsp_server.odin for extracting LSP message fields.
 get_prop :: proc(v: ^J_Value, key: string) -> ^J_Value {
     if v == nil || v.kind != .Object do return nil
     for k, i in v.obj_keys do if k == key do return v.obj_vals[i]
