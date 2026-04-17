@@ -1,4 +1,4 @@
-# Stability Matrix — CSLv3 v1.1.0
+# Stability Matrix — CSLv3 v1.2.0
 
 Post-v1.0 contract: components marked **stable** require a MAJOR version
 bump for breaking changes. Components marked **experimental** may change
@@ -30,6 +30,13 @@ within a MINOR bump with deprecation notice.
 | m₂ `cli` backend         | experimental  | Session-12 addition ; repeat-pad llama-perplexity subprocess ; ratio-unbiased ; absolute-NLL biased |
 | m₂ audit-chain           | experimental  | `.m2-chain/` Ed25519 JSONL ; shares key-mgmt with T26 |
 | prose-file directive     | experimental  | `# @prose-file` opt-in ; Session-12 P2.2 ; silences lex+parse errors for freeform fixtures |
+| prose corpus (C8-C10)    | stable        | Session-13 ; three prose-mode fixtures + paraphrases + m₁/m₂ baselines |
+| SHA-256 Odin (T2)        | stable        | `parser/sha256.odin` FIPS 180-4 ; 4/4 NIST vectors ; `--sha256` CLI |
+| SHA-512 Odin             | stable        | `parser/sha512.odin` FIPS 180-4 ; internal dep of Ed25519 |
+| Ed25519 signer/verifier  | stable        | `parser/ed25519.odin` wraps Odin `core:crypto/ed25519` ; RFC 8032 compliant ; `--sign` / `--verify` CLI |
+| Levenshtein Odin         | stable        | `parser/levenshtein.odin` Wagner-Fischer ; `--distance` CLI |
+| audit-chain schema v2    | stable        | `binary_hash` + `schema_version` fields ; v1 entries verify byte-identical |
+| cli-daemon backend       | experimental  | `scripts/compute_m2.py --backend=cli-daemon` ; mmap-retained GGUF |
 
 ## Diagnostic code namespace (frozen)
 
@@ -86,3 +93,30 @@ Non-breaking (MINOR) changes:
 5. Bug fixes that don't alter documented contracts.
 
 See `MIGRATION_GUIDE.md` for per-release migration notes going forward.
+
+## Replacement policy (drop-in discipline)
+
+Bespoke replacements of external dependencies (`diag/DEPENDENCY_ELIMINATION_ROADMAP.md`)
+must satisfy:
+
+1. **Byte-equivalent output** — SHA-256 of manifest bytes, emit-target
+   binaries, audit-chain signatures must match the replaced path
+   byte-for-byte before the replacement is promoted from experimental
+   to stable.
+2. **Drop-in call-site** — callers change at most one line (binary path
+   or import). No user-visible CLI surface change.
+3. **Backward-compat verify** — any replacement of a path that consumes
+   previously-persisted artifacts (e.g. audit-chain entries) must
+   verify all pre-replacement artifacts under the new tool.
+4. **Selftest gate** — each bespoke module includes a `--X-selftest`
+   flag or equivalent that runs published standard test-vectors
+   (NIST / RFC / IETF). CI must run all selftests every release.
+5. **Spec-cite in source** — header comment of each bespoke file names
+   the authoritative reference (FIPS 180-4, RFC 8032, etc.) so
+   future maintainers can audit correctness against standard.
+6. **Stable bump discipline** — bespoke additions start experimental
+   for exactly one MINOR release cycle, then promote to stable upon
+   at-least-one-release's byte-equivalence verification.
+
+First bespoke batch (v1.2.0): SHA-256, SHA-512, Ed25519 (via stdlib),
+Levenshtein. Bespoke BLAKE3, JSON, URI, Regex deferred to v1.3+.

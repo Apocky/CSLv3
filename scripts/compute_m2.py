@@ -295,20 +295,30 @@ class CliBackend:
         print(f"[cli] using {self.ppl_bin} + {path.name} (ctx={self.ppl_ctx})",
               file=sys.stderr)
 
+    # Under-count guard : real BPE tokenization of CSL-glyph-heavy text
+    # often splits glyphs into 3+ tokens. ~3.5 bytes/token is accurate for
+    # English prose but overcounts tokens-per-byte for pure-CSL fixtures.
+    # To guarantee 2*ctx tokens after pad, we over-pad by this factor.
+    PAD_SAFETY_FACTOR = 1.8
+
     @staticmethod
     def _approx_tokens(text: str) -> int:
-        # Crude estimate : ~3.5 utf-8 bytes per token (over English) ; CSL
-        # glyphs inflate byte count but also inflate token count similarly.
+        # Crude estimate : ~3.5 utf-8 bytes per token.
         return max(1, int(len(text.encode("utf-8")) / 3.5))
 
     def _pad_repeat(self, text: str) -> tuple[str, int]:
-        """Return (padded_text, n_repeats) s.t. approx-tokens >= MIN_TOKENS."""
+        """Return (padded_text, n_repeats) s.t. actual-tokens >= MIN_TOKENS
+        even under pessimistic tokenization. Uses PAD_SAFETY_FACTOR to
+        over-pad vs the naive bytes/3.5 estimate — necessary because
+        CSL-glyph-heavy fixtures tokenize tighter than English prose."""
         approx = self._approx_tokens(text)
-        if approx >= self.min_tokens:
+        # Minimum target with safety factor applied.
+        target = int(self.min_tokens * self.PAD_SAFETY_FACTOR)
+        if approx >= target:
             return text, 1
         repeats = min(
             self.MAX_PAD_REPEATS,
-            max(2, (self.min_tokens // max(1, approx)) + 1),
+            max(2, (target // max(1, approx)) + 1),
         )
         # newline separator prevents token-merge across repeat-boundaries
         padded = ("\n".join([text] * repeats)).rstrip() + "\n"

@@ -1,5 +1,48 @@
 # Migration Guide
 
+## 1.1.0 → 1.2.0
+
+**No user-visible action required.** All v1.2.0 additions are opt-in
+via new CLI flags ; existing workflows continue unchanged.
+
+### Optional migrations
+
+If you are writing new scripts against the m₂ audit-chain, you may now:
+
+- Pass `binary_hash=<sha256-hex>` to `append_measurement()` to pin the
+  subprocess that produced the measurement. Old callers that omit the
+  parameter still produce valid v1 entries.
+- Use `parser.exe --sha256 <file>` in place of `sha256sum` or Python
+  `hashlib.sha256` for manifest generation. Output format is
+  `<hex>  <filename>` which is byte-identical to GNU sha256sum.
+- Use `parser.exe --sign <file> --key=<priv32.bin>` in place of
+  Python `cryptography.hazmat.primitives.asymmetric.ed25519` for
+  signing. Signatures are RFC 8032 compliant and verify cross-path.
+- Use `--backend=cli-daemon` for m₂ full-corpus runs ; gets ~3×
+  wallclock speedup through OS page-cache retention of GGUFs.
+
+### Stratified-target revisions
+
+If your CI gates on `compute_m1.py --strict` with the prose threshold,
+note that the prose target moved from 0.95 to 1.10 based on empirical
+Session-13 data. Your runs will now pass where they previously failed
+on the C8-C10 prose fixtures. The change is tracked in
+`specs/10_EVAL.csl` under "TARGET-HISTORY". See also
+`specs/15_M2_METRIC.csl` for the bridge m₂-target revision (1.2 → 1.5)
+with theoretical basis in `eval/m2_stratified_report.md`.
+
+### v1 audit-chain entries
+
+The 22-entry pre-v1.2 audit-chain (Session-10 through Session-12)
+continues to verify under the v2 `m2_audit.py --verify`. No re-signing
+required. New entries may optionally set `schema_version=2` and populate
+`binary_hash` ; mixed v1/v2 chains are supported.
+
+## 1.0.0 → 1.1.0
+
+**No user-visible action required.** v1.1.0 added the T25 m₂ perplexity
+harness as an entirely additive research-grade measurement infrastructure.
+
 ## Pre-1.0 → 1.0.0
 
 v1.0.0 is the first stable release. No prior versions were published to

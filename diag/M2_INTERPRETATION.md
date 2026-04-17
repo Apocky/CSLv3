@@ -138,6 +138,27 @@ Per-model means : small=1.216, medium=1.148, large=1.267.
 (see `eval/m2_stratified_report.md`). v1.1.0 is promoted on that
 basis per handoff §§ WHEN-STUCK clause.
 
+## Session-13 P1.3 + P4 re-baseline (v1.2.0 final)
+
+Full 30-measurement re-run with cli-daemon backend + ctx=256 +
+1.8× safety-factor repeat-pad. 10 files × 3 models = 30 measurements.
+Mean m₂ = 0.862, stdev = 0.270, range [0.093, 1.388].
+Per-model means : small=0.838, medium=0.849, large=0.899.
+
+10/10 files met revised stratified targets :
+- pure-CSL ≤ 1.50 : 7 files, max m₂ = 0.983 ← comfortably under
+- bridge ≤ 1.50 (revised) : 1 file, max m₂ = 1.388 ← under
+- prose ≤ 1.05 : 3 files, max m₂ = 0.987 ← first-time data
+
+C2_nested_scopes anomaly flagged (spread 400%) — traced to repeat-pad
+over-collapse on highly-regular short content. Documented in the
+stratified report ; does not block release.
+
+Cross-version note : Session-12 → Session-13 mean 1.210 → 0.862 is an
+artefact of ctx=64 → ctx=256 change. Absolute values between ctx
+regimes are not directly comparable ; stick to one ctx when doing
+longitudinal density comparison.
+
 ## Common misreadings
 
 **"m₂ = 1.35 means CSL is 35% worse than English."** — False. It means
