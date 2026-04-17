@@ -61,7 +61,9 @@ def test_M2(fails: list[str]) -> None:
     if baseline.exists():
         doc = json.loads(baseline.read_text(encoding="utf-8"))
         n = len(doc.get("measurements", []))
-        gate(fails, "M2 count", n == 21, f"got {n} measurements, want 21")
+        # Session-13 : corpus grew 7 → 10 files (C8-C10 prose added), so
+        # a full --all-eval baseline now produces 10 * 3 = 30 measurements.
+        gate(fails, "M2 count", n == 30, f"got {n} measurements, want 30")
 
 
 def test_M3(fails: list[str]) -> None:

@@ -74,13 +74,15 @@ def test_A2_A3_A5(fails: list[str]) -> None:
     rc, out, _ = run([str(SCRIPT / "m2_audit.py"),
                        "--append", str(ROOT / "eval" / "m2_baseline.json")])
     gate(fails, "A2 append rc", rc == 0, f"rc={rc}")
-    gate(fails, "A2 append count", "appended 21 entries" in out,
+    # Session-13 : corpus grew from 7 → 10 files (C8-C10 prose added),
+    # so each full-eval baseline is 10*3 = 30 measurements.
+    gate(fails, "A2 append count", "appended 30 entries" in out,
           f"out-tail: {out[-200:]}")
 
     # A5 : JSONL parseable, one JSON per line
     lines = (CHAIN / "runs.jsonl").read_text(encoding="utf-8").splitlines()
-    gate(fails, "A5 line count", len(lines) == 22,
-          f"got {len(lines)} lines (want 22 = genesis + 21)")
+    gate(fails, "A5 line count", len(lines) == 31,
+          f"got {len(lines)} lines (want 31 = genesis + 30)")
     for i, line in enumerate(lines):
         try:
             json.loads(line)
