@@ -41,11 +41,11 @@
 §§ config-sub
 
 §§§ tunable-depth
-  max-nest : u8 = 16
-  stride : u8 = 4
+  max-nest : i32 = 16
+  stride : i32 = 4
 
 §§§ default-depth
-  min-nest : u8 = 1
+  min-nest : i32 = 1
   optional : bool = false
 
 § next-top

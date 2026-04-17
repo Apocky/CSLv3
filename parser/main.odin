@@ -83,6 +83,28 @@ main :: proc() {
         ed25519_selftest()
         return
     }
+    // Session-14 A4 : `--json-selftest` runs RFC 8259 round-trip + reject cases.
+    if len(args) >= 2 && args[1] == "--json-selftest" {
+        json_selftest()
+        return
+    }
+    // Session-14 A4 : `--json-validate <file>` exits 0 if valid, 1 if not.
+    if len(args) >= 3 && args[1] == "--json-validate" {
+        data, read_err := os.read_entire_file_from_path(args[2], context.allocator)
+        if read_err != nil {
+            fmt.eprintf("json-validate: cannot read %s\n", args[2])
+            os.exit(2)
+        }
+        v, e := json_parse(string(data))
+        delete(data)
+        if !e.ok {
+            fmt.printf("FAIL %s @ L%d C%d : %s\n", args[2], e.line, e.col, e.msg)
+            os.exit(1)
+        }
+        json_free(v)
+        fmt.printf("OK %s\n", args[2])
+        os.exit(0)
+    }
     // Session-13 P2.3 : `--sign <file> --key=<priv>` emits hex signature.
     if len(args) >= 3 && args[1] == "--sign" {
         key_path := ""
