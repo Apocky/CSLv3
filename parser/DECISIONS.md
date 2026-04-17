@@ -1592,3 +1592,112 @@ was consumed by the P1 measurement loop (which is the critical-path
 for v1.1.0). Per handoff §§ PRE-AUTHORIZED-FALLBACKS, deferring P4
 to Session-13 with negative-result reporting is explicitly
 permitted.
+
+
+## 2026-04-17 — Session-13 : v1.2.0 phase-A quick-wins
+
+**Decision:** Use Odin stdlib `core:crypto/ed25519` for the Ed25519
+implementation in `parser/ed25519.odin` rather than porting TweetNaCl
+from scratch.
+
+**Why:** Apocky's sovereignty goal is elimination of EXTERNAL
+dependencies. The Odin stdlib ships with the Odin compiler we already
+build with — using `core:crypto/ed25519` removes the Python
+`cryptography` dep from the m₂ audit-chain signing path without
+adding any new external dep. A bespoke TweetNaCl-equivalent is ~500-800
+LOC of tightly-coupled curve-arithmetic / constant-time code that
+duplicates what the stdlib already provides + tests. Per Apocky
+standing-directive 'optimal ≠ minimal' : shipping working crypto now
+with correct drop-in replacement of Python is the optimal v1.2.0
+outcome ; scratch-porting is a meaningful Session-14+ exercise when
+the sovereignty roadmap explicitly earmarks it.
+
+**Verification:** `parser.exe --ed25519-selftest` produces signatures
+that match Python `cryptography.hazmat.primitives.asymmetric.ed25519`
+byte-for-byte under RFC 8032 Test 1 and Test 2. Tamper-test also
+passes (single-bit flip in signature is rejected).
+
+---
+
+**Decision:** Audit-chain schema evolution uses a `schema_version`
+field with conditional canonical-bytes extension rather than mutating
+the v1 canonical form.
+
+**Why:** The STABILITY commitment says audit-chain entries are
+byte-frozen — v1 entries signed under Session-10/11/12 tooling MUST
+continue to verify bit-identical under v1.2+ tooling, forever. The v1
+canonical-bytes assembled `fields[] joined by '|'` ; adding
+`binary_hash` naively would break all pre-existing signatures.
+
+The v2 scheme : default `schema_version=1` + append binary_hash to
+canonical_bytes ONLY when schema_version ≥ 2. New entries populate
+schema_version=2 ; old entries continue to compute canonical_bytes
+exactly as before. 22-entry pre-v1.2 chain verifies byte-identical
+under v1.2 tooling — verified by `scripts/m2_audit.py --verify`.
+
+This pattern extends to schema_version=3 if we ever need to add a
+fourth signed field, without breaking v1/v2 entries.
+
+**Alternatives rejected:**
+- Migrate old entries : no. Signatures would change. Attestation
+  provenance broken.
+- Separate v1/v2 chains : no. Splits the chain ; loses continuity.
+- Parse-once dispatch on version field : we do this, but in
+  `canonical_bytes` not at serialization. Cleaner.
+
+---
+
+**Decision:** cli-daemon backend is 'mmap-retention subprocess' not
+'interactive-mode subprocess'.
+
+**Why:** The Session-13 handoff specified an interactive-mode pool
+shared across measurements. llama-perplexity.exe (Session-11 D:/llama.cpp/
+build b8827) does NOT expose --interactive or equivalent. Rather than
+wait for upstream llama.cpp to add it, we get the same functional
+benefit by removing `--no-mmap` so the OS page-cache retains the
+GGUF across subprocess launches. First call pays the full ~10s model-
+load ; subsequent calls cost ~3-5s.
+
+Empirically : 30-measurement P4 re-run in ~3 min vs Session-12's
+21-measurement run in ~9 min — ~3× faster despite processing 40% more
+fixtures. Matches the handoff's 3× target.
+
+---
+
+**Decision:** Default ctx-size raised 64 → 256 with a 1.8× safety
+factor on the repeat-pad calculation.
+
+**Why:** ctx=64 with short pure-CSL fixtures produced very wide
+bootstrap CI (only 2-4 chunks available per fixture). Raising ctx
+narrows CI width for longer fixtures at the cost of more repeat-
+padding for shorter ones. First run at ctx=256 produced NaN values
+for shortest fixtures — the byte-based approx-tokens estimate was
+optimistic under CSL-glyph-heavy tokenization. The 1.8× safety
+factor over-pads vs the naive bytes/3.5 estimate, guaranteeing
+real tokenized-bytes ≥ 2*ctx even for the glyph-dense fixtures.
+
+**Trade:** repeat-pad-induced absolute-NLL collapse worsens for
+highly-regular short content. C2_nested_scopes m₂ = 0.09-0.46 is
+a documented artefact ; the ratio interpretation holds in limit but
+numeric value at tight pad regimes is misleading. Session-14 item :
+expand short-fixture content so 2·ctx is reachable without padding.
+
+---
+
+**Decision:** Regenerate the LaTeX golden fixtures after fixing the
+emit_latex.odin `{}` formatter bug, even though STABILITY says
+emit-formats are byte-stable.
+
+**Why:** The pre-v1.2 golden files captured the output of a buggy
+emit path — the `\title%!(MISSING CLOSE BRACE)s}` markers in the
+old golden were INVALID LaTeX (would have failed latexmk compile).
+The byte-stability commitment is against user-visible breaking changes,
+not against preserving a defect. Regen captures the correct output ;
+documented in the v1.2.0 CHANGELOG under 'Changed'.
+
+**Alternatives rejected:**
+- Leave the bug : no. latex-v1 must actually compile to be usable.
+- MAJOR bump for schema change : no. This is a defect fix, not a
+  contract change — the schema was always supposed to produce valid
+  LaTeX.
+
