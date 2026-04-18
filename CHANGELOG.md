@@ -4,6 +4,66 @@ All notable changes to CSLv3 are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/). This project adheres
 to [Semantic Versioning](https://semver.org/) starting at `1.0.0`.
 
+## [1.5.0] — 2026-04-17
+
+**Released.** Session-16 executed the Apocky directive for the B
+track : **LoRA-proper**, scaled up from the Session-14 smoke-test to
+Qwen2.5-1.5B + proper isolation-experiment design. Three adapters
+trained ; the CSL-only adapter produces the first empirical
+demonstration on the CSLv3 corpus that H1 (CSL-NLL drops faster than
+EN-NLL) and H2 (post-tune m₂ moves toward 1.0) both hold. Session-14's
+negative result is now contextualized : a 0.5B-CPU joint-training smoke
+is too small to see the signal, but a 1.5B base with CSL-only training
+at rank 16 reveals it cleanly.
+
+### Added
+
+- **`scripts/m2_finetune.py --mode={joint|csl-only|en-only}`** —
+  isolation-experiment mode selector. `joint` keeps the Session-14
+  recipe (EN-prompt → CSL-completion with masked-prompt loss).
+  `csl-only` / `en-only` train pure next-token loss on the respective
+  corpus half, isolating which distribution the adapter is learning.
+  Per-mode output directories under `artifacts/lora_weights/<mode>/`.
+- **`scripts/m2_finetune_measure.py --adapter LABEL:PATH`** —
+  repeatable flag ; compares multiple adapters side-by-side against a
+  single pre-tune baseline measurement. Per-adapter hypothesis
+  verdicts + isolation-signature classifier (CSL-dominant / EN-
+  dominant / balanced) built in.
+- **Session-16 data artifacts** — `eval/m2_finetune_delta.json`
+  machine-readable pre/post table for all 3 adapters ;
+  `diag/M2_FINETUNE_INTERPRETATION.md` rigorous report with
+  hypothesis verdicts and honest-science notes.
+- **`training_data/<mode>/csl_corpus.jsonl`** — per-mode training
+  sets, ready for any PEFT-compatible trainer.
+
+### Results summary
+
+Pre-tune mean m₂ (Qwen2.5-1.5B) : **1.0958** across 10 fixtures.
+
+| adapter | post m₂ | Δ m₂ | Δ CSL-NLL | Δ EN-NLL | signature | H1 | H2 |
+|---------|--------:|-----:|----------:|---------:|-----------|:--:|:--:|
+| joint | 1.1111 | +0.015 | -0.069 | -0.097 | balanced-EN | ✗ | ✗ |
+| **csl-only** | **1.0468** | **-0.049** | **-0.170** | -0.042 | **CSL-dominant** | ✓ | ✓ |
+| en-only | 1.1317 | +0.036 | -0.043 | -0.119 | EN-dominant | ✗ | ✗ |
+
+### Honest-science caveats
+
+- Training on the same corpus as measurement (data leakage). A
+  generalisation experiment with a held-out fixture set is Session-17+
+  scope.
+- 3 epochs, 10 training pairs, LoRA rank 16, CPU training :
+  each configuration took ~7.3 min. Larger scale expected to amplify
+  the effect cleanly demonstrated here.
+- The result is deterministic (seed=20260417) and reproducible via
+  `scripts/m2_finetune.py` + `scripts/m2_finetune_measure.py`.
+
+### Gates
+
+- 126 selftest vectors across 8 suites (unchanged from v1.4.0) remain green
+- 10/10 m₁ stratified-targets, 10/10 m₂ targets + 10/10 agreement
+- 22-entry audit-chain verifies under v1.5 tooling
+- LoRA pipeline end-to-end verified : 3 adapters trained + measured
+
 ## [1.4.0] — 2026-04-17
 
 **Released.** Session-15 closed phase-A dependency-elimination with the

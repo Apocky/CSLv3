@@ -1,5 +1,36 @@
 # Migration Guide
 
+## 1.4.0 → 1.5.0
+
+**No user-visible action required.** v1.5.0 additions are opt-in via
+new script flags ; existing workflows continue unchanged.
+
+### New flags (LoRA pipeline)
+
+- `scripts/m2_finetune.py --mode={joint|csl-only|en-only}` — isolation-
+  experiment mode. `joint` keeps v1.3.0's recipe ; new modes isolate
+  the training-side.
+- `scripts/m2_finetune_measure.py --adapter LABEL:PATH` — repeatable
+  flag ; compare multiple adapters in one run against a single
+  pre-tune baseline.
+
+### Required environment
+
+Python 3.12 + `torch` `transformers` `peft` `datasets` `accelerate`.
+`pip install torch transformers peft datasets accelerate` on a fresh
+3.12 env works. Python 3.14 remains blocked (Session-14 regression).
+
+### Research data
+
+Session-16 results live under :
+
+- `eval/m2_finetune_delta.json` — machine-readable 3-adapter deltas
+- `diag/M2_FINETUNE_INTERPRETATION.md` — H1/H2 verdicts + signature
+  analysis
+
+Adapter weights (`artifacts/lora_weights/<mode>/final/`) are gitignored
+as regenerable via the training scripts.
+
 ## 1.3.0 → 1.4.0
 
 **No user-visible action required.** v1.4.0 additions are opt-in via

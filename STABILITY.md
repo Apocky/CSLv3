@@ -1,4 +1,4 @@
-# Stability Matrix — CSLv3 v1.4.0
+# Stability Matrix — CSLv3 v1.5.0
 
 Post-v1.0 contract: components marked **stable** require a MAJOR version
 bump for breaking changes. Components marked **experimental** may change
@@ -45,6 +45,8 @@ within a MINOR bump with deprecation notice.
 | Regex engine Odin        | stable        | `parser/regex*.odin` Pike-VM ; 38/38 selftest ; Unicode \p{L/N/P/S} ; `--regex-*` CLI |
 | JSON-Schema pattern      | stable        | Draft-07 `pattern` keyword wired to regex (Session-15 O1) ; 34/34 schema selftest |
 | LaTeX glyph coverage     | stable        | `emit_schema/latex-v1.sty` newunicodechar for 40+ glyphs ; 7/7 PDFs warning-free |
+| LoRA fine-tune pipeline  | stable        | `scripts/m2_finetune.py` + `scripts/m2_finetune_measure.py` ; isolation-experiment scaffold |
+| LoRA isolation result    | research      | Session-16 data : CSL-only adapter confirms H1+H2 on Qwen2.5-1.5B ; see `diag/M2_FINETUNE_INTERPRETATION.md` |
 
 ## Diagnostic code namespace (frozen)
 
