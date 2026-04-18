@@ -1,5 +1,34 @@
 # Migration Guide
 
+## 1.5.0 → 1.6.0
+
+**No user-visible action required.** v1.6.0 additions are opt-in via
+new CLI flags + new LSP methods ; existing workflows continue
+unchanged.
+
+### New flags / methods
+
+- `scripts/m2_finetune.py --train-filter=C1,C2,...` — restrict
+  training to a named subset ; remainder is implicit held-out.
+- `scripts/release_crossplatform.sh {all|windows|linux|macos}` —
+  per-target dist bundle builder.
+- `tests/test_bespoke_stress.py` — comprehensive cross-validation
+  suite (depends on `cryptography`, optional `blake3` for full cov).
+- LSP methods `textDocument/hover`, `textDocument/completion`,
+  `textDocument/documentSymbol` now respond. Clients that previously
+  got empty responses will see results.
+
+### CI
+
+`.github/workflows/selftest.yml` runs 3-OS matrix (ubuntu + windows +
+macos) on every push / PR to main. No setup required beyond enabling
+Actions in the repository settings.
+
+### Data (research)
+
+`diag/M2_FINETUNE_GENERALIZATION.md` contains the held-out
+generalization test for Session-16's LoRA isolation experiment.
+
 ## 1.4.0 → 1.5.0
 
 **No user-visible action required.** v1.5.0 additions are opt-in via

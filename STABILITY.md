@@ -1,4 +1,4 @@
-# Stability Matrix — CSLv3 v1.5.0
+# Stability Matrix — CSLv3 v1.6.0
 
 Post-v1.0 contract: components marked **stable** require a MAJOR version
 bump for breaking changes. Components marked **experimental** may change
@@ -47,6 +47,10 @@ within a MINOR bump with deprecation notice.
 | LaTeX glyph coverage     | stable        | `emit_schema/latex-v1.sty` newunicodechar for 40+ glyphs ; 7/7 PDFs warning-free |
 | LoRA fine-tune pipeline  | stable        | `scripts/m2_finetune.py` + `scripts/m2_finetune_measure.py` ; isolation-experiment scaffold |
 | LoRA isolation result    | research      | Session-16 data : CSL-only adapter confirms H1+H2 on Qwen2.5-1.5B ; see `diag/M2_FINETUNE_INTERPRETATION.md` |
+| LoRA generalization      | research      | Session-17 data : H1+H2 hold on held-out C8-C10 ; see `diag/M2_FINETUNE_GENERALIZATION.md` |
+| LSP hover + completion + documentSymbol | experimental | `parser/lsp_server.odin` Phase-B extensions ; 30 glyph + 22 completion items |
+| Bespoke stress suite     | stable        | `tests/test_bespoke_stress.py` cross-validates 8 bespoke Odin modules vs Python references |
+| CI 3-OS matrix workflow  | stable        | `.github/workflows/selftest.yml` runs Odin build + all selftests across ubuntu/windows/macos |
 
 ## Diagnostic code namespace (frozen)
 

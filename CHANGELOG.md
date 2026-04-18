@@ -4,6 +4,68 @@ All notable changes to CSLv3 are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/). This project adheres
 to [Semantic Versioning](https://semver.org/) starting at `1.0.0`.
 
+## [1.6.0] — 2026-04-17
+
+**Released.** Session-17 tagged by Apocky as "rigorous/comprehensive/
+focused testing + deliverables." This release closes the
+Session-16 data-leakage caveat with a proper held-out generalization
+test, adds a cross-platform + cross-validation stress suite covering
+all bespoke Odin modules, wires CI for the 3-OS matrix, and extends
+the Phase-B LSP server with hover + completion + documentSymbol.
+
+### Added
+
+- **LoRA generalization test** — `scripts/m2_finetune.py --train-filter`
+  for held-out fold training. Adapter trained on C1-C7 csl-only shows
+  the **same CSL-dominant isolation signature on unseen C8-C10** as on
+  the training fold (4.3× ΔCSL vs ΔEN ratio on both), confirming
+  transfer rather than memorization. Full report :
+  `diag/M2_FINETUNE_GENERALIZATION.md`.
+- **Comprehensive stress suite** — `tests/test_bespoke_stress.py` :
+  8 modules ; 100 randomized SHA-256 cases cross-verified vs hashlib ;
+  20 BLAKE3 cases vs blake3-py ; 30 Ed25519 sign+cross-verify via
+  `cryptography` ; JSON nested + 1k-element + Unicode escapes ;
+  regex DoS-safety (catastrophic patterns must complete < 2 s) +
+  correctness ; URI round-trips ; Levenshtein (ASCII) ; JSON-Schema
+  pattern integration. Runs in ~2 s. 0 failures.
+- **CI workflow** (`.github/workflows/selftest.yml`) — matrix over
+  ubuntu + windows + macos ; builds Odin ; runs 8 internal selftest
+  flags (`--sha256-selftest`, `--ed25519-selftest`, `--blake3-
+  selftest`, `--json-selftest`, `--json-schema-selftest`, `--uri-
+  selftest`, `--regex-selftest`, `--emit-selftest`) + 5 Python gate
+  scripts + the new stress suite.
+- **LSP Phase-B** (`parser/lsp_server.odin`) :
+  - `textDocument/hover` — glyph → ASCII + meaning via markdown
+    content. 30 common CSLv3 glyphs covered.
+  - `textDocument/completion` — 22 completion items (sections,
+    modals, quantifiers, evidence, scopes). Trigger characters :
+    `§`, `:`, `.`, `W`.
+  - `textDocument/documentSymbol` — section outline from `§/§§/§§§`
+    line scan. SymbolKind Class / Struct by depth.
+- **Cross-platform dist script** —
+  `scripts/release_crossplatform.sh {all|windows|linux|macos}`.
+  Cross-compiles where the host supports it ; otherwise skips
+  cleanly (Odin's Windows host cannot link for Linux/macOS ; use the
+  CI matrix for those targets).
+
+### Gates
+
+- 126 internal + 8-module-stress suites all green
+- 10/10 m₁ stratified ; 10/10 m₂ targets ; 10/10 multi-model agreement
+- LoRA generalization : H1 + H2 confirmed on OOD fold (smaller
+  magnitude than ID, as expected)
+- Phase-B LSP smoke-test : 4 new methods all respond correctly
+
+### Honest-science notes
+
+The generalization magnitude (0.6% toward 1.0 on OOD vs 4.7% on ID)
+is small, reflecting narrow training (7 fixtures, 3 epochs, rank 16,
+CPU). Scaling any dimension (corpus, epochs, rank, base-model size)
+should amplify the OOD signal ; recommend Session-18+ runs explicitly
+register expected magnitude before running. The direction is
+correct and the isolation signature transfers — the density claim
+has empirical transfer support now, not just in-sample fit.
+
 ## [1.5.0] — 2026-04-17
 
 **Released.** Session-16 executed the Apocky directive for the B
