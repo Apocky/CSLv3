@@ -108,6 +108,62 @@ main :: proc() {
         code := lsp_server_main()
         os.exit(code)
     }
+    // Session-15 A8 : regex engine CLI flags.
+    if len(args) >= 2 && args[1] == "--regex-selftest" {
+        regex_selftest()
+        return
+    }
+    if len(args) >= 2 && args[1] == "--regex-compile-check" {
+        if len(args) < 3 { fmt.eprintln("usage: --regex-compile-check <pattern>"); os.exit(2) }
+        re, err := regex_compile(args[2])
+        if !err.ok {
+            fmt.printf("FAIL @ pos %d : %s\n", err.pos, err.msg)
+            os.exit(1)
+        }
+        fmt.printf("OK %d bytecode instructions, %d groups\n",
+            len(re.prog.code), re.prog.n_groups)
+        regex_free(&re)
+        os.exit(0)
+    }
+    if len(args) >= 2 && args[1] == "--regex-match" {
+        if len(args) < 4 { fmt.eprintln("usage: --regex-match <pattern> <input>"); os.exit(2) }
+        re, err := regex_compile(args[2])
+        if !err.ok { fmt.eprintf("compile: %s\n", err.msg); os.exit(2) }
+        m := regex_search(&re, args[3])
+        if m.ok {
+            fmt.printf("MATCH %s\n", args[3][m.start:m.end])
+            for g, i in m.groups {
+                if i == 0 do continue
+                if g.start >= 0 do fmt.printf("  group %d %q\n", i, g.text)
+            }
+            regex_free(&re)
+            os.exit(0)
+        }
+        fmt.println("NO-MATCH")
+        regex_free(&re)
+        os.exit(1)
+    }
+    if len(args) >= 2 && args[1] == "--regex-find" {
+        if len(args) < 4 { fmt.eprintln("usage: --regex-find <pattern> <input>"); os.exit(2) }
+        re, err := regex_compile(args[2])
+        if !err.ok { fmt.eprintf("compile: %s\n", err.msg); os.exit(2) }
+        ms := regex_find_all(&re, args[3])
+        fmt.printf("[%d match%s]\n", len(ms), "" if len(ms) == 1 else "es")
+        for m in ms {
+            fmt.printf("  [%d..%d) %q\n", m.start, m.end, args[3][m.start:m.end])
+        }
+        regex_free(&re)
+        os.exit(0)
+    }
+    if len(args) >= 2 && args[1] == "--regex-replace" {
+        if len(args) < 5 { fmt.eprintln("usage: --regex-replace <pattern> <template> <input>"); os.exit(2) }
+        re, err := regex_compile(args[2])
+        if !err.ok { fmt.eprintf("compile: %s\n", err.msg); os.exit(2) }
+        out := regex_replace(&re, args[4], args[3])
+        fmt.println(out)
+        regex_free(&re)
+        os.exit(0)
+    }
     // Session-14 A5 : `--json-schema-validate <schema> <doc>`.
     if len(args) >= 4 && args[1] == "--json-schema-validate" {
         sch, se := os.read_entire_file_from_path(args[2], context.allocator)
