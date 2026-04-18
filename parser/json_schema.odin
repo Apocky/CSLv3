@@ -208,9 +208,20 @@ validate_string :: proc(schema, doc: ^J_Value, path: string, r: ^Schema_Result) 
         if f64(n_chars) > max_len do add_err(r, path,
             fmt.tprintf("string too long (%d > %d)", n_chars, int(max_len)))
     }
-    // pattern : deferred to A8 regex. If specified, we accept with warning.
+    // pattern : Draft-07 ECMAScript-regex subset (Session-15 O1 wire-up).
+    // We compile on first use per-validate ; a cache is a Session-16+ opt.
     if p := get_prop(schema, "pattern"); p != nil && p.kind == .String {
-        // no-op until A8 ships ; documented in the schema-validator selftest
+        re, perr := regex_compile(p.s, context.temp_allocator)
+        if !perr.ok {
+            add_err(r, path, fmt.tprintf("pattern compile error : %s", perr.msg))
+        } else {
+            defer regex_free(&re)
+            m := regex_search(&re, doc.s)
+            if !m.ok {
+                add_err(r, path, fmt.tprintf("string %q does not match pattern %q",
+                    doc.s, p.s))
+            }
+        }
     }
 }
 
@@ -346,6 +357,21 @@ schema_selftest :: proc() {
         { "not-fail",        `{"not":{"type":"string"}}`, `"hi"`, false },
         { "bool-schema-true",  `true`,  `42`, true },
         { "bool-schema-false", `false`, `42`, false },
+        // Session-15 O1 : pattern wire-up (requires A8 regex).
+        { "pattern-ok",    `{"type":"string","pattern":"^[a-z]+$"}`, `"abc"`,  true },
+        { "pattern-fail",  `{"type":"string","pattern":"^[a-z]+$"}`, `"ab3"`, false },
+        { "pattern-anchored-ok",
+          `{"type":"string","pattern":"^\\d{4}-\\d{2}-\\d{2}$"}`,
+          `"2026-04-17"`, true },
+        { "pattern-anchored-fail",
+          `{"type":"string","pattern":"^\\d{4}-\\d{2}-\\d{2}$"}`,
+          `"not-a-date"`, false },
+        { "pattern-unicode",
+          `{"type":"string","pattern":"^\\p{L}+$"}`,
+          `"abcXYZ"`, true },
+        { "pattern-bad-regex",
+          `{"type":"string","pattern":"[unclosed"}`,
+          `"x"`, false },
     }
     for c in cases {
         r := schema_validate(c.schema, c.doc)

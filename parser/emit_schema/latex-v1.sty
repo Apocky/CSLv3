@@ -1,12 +1,90 @@
 % CSLv3 LaTeX Emit Style (latex-v1)
 % Use with a XeLaTeX or LuaLaTeX compiler ; pdflatex won't render the
 % glyphs without fallback macros.
-\ProvidesPackage{cslv3}[2026/04/16 CSLv3 style]
+\ProvidesPackage{cslv3}[2026/04/17 CSLv3 style]
 \RequirePackage{listings}
 \RequirePackage{xcolor}
 \RequirePackage{unicode-math}
 \RequirePackage{amsmath}
 \RequirePackage{hyperref}
+\RequirePackage{fontspec}
+
+% Session-15 O4 : default monospace with broad Unicode coverage so that
+% CSLv3 glyphs (⊢ ⌈ ⌉ ⟦ ⟧ ⊗ ∀ ∃ ...) render in section titles + prose,
+% not only inside lstlisting's literate= mappings. DejaVu Sans Mono is
+% ubiquitously available on MiKTeX+TeXLive ; falls back silently if
+% absent so the package still parses.
+\IfFontExistsTF{DejaVu Sans Mono}{
+  \setmonofont{DejaVu Sans Mono}
+}{%
+  % fallback : unchanged (lmmono10) ; some glyphs render as boxes but
+  % the document still compiles.
+}
+
+% Explicit Unicode-character mappings for glyphs that the default
+% lmmono10 font lacks ; xelatex with \newunicodechar substitutes math-
+% mode equivalents so section titles + prose render without boxes.
+\RequirePackage{newunicodechar}
+\newunicodechar{⟨}{\ensuremath{\langle}}
+\newunicodechar{⟩}{\ensuremath{\rangle}}
+\newunicodechar{⌈}{\ensuremath{\lceil}}
+\newunicodechar{⌉}{\ensuremath{\rceil}}
+\newunicodechar{⌊}{\ensuremath{\lfloor}}
+\newunicodechar{⌋}{\ensuremath{\rfloor}}
+\newunicodechar{⟦}{\ensuremath{\llbracket}}
+\newunicodechar{⟧}{\ensuremath{\rrbracket}}
+\newunicodechar{⊢}{\ensuremath{\vdash}}
+\newunicodechar{⊨}{\ensuremath{\models}}
+\newunicodechar{⊑}{\ensuremath{\sqsubseteq}}
+\newunicodechar{⊗}{\ensuremath{\otimes}}
+\newunicodechar{⊕}{\ensuremath{\oplus}}
+\newunicodechar{⊖}{\ensuremath{\ominus}}
+\newunicodechar{⊙}{\ensuremath{\odot}}
+\newunicodechar{⊔}{\ensuremath{\sqcup}}
+\newunicodechar{⊓}{\ensuremath{\sqcap}}
+\newunicodechar{∎}{\ensuremath{\blacksquare}}
+\newunicodechar{≡}{\ensuremath{\equiv}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{∴}{\ensuremath{\therefore}}
+\newunicodechar{∵}{\ensuremath{\because}}
+\newunicodechar{∅}{\ensuremath{\emptyset}}
+\newunicodechar{⇒}{\ensuremath{\Rightarrow}}
+\newunicodechar{⇔}{\ensuremath{\Leftrightarrow}}
+\newunicodechar{↦}{\ensuremath{\mapsto}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{∀}{\ensuremath{\forall}}
+\newunicodechar{∃}{\ensuremath{\exists}}
+\newunicodechar{∈}{\ensuremath{\in}}
+\newunicodechar{∉}{\ensuremath{\notin}}
+\newunicodechar{∪}{\ensuremath{\cup}}
+\newunicodechar{∩}{\ensuremath{\cap}}
+\newunicodechar{⊂}{\ensuremath{\subset}}
+\newunicodechar{⊃}{\ensuremath{\supset}}
+\newunicodechar{⊆}{\ensuremath{\subseteq}}
+\newunicodechar{∫}{\ensuremath{\int}}
+\newunicodechar{∆}{\ensuremath{\Delta}}
+\newunicodechar{∇}{\ensuremath{\nabla}}
+\newunicodechar{⊞}{\ensuremath{\boxplus}}
+\newunicodechar{⊟}{\ensuremath{\boxminus}}
+\newunicodechar{⊠}{\ensuremath{\boxtimes}}
+\newunicodechar{₀}{\ensuremath{{}_0}}
+\newunicodechar{₁}{\ensuremath{{}_1}}
+\newunicodechar{₂}{\ensuremath{{}_2}}
+\newunicodechar{₃}{\ensuremath{{}_3}}
+\newunicodechar{₄}{\ensuremath{{}_4}}
+\newunicodechar{₅}{\ensuremath{{}_5}}
+\newunicodechar{₆}{\ensuremath{{}_6}}
+\newunicodechar{₇}{\ensuremath{{}_7}}
+\newunicodechar{₈}{\ensuremath{{}_8}}
+\newunicodechar{₉}{\ensuremath{{}_9}}
+\newunicodechar{∧}{\ensuremath{\wedge}}
+\newunicodechar{∨}{\ensuremath{\vee}}
+\newunicodechar{¬}{\ensuremath{\neg}}
+\newunicodechar{≠}{\ensuremath{\neq}}
+\newunicodechar{→}{\ensuremath{\to}}
+\newunicodechar{←}{\ensuremath{\leftarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
 
 \definecolor{cslkw}{HTML}{CC66CC}
 \definecolor{cslop}{HTML}{FFCC66}
