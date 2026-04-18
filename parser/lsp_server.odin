@@ -265,10 +265,11 @@ apply_did_change :: proc(doc: ^Lsp_Doc, content_changes: ^J_Value) {
 // Re-run parser on a document and emit publishDiagnostics notification.
 @(private="file")
 publish_diagnostics :: proc(uri: string, text: string) {
-    // Lightweight diagnostics : we use lex_source + parser to get errors.
-    tokens, lex_errs := lex_source(text, uri)
-    defer { delete(tokens) }
+    // Session-15 O3 : surface both lex AND parse errors. parse_source
+    // runs the full pipeline and returns three slices (doc, lex, parse).
+    _, lex_errs, parse_errs := parse_source(text, uri)
     defer { for e in lex_errs do delete(e.snippet) ; delete(lex_errs) }
+    defer { for e in parse_errs do delete(e.snippet) ; delete(parse_errs) }
 
     diags := j_arr()
     for le in lex_errs {
@@ -283,7 +284,26 @@ publish_diagnostics :: proc(uri: string, text: string) {
         j_put(d, "range", rng)
         j_put(d, "severity", j_int(1))  // Error
         j_put(d, "source", j_str("cslv3-lsp"))
+        j_put(d, "code", j_str("lex"))
         j_put(d, "message", j_str(le.msg))
+        append(&diags.arr, d)
+    }
+    for pe in parse_errs {
+        d := j_obj()
+        rng := j_obj()
+        s := j_obj(); j_put(s, "line", j_int(i64(max(0, pe.pos.line - 1))))
+                      j_put(s, "character", j_int(i64(max(0, pe.pos.col - 1))))
+        e := j_obj(); j_put(e, "line", j_int(i64(max(0, pe.pos.line - 1))))
+                      j_put(e, "character", j_int(i64(pe.pos.col)))
+        j_put(rng, "start", s)
+        j_put(rng, "end",   e)
+        j_put(d, "range", rng)
+        j_put(d, "severity", j_int(1))  // Error
+        j_put(d, "source", j_str("cslv3-lsp"))
+        j_put(d, "code", j_str("parse"))
+        msg := pe.msg
+        if len(pe.context_) > 0 do msg = fmt.tprintf("%s (%s)", pe.msg, pe.context_)
+        j_put(d, "message", j_str(msg))
         append(&diags.arr, d)
     }
 
