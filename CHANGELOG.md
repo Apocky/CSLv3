@@ -4,6 +4,75 @@ All notable changes to CSLv3 are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/). This project adheres
 to [Semantic Versioning](https://semver.org/) starting at `1.0.0`.
 
+## [1.4.0] — 2026-04-17
+
+**Released.** Session-15 closed phase-A dependency-elimination with the
+PhD-grade **regex engine** (A8, final big item) and burned down three
+of four opportunistic follow-ups : JSON-Schema `pattern` wire-up (O1),
+LSP parse-error diagnostics (O3), LaTeX glyph-gap fix (O4). v1.4.0 is
+a MINOR bump — user-visible new CLI surface, fully additive.
+
+### Added
+
+- **Regex engine** (5 Odin modules, ~1700 LOC total) :
+  - `parser/regex.odin` — public API : compile / match / search /
+    find_all / replace with $1 $2 $<name> templates
+  - `parser/regex_parse.odin` — pattern → AST recursive descent
+  - `parser/regex_compile.odin` — AST → Pike-VM bytecode
+    (Char / Class / Any / Match / Jmp / Split / Save / Anchor / Backref)
+  - `parser/regex_nfa.odin` — VM thread scheduler (O(mn) worst-case,
+    no catastrophic backtracking possible)
+  - `parser/regex_unicode.odin` — UCD subset L/N/P/S/Z/C as binary-
+    searchable rune ranges (~20 KB, cf. ~30 MB full UCD)
+  - 38/38 selftest vectors covering literals, escapes, character
+    classes, predefined classes (\d \D \s \S \w \W), Unicode classes
+    (\p{L} \p{N} \p{P} \p{S}), greedy + lazy quantifiers (* + ?
+    {n,m}), anchors (^ $ \b \B), alternation, capturing + non-capt
+    + named groups, backreferences (\1, \k<name>), find-all, replace,
+    CSLv3-specific glyph matches.
+- **CLI flags** : `parser.exe --regex-match <pat> <inp>`,
+  `--regex-find <pat> <inp>`, `--regex-replace <pat> <repl> <inp>`,
+  `--regex-compile-check <pat>`, `--regex-selftest`.
+- **JSON-Schema pattern-keyword wire-up** — `parser/json_schema.odin`
+  now compiles Draft-07 `"pattern"` strings through the regex engine
+  and validates via `regex_search`. +6 selftest vectors. Replaces
+  the Session-14 stub. JSON-Schema selftest : 28 → 34.
+- **LSP parse-error diagnostics** — `parser/lsp_server.odin`
+  `publish_diagnostics` now emits both lex AND parse errors. Each
+  diagnostic carries `code: "lex"` or `code: "parse"` so clients
+  can filter. Range + severity + source unchanged from v1.3.0 MVP.
+- **LaTeX glyph coverage** — `parser/emit_schema/latex-v1.sty`
+  gains fontspec + `\newunicodechar` declarations for 40+ glyphs
+  (⟨⟩ ⌈⌉ ⌊⌋ ⟦⟧ ⊢ ⊑ ⊗ ⊕ ∎ ≥ ≤ ∀ ∃ ∈ ⊂ ⊆ ∫ ∇ ⊞ ⊠ ₀..₉ ∧ ∨ ¬ → ← ↔
+  ...). 7/7 corpus PDFs now compile with **zero missing-glyph
+  warnings** (was 4-8 per fixture).
+
+### Changed
+
+- Regex engine is marked **stable** in STABILITY.md ; lookahead /
+  lookbehind deferred to v1.4.1 per handoff design-note.
+
+### Deferred
+
+- Lookahead `(?=...)` / `(?!...)` and lookbehind `(?<=...)` /
+  `(?<!...)` — explicitly kicked to v1.4.1. Lookahead is implementable
+  in pure NFA but requires extending the thread-scheduler ;
+  lookbehind (bounded) similarly.
+
+### Gates
+
+- 38/38 regex selftest ; 34/34 JSON-Schema ; 11/11 BLAKE3 ; 20/20 JSON ;
+  13/13 URI ; 4/4 SHA-256 NIST ; 3/3 Ed25519 RFC 8032 ; 5/5 prose-context
+- 57/57 typecheck G1-G5 corpus
+- 22-entry pre-v1.2 audit-chain verifies byte-identical under v1.4 tooling
+- 7/7 LaTeX fixtures compile to PDF with zero missing-glyph warnings
+
+### Phase-A status
+
+Phase-A dependency-elimination reaches **10/10** with A8 landing.
+Remaining scopes : Phase-B LSP continuation (Session-16+) and Phase-C
+(LoRA-proper, SQLite-LSP, cross-platform bundles, bespoke SMT).
+
 ## [1.3.0] — 2026-04-17
 
 **Released.** Session-14 delivered six bespoke-replacement modules,

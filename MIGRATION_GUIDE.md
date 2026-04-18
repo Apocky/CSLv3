@@ -1,5 +1,34 @@
 # Migration Guide
 
+## 1.3.0 → 1.4.0
+
+**No user-visible action required.** v1.4.0 additions are opt-in via
+new CLI flags ; existing workflows continue unchanged.
+
+### New CLI flags
+
+- `parser.exe --regex-match <pat> <inp>` — test if pattern matches input
+- `parser.exe --regex-find <pat> <inp>` — list all non-overlapping matches
+- `parser.exe --regex-replace <pat> <repl> <inp>` — template substitution
+- `parser.exe --regex-compile-check <pat>` — syntax validate only
+- `parser.exe --regex-selftest` — run 38-vector test suite
+
+### Optional migrations
+
+If you were using a Rust `regex` CLI or `grep` for pattern matching in
+your build scripts, you can now use `parser.exe --regex-match` /
+`--regex-find`. Performance: O(mn) worst-case guaranteed — no
+catastrophic backtracking possible (unlike PCRE).
+
+If you are consuming the LSP server's diagnostics, note that parse-error
+diagnostics now appear alongside lex-error diagnostics. They are
+distinguished by `code: "parse"` vs `code: "lex"`. Clients that filter
+by code string may need to handle both.
+
+If you build with the LaTeX emit target, you now get clean PDF output
+for CSLv3 glyph-heavy content. The `emit_schema/latex-v1.sty` update
+is a drop-in ; re-copy it if you use a local copy.
+
 ## 1.2.0 → 1.3.0
 
 **No user-visible action required.** v1.3.0 additions are opt-in via

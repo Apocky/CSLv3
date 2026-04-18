@@ -1,4 +1,4 @@
-# Stability Matrix — CSLv3 v1.3.0
+# Stability Matrix — CSLv3 v1.4.0
 
 Post-v1.0 contract: components marked **stable** require a MAJOR version
 bump for breaking changes. Components marked **experimental** may change
@@ -41,7 +41,10 @@ within a MINOR bump with deprecation notice.
 | JSON parser+emitter Odin | stable        | `parser/json_codec.odin` RFC 8259 ; 20/20 round-trip ; `--json-validate` CLI |
 | JSON-Schema Odin         | experimental  | `parser/json_schema.odin` Draft-07 subset ; 28/28 vectors ; pattern awaits A8 regex |
 | URI parser Odin          | stable        | `parser/uri.odin` RFC 3986 ; 13/13 vectors ; ASCII host only (IDNA deferred) |
-| LSP server Odin          | experimental  | `parser/lsp_server.odin` MVP ; initialize + didOpen/Change/Close + publishDiagnostics |
+| LSP server Odin          | experimental  | `parser/lsp_server.odin` MVP ; initialize + didOpen/Change/Close + publishDiagnostics (lex+parse) |
+| Regex engine Odin        | stable        | `parser/regex*.odin` Pike-VM ; 38/38 selftest ; Unicode \p{L/N/P/S} ; `--regex-*` CLI |
+| JSON-Schema pattern      | stable        | Draft-07 `pattern` keyword wired to regex (Session-15 O1) ; 34/34 schema selftest |
+| LaTeX glyph coverage     | stable        | `emit_schema/latex-v1.sty` newunicodechar for 40+ glyphs ; 7/7 PDFs warning-free |
 
 ## Diagnostic code namespace (frozen)
 
