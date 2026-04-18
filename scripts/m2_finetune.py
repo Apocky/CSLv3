@@ -106,7 +106,7 @@ def write_training_dataset(pairs: list[dict], out: Path) -> Path:
     with ds_path.open("w", encoding="utf-8") as f:
         for p in pairs:
             f.write(json.dumps(p, ensure_ascii=False) + "\n")
-    print(f"[corpus] wrote {len(pairs)} pairs → {ds_path}")
+    print(f"[corpus] wrote {len(pairs)} pairs -> {ds_path}")
     return ds_path
 
 
@@ -140,17 +140,25 @@ def train(args) -> int:
 
     def tokenize_row(ex):
         full = ex["prompt"] + "\n---\n" + ex["completion"]
+        # Pad to max_len so collator gets uniform-length tensors and eval-batch
+        # can stack them. Labels -100 past EOS so they don't contribute to loss.
         enc = tokenizer(full, truncation=True, max_length=args.max_len,
-                        padding=False, return_tensors=None)
-        # label masking : only compute loss over the completion portion
-        prompt_len = len(tokenizer(ex["prompt"] + "\n---\n").input_ids)
+                        padding="max_length", return_tensors=None)
+        prompt_only = tokenizer(ex["prompt"] + "\n---\n",
+                                truncation=True, max_length=args.max_len,
+                                padding=False, return_tensors=None)
+        prompt_len = len(prompt_only["input_ids"])
         labels = [-100] * prompt_len + enc["input_ids"][prompt_len:]
         labels = labels[:len(enc["input_ids"])]
+        # mask pad-tokens from loss
+        labels = [-100 if tok == tokenizer.pad_token_id else lbl
+                  for tok, lbl in zip(enc["input_ids"], labels)]
         enc["labels"] = labels
         return enc
 
     ds = Dataset.from_list(pairs).map(tokenize_row, remove_columns=["prompt", "completion", "meta"])
-    split = ds.train_test_split(test_size=0.2, seed=args.seed)
+    # Small corpus : skip train/test split. Train on all 10 pairs.
+    split = {"train": ds}
 
     model = AutoModelForCausalLM.from_pretrained(
         args.base,
@@ -173,11 +181,11 @@ def train(args) -> int:
         per_device_train_batch_size=1,
         gradient_accumulation_steps=4,
         learning_rate=args.lr,
-        warmup_steps=50,
+        warmup_steps=5,      # small corpus ; tiny warmup
         lr_scheduler_type="cosine",
-        logging_steps=5,
-        save_strategy="epoch",
-        eval_strategy="epoch",
+        logging_steps=1,
+        save_strategy="no",  # save once manually at end
+        eval_strategy="no",  # small corpus ; train on all 10 pairs
         bf16=torch.cuda.is_available(),
         seed=args.seed,
         report_to=[],
@@ -186,7 +194,6 @@ def train(args) -> int:
         model=model,
         args=targs,
         train_dataset=split["train"],
-        eval_dataset=split["test"],
         data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
     )
     trainer.train()

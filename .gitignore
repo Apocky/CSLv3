@@ -57,3 +57,6 @@ Thumbs.db
 
 # Private claude memory (auto-memory)
 /.claude/
+
+# LoRA fine-tune artifacts (regenerable from scripts/m2_finetune.py)
+/artifacts/lora_weights/

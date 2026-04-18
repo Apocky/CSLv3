@@ -1,0 +1,216 @@
+{
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "adapter_path": "artifacts/lora_weights/final",
+  "results": [
+    {
+      "stem": "C10_changelog_narrative",
+      "mode": "prose",
+      "pre": {
+        "stem": "C10_changelog_narrative",
+        "mode": "prose",
+        "csl_nll": 3.1803390979766846,
+        "en_nll": 3.4207940101623535,
+        "m2": 0.9297078656384058
+      },
+      "post": {
+        "stem": "C10_changelog_narrative",
+        "mode": "prose",
+        "csl_nll": 3.1330668926239014,
+        "en_nll": 3.3704559803009033,
+        "m2": 0.929567664118904
+      },
+      "delta_m2": -0.0001402015195017814,
+      "delta_csl_nll": -0.0472722053527832,
+      "delta_en_nll": -0.050338029861450195
+    },
+    {
+      "stem": "C1_sort",
+      "mode": "pure-CSL",
+      "pre": {
+        "stem": "C1_sort",
+        "mode": "pure-CSL",
+        "csl_nll": 2.445258378982544,
+        "en_nll": 2.3592793941497803,
+        "m2": 1.0364429007628189
+      },
+      "post": {
+        "stem": "C1_sort",
+        "mode": "pure-CSL",
+        "csl_nll": 2.3702430725097656,
+        "en_nll": 2.301466226577759,
+        "m2": 1.0298839257938088
+      },
+      "delta_m2": -0.006558974969010034,
+      "delta_csl_nll": -0.07501530647277832,
+      "delta_en_nll": -0.057813167572021484
+    },
+    {
+      "stem": "C2_nested_scopes",
+      "mode": "pure-CSL",
+      "pre": {
+        "stem": "C2_nested_scopes",
+        "mode": "pure-CSL",
+        "csl_nll": 2.9246902465820312,
+        "en_nll": 3.3845603466033936,
+        "m2": 0.8641270791691248
+      },
+      "post": {
+        "stem": "C2_nested_scopes",
+        "mode": "pure-CSL",
+        "csl_nll": 2.882263422012329,
+        "en_nll": 3.3044497966766357,
+        "m2": 0.8722370135297836
+      },
+      "delta_m2": 0.008109934360658766,
+      "delta_csl_nll": -0.04242682456970215,
+      "delta_en_nll": -0.08011054992675781
+    },
+    {
+      "stem": "C3_dependent_types",
+      "mode": "pure-CSL",
+      "pre": {
+        "stem": "C3_dependent_types",
+        "mode": "pure-CSL",
+        "csl_nll": 3.667231798171997,
+        "en_nll": 2.687206745147705,
+        "m2": 1.364700280242272
+      },
+      "post": {
+        "stem": "C3_dependent_types",
+        "mode": "pure-CSL",
+        "csl_nll": 3.5794425010681152,
+        "en_nll": 2.617217540740967,
+        "m2": 1.3676518842429624
+      },
+      "delta_m2": 0.0029516040006902777,
+      "delta_csl_nll": -0.08778929710388184,
+      "delta_en_nll": -0.06998920440673828
+    },
+    {
+      "stem": "C4_reason_block",
+      "mode": "pure-CSL",
+      "pre": {
+        "stem": "C4_reason_block",
+        "mode": "pure-CSL",
+        "csl_nll": 4.165643215179443,
+        "en_nll": 3.331277847290039,
+        "m2": 1.2504640579794783
+      },
+      "post": {
+        "stem": "C4_reason_block",
+        "mode": "pure-CSL",
+        "csl_nll": 4.1075873374938965,
+        "en_nll": 3.2451701164245605,
+        "m2": 1.2657540868826698
+      },
+      "delta_m2": 0.015290028903191422,
+      "delta_csl_nll": -0.058055877685546875,
+      "delta_en_nll": -0.08610773086547852
+    },
+    {
+      "stem": "C5_bridge_mode",
+      "mode": "bridge",
+      "pre": {
+        "stem": "C5_bridge_mode",
+        "mode": "bridge",
+        "csl_nll": 3.839902400970459,
+        "en_nll": 3.419562578201294,
+        "m2": 1.1229221028001382
+      },
+      "post": {
+        "stem": "C5_bridge_mode",
+        "mode": "bridge",
+        "csl_nll": 3.74804949760437,
+        "en_nll": 3.306662082672119,
+        "m2": 1.1334842823054858
+      },
+      "delta_m2": 0.010562179505347657,
+      "delta_csl_nll": -0.09185290336608887,
+      "delta_en_nll": -0.1129004955291748
+    },
+    {
+      "stem": "C6_slot_grammar",
+      "mode": "pure-CSL",
+      "pre": {
+        "stem": "C6_slot_grammar",
+        "mode": "pure-CSL",
+        "csl_nll": 2.9139206409454346,
+        "en_nll": 3.2177734375,
+        "m2": 0.9055704814349393
+      },
+      "post": {
+        "stem": "C6_slot_grammar",
+        "mode": "pure-CSL",
+        "csl_nll": 2.8444981575012207,
+        "en_nll": 3.1409857273101807,
+        "m2": 0.9056068395245908
+      },
+      "delta_m2": 3.635808965141152e-05,
+      "delta_csl_nll": -0.06942248344421387,
+      "delta_en_nll": -0.07678771018981934
+    },
+    {
+      "stem": "C7_morpheme_stack",
+      "mode": "pure-CSL",
+      "pre": {
+        "stem": "C7_morpheme_stack",
+        "mode": "pure-CSL",
+        "csl_nll": 3.0584168434143066,
+        "en_nll": 2.613964080810547,
+        "m2": 1.170030172130729
+      },
+      "post": {
+        "stem": "C7_morpheme_stack",
+        "mode": "pure-CSL",
+        "csl_nll": 2.9654648303985596,
+        "en_nll": 2.534329414367676,
+        "m2": 1.1701181439108435
+      },
+      "delta_m2": 8.797178011454854e-05,
+      "delta_csl_nll": -0.09295201301574707,
+      "delta_en_nll": -0.0796346664428711
+    },
+    {
+      "stem": "C8_design_retrospective",
+      "mode": "prose",
+      "pre": {
+        "stem": "C8_design_retrospective",
+        "mode": "prose",
+        "csl_nll": 3.446723699569702,
+        "en_nll": 3.6116702556610107,
+        "m2": 0.9543295637710093
+      },
+      "post": {
+        "stem": "C8_design_retrospective",
+        "mode": "prose",
+        "csl_nll": 3.3948850631713867,
+        "en_nll": 3.5623397827148438,
+        "m2": 0.9529930523876528
+      },
+      "delta_m2": -0.0013365113833565534,
+      "delta_csl_nll": -0.05183863639831543,
+      "delta_en_nll": -0.04933047294616699
+    },
+    {
+      "stem": "C9_tutorial_style",
+      "mode": "prose",
+      "pre": {
+        "stem": "C9_tutorial_style",
+        "mode": "prose",
+        "csl_nll": 2.727254629135132,
+        "en_nll": 2.8293914794921875,
+        "m2": 0.9639014780749298
+      },
+      "post": {
+        "stem": "C9_tutorial_style",
+        "mode": "prose",
+        "csl_nll": 2.6643693447113037,
+        "en_nll": 2.752232074737549,
+        "m2": 0.9680758280405465
+      },
+      "delta_m2": 0.004174349965616719,
+      "delta_csl_nll": -0.06288528442382812,
+      "delta_en_nll": -0.07715940475463867
+    }
+  ]
+}
