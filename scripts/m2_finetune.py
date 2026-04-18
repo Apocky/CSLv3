@@ -67,12 +67,26 @@ def check_env() -> tuple[bool, str]:
     return True, ""
 
 
-def build_training_corpus() -> list[dict]:
-    """Assemble (prompt, completion) pairs from the corpus.
+def build_training_corpus(mode: str = "joint") -> list[dict]:
+    """Assemble training examples from the corpus.
 
-    For each (csl_file, en_file) pair, emit :
-      (EN paraphrase as prompt, CSL file as completion)
-    This teaches the model "given English spec intent, produce CSLv3".
+    `mode` (Session-16 isolation experiment) :
+
+      "joint"    : each example is (EN-paraphrase prompt, CSL completion).
+                   Training loss covers ONLY the CSL-completion portion
+                   (prompt is masked with -100). This is the Session-14
+                   baseline recipe. Teaches "given EN intent, produce CSL".
+
+      "csl-only" : each example is a single CSL fixture as both prompt
+                   and completion. No masking ← full next-token loss on
+                   CSL. Teaches "predict CSL token-stream".
+
+      "en-only"  : each example is a single EN paraphrase. Full next-
+                   token loss on EN. Teaches "predict EN token-stream".
+
+    The CSL-only vs EN-only split isolates which side of the loss an
+    adapter is learning from, per the Session-15-handoff isolation
+    recommendation. Joint training confounds the two.
     """
     pairs: list[dict] = []
     csl_files = sorted(EVAL_DIR.glob("C*_CSL.csl"))
@@ -84,11 +98,27 @@ def build_training_corpus() -> list[dict]:
         if not en.exists():
             print(f"[skip] no EN pair for {csl.name}", file=sys.stderr)
             continue
-        pairs.append({
-            "prompt":     en.read_text(encoding="utf-8"),
-            "completion": csl.read_text(encoding="utf-8"),
-            "meta":       {"fixture": stem, "mode": discover_mode(csl)},
-        })
+        m = discover_mode(csl)
+        if mode == "joint":
+            pairs.append({
+                "prompt":     en.read_text(encoding="utf-8"),
+                "completion": csl.read_text(encoding="utf-8"),
+                "meta":       {"fixture": stem, "mode": m, "train_mode": "joint"},
+            })
+        elif mode == "csl-only":
+            pairs.append({
+                "prompt":     "",
+                "completion": csl.read_text(encoding="utf-8"),
+                "meta":       {"fixture": stem, "mode": m, "train_mode": "csl-only"},
+            })
+        elif mode == "en-only":
+            pairs.append({
+                "prompt":     "",
+                "completion": en.read_text(encoding="utf-8"),
+                "meta":       {"fixture": stem, "mode": m, "train_mode": "en-only"},
+            })
+        else:
+            raise ValueError(f"unknown mode : {mode}")
     return pairs
 
 
@@ -116,8 +146,8 @@ def train(args) -> int:
         print(f"[env] cannot train: {why}")
         print("[env] wheels for Python 3.14 pending ; run on a 3.12 env or wait")
         print("[corpus] building training set anyway (usable by any trainer)")
-        pairs = build_training_corpus()
-        write_training_dataset(pairs, TRAINING_DIR)
+        pairs = build_training_corpus(mode=args.mode)
+        write_training_dataset(pairs, TRAINING_DIR / args.mode)
         return 2
 
     # Imports are lazy so --help works even without packages.
@@ -129,9 +159,10 @@ def train(args) -> int:
     from datasets import Dataset
 
     print(f"[env] torch {torch.__version__} ; cuda={torch.cuda.is_available()}")
+    print(f"[env] mode={args.mode} base={args.base} rank={args.rank}")
 
-    pairs = build_training_corpus()
-    ds_path = write_training_dataset(pairs, TRAINING_DIR)
+    pairs = build_training_corpus(mode=args.mode)
+    ds_path = write_training_dataset(pairs, TRAINING_DIR / args.mode)
 
     # Build prompt/completion → completion-only-loss dataset.
     tokenizer = AutoTokenizer.from_pretrained(args.base, use_fast=True)
@@ -139,15 +170,21 @@ def train(args) -> int:
         tokenizer.pad_token = tokenizer.eos_token
 
     def tokenize_row(ex):
-        full = ex["prompt"] + "\n---\n" + ex["completion"]
-        # Pad to max_len so collator gets uniform-length tensors and eval-batch
-        # can stack them. Labels -100 past EOS so they don't contribute to loss.
+        # For joint mode : prompt is non-empty (EN), completion is CSL, and
+        # we mask labels up to prompt_len. For csl-only / en-only mode :
+        # prompt is empty, so prompt_len = 0 and the whole completion is
+        # trained against (no masking).
+        if ex["prompt"]:
+            full = ex["prompt"] + "\n---\n" + ex["completion"]
+            prompt_only = tokenizer(ex["prompt"] + "\n---\n",
+                                    truncation=True, max_length=args.max_len,
+                                    padding=False, return_tensors=None)
+            prompt_len = len(prompt_only["input_ids"])
+        else:
+            full = ex["completion"]
+            prompt_len = 0
         enc = tokenizer(full, truncation=True, max_length=args.max_len,
                         padding="max_length", return_tensors=None)
-        prompt_only = tokenizer(ex["prompt"] + "\n---\n",
-                                truncation=True, max_length=args.max_len,
-                                padding=False, return_tensors=None)
-        prompt_len = len(prompt_only["input_ids"])
         labels = [-100] * prompt_len + enc["input_ids"][prompt_len:]
         labels = labels[:len(enc["input_ids"])]
         # mask pad-tokens from loss
@@ -174,9 +211,13 @@ def train(args) -> int:
     model = get_peft_model(model, lora_cfg)
     model.print_trainable_parameters()
 
-    ARTIFACTS.mkdir(parents=True, exist_ok=True)
+    # Session-16 : each run goes under ARTIFACTS/<mode>[_<rank>]/
+    suffix = args.mode
+    if args.rank != 16: suffix += f"_r{args.rank}"
+    out_dir = ARTIFACTS / suffix
+    out_dir.mkdir(parents=True, exist_ok=True)
     targs = TrainingArguments(
-        output_dir=str(ARTIFACTS),
+        output_dir=str(out_dir),
         num_train_epochs=args.epochs,
         per_device_train_batch_size=1,
         gradient_accumulation_steps=4,
@@ -197,9 +238,10 @@ def train(args) -> int:
         data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
     )
     trainer.train()
-    trainer.save_model(str(ARTIFACTS / "final"))
-    tokenizer.save_pretrained(str(ARTIFACTS / "final"))
-    print(f"[train] adapter saved → {ARTIFACTS / 'final'}")
+    final_dir = out_dir / "final"
+    trainer.save_model(str(final_dir))
+    tokenizer.save_pretrained(str(final_dir))
+    print(f"[train] adapter saved -> {final_dir}")
     return 0
 
 
@@ -240,12 +282,17 @@ def main() -> int:
     ap.add_argument("--eval-only", action="store_true",
                     help="skip training ; only re-run m2 against existing adapter")
     ap.add_argument("--build-corpus-only", action="store_true",
-                    help="only emit training_data/csl_corpus.jsonl, no training")
+                    help="only emit training_data/<mode>/csl_corpus.jsonl, no training")
+    ap.add_argument("--mode", choices=["joint", "csl-only", "en-only"],
+                    default="joint",
+                    help="isolation-experiment mode (Session-16) : joint "
+                         "trains on EN->CSL prompt/completion pairs ; csl-only "
+                         "and en-only train pure LM loss on respective halves")
     args = ap.parse_args()
 
     if args.build_corpus_only:
-        pairs = build_training_corpus()
-        write_training_dataset(pairs, TRAINING_DIR)
+        pairs = build_training_corpus(mode=args.mode)
+        write_training_dataset(pairs, TRAINING_DIR / args.mode)
         return 0
 
     if args.eval_only:
