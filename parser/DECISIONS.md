@@ -1846,3 +1846,73 @@ any font, degrading gracefully if the glyph is present (no remapping
 needed) or absent (math-mode symbol substitutes). 40+ declarations
 cover all glyphs observed in the 7 corpus fixtures, bringing missing-
 glyph warning count from 4-8-per-fixture to 0-per-fixture.
+
+
+## 2026-04-17 — Session-16 : v1.5.0 LoRA-proper + isolation experiment
+
+**Decision:** Run three LoRA adapters in parallel (joint + csl-only +
+en-only) rather than a single joint-training-scaled-up experiment.
+
+**Why:** Session-14's smoke-test trained a joint adapter (EN-prompt →
+CSL-completion with prompt-masked loss) on 0.5B-CPU, reported
+NOT-CONFIRMED for H1 and H2. That result had two possible
+explanations : (a) the experiment is too small to see the signal, or
+(b) the signal doesn't exist. Scaling up the same recipe only
+addresses (a). The isolation experiment (csl-only vs en-only)
+addresses (b) directly : if the adapter can shift the CSL-NLL
+distribution independently of the EN-NLL distribution, then the
+density claim has mechanistic support. Three adapters for the price
+of ~22 min CPU training is a bargain.
+
+**Alternatives rejected:**
+- Joint-only at larger scale. Rejected — would not distinguish between
+  "adapter lowers both proportionally" and "adapter specifically
+  learns CSL." The whole point of the Session-15 handoff's
+  "isolation" note was to make this distinction empirically.
+- Held-out generalization test. Rejected for Session-16 ← needs a
+  disjoint corpus first ; the current 10 fixtures IS the entire
+  corpus. Session-17 task.
+
+---
+
+**Decision:** `artifacts/lora_weights/{mode}/final/` directory layout
+with mode-name subdirs, weights gitignored.
+
+**Why:** Three separate adapter trainings with identical file names
+would clobber each other in a flat directory. Subdir-per-mode keeps
+them distinct and makes multi-adapter loading trivial (just pass
+`--adapter LABEL:<path>` repeatably). Each adapter is ~15 MB ;
+committing all three would bloat the repo with regenerable binaries,
+so .gitignore's `/artifacts/lora_weights/` blanket covers them.
+Session-14 set this precedent ; Session-16 extends it to subdir-per-mode.
+
+---
+
+**Decision:** Qwen2.5-1.5B-Instruct as the Session-16 base model.
+
+**Why:** Three reasons. (1) 3× the parameter count of Session-14's
+0.5B base — more representational capacity to absorb CSL tokens
+without crowding out the EN side. (2) Still tractable on CPU at
+~7 min per 3-epoch run ; 3B or 7B would push wall-clock past 30 min
+per adapter. (3) Already in our Session-12 reference-model set
+(as one of the m₂ eval models, though via the Q4_K_M quant path) —
+so signal here has continuity with the existing baseline.
+
+**Alternatives rejected:**
+- Qwen2.5-0.5B rerun with isolation. Rejected — Session-14 showed 0.5B
+  is too small for the joint case ; adding isolation at the same
+  scale risks non-signal.
+- Qwen2.5-3B or 7B. Rejected — wall-clock too long for a 3-adapter
+  sweep without CUDA. Session-17 can scale up if CUDA path opens.
+
+---
+
+**Decision:** Multi-adapter measurement with `model.unload()` between
+adapters rather than loading fresh base model per adapter.
+
+**Why:** Each `PeftModel.from_pretrained(base, adapter_path)` injects
+LoRA weights into the base model. `model.unload()` strips them back
+out, restoring the pristine base state. Saves 10 GB of RAM (fresh
+Qwen2.5-1.5B load is slow) and ~30 s per adapter switch. Verified
+numerically identical pre-tune measurements when loading multiple
+adapters sequentially vs fresh-base-per-adapter.
