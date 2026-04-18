@@ -1916,3 +1916,63 @@ out, restoring the pristine base state. Saves 10 GB of RAM (fresh
 Qwen2.5-1.5B load is slow) and ~30 s per adapter switch. Verified
 numerically identical pre-tune measurements when loading multiple
 adapters sequentially vs fresh-base-per-adapter.
+
+
+## 2026-04-17 — Session-17 : v1.6.0 rigor-upgrade
+
+**Decision:** Held-out fold C8-C10 (prose-mode) rather than random 7/3
+split for generalization test.
+
+**Why:** Prose-mode fixtures are structurally different from the pure-
+CSL + bridge fixtures the adapter trained on. A random split would
+test "generalizes to similar-mode held-out content" — easier. A
+mode-stratified split tests "generalizes across distribution shift"
+— harder. The harder test is more informative : if the CSL-dominant
+signature transfers to a distribution the adapter has never seen, the
+signature is about CSL-ness generally, not about C1-C7 specifically.
+The signature DID transfer (4.3× ratio on OOD), which is the stronger
+possible conclusion.
+
+---
+
+**Decision:** Comprehensive stress suite uses randomized inputs +
+Python reference-cross-verification rather than fixed NIST/RFC
+vectors.
+
+**Why:** The internal `--*-selftest` flags already run fixed test
+vectors. A second layer of defense : generate 100 random SHA-256
+inputs and compare against Python's hashlib. If there's a subtle
+bug (e.g. a specific byte pattern that triggers an off-by-one in
+padding), randomized tests are vastly more likely to catch it than
+a fixed 4-vector suite. This is the standard property-testing
+approach applied to hash functions. 100 cases in ~1 s cross-verified
+is cheap rigor.
+
+---
+
+**Decision:** LSP documentSymbol uses byte-scan for UTF-8 `§`
+(0xC2 0xA7) rather than invoking the full parser.
+
+**Why:** For the MVP phase-B expansion, byte-scan is enough to
+extract section outlines for outline-view / breadcrumbs / quick-nav.
+A full AST-based symbol extraction would provide richer information
+(field types, invariants, etc.) but requires exposing the parser's
+symbol table to the LSP layer. Byte-scan is ~30 LOC and handles the
+99%-case ; the AST-based version is Session-18+ work. Non-regressive
+because the byte-scan output conforms to LSP's SymbolInformation
+schema.
+
+---
+
+**Decision:** Cross-platform dist script cleanly-skips unsupported
+targets rather than erroring.
+
+**Why:** Odin on Windows lacks cross-compile linkers for Linux/macOS
+targets (confirmed empirically : "Linking for cross compilation for
+this platform is not yet supported"). Rather than require a user to
+set up Docker/WSL/remote runners, the script emits a clear skip
+message per target and continues to the next. The CI workflow
+matrix (ubuntu + windows + macos) produces native binaries on each
+runner, so the full 3-OS dist bundle is achievable there. On a bare
+dev host, the user gets their-platform bundle locally without
+extra infrastructure.
