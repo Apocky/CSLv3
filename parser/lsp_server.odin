@@ -207,6 +207,18 @@ build_capabilities :: proc() -> ^J_Value {
     // diagnosticProvider is pushed ; we publish via notification.
     // Position encoding : UTF-16 (LSP default).
     j_put(caps, "positionEncoding", j_str("utf-16"))
+    // Session-17 Phase-B : hover + completion + documentSymbol
+    hover_prov := j_obj()
+    j_put(caps, "hoverProvider", hover_prov)
+    compl_prov := j_obj()
+    trig := j_arr()
+    append(&trig.arr, j_str("§"))
+    append(&trig.arr, j_str(":"))
+    append(&trig.arr, j_str("."))
+    append(&trig.arr, j_str("W"))  // W! R! N! I>
+    j_put(compl_prov, "triggerCharacters", trig)
+    j_put(caps, "completionProvider", compl_prov)
+    j_put(caps, "documentSymbolProvider", j_bool(true))
     return caps
 }
 
@@ -351,6 +363,238 @@ handle_did_change :: proc(state: ^Lsp_State, params: ^J_Value) {
     }
 }
 
+// ---------- hover / completion / documentSymbol ----------
+
+// Tiny glyph-reference table for hover-over-glyph. Lookups by glyph text.
+@(private="file")
+Glyph_Info :: struct { glyph, ascii, meaning: string }
+
+@(private="file")
+GLYPH_TABLE := []Glyph_Info{
+    {"§", "S:", "section / module / domain boundary"},
+    {"¶", "P:", "sub-paragraph / continuation"},
+    {"→", "->", "then / yields / maps-to / flow"},
+    {"←", "<-", "from / sourced / derives"},
+    {"↔", "<->", "bidirectional / isomorphic"},
+    {"⇒", "=>", "implies (logical)"},
+    {"⊢", "|-", "entails / proves"},
+    {"∴", ".:.", "therefore"},
+    {"∵", ":..", "because"},
+    {"∎", "QED", "block-end / proof-end"},
+    {"W!", "W!", "MUST (hard requirement, inviolable)"},
+    {"R!", "R!", "SHOULD (strong recommend)"},
+    {"M?", "M?", "MAY (optional, designer discretion)"},
+    {"N!", "N!", "MUST NOT (prohibition)"},
+    {"I>", "I>", "INSIGHT / key claim / important note"},
+    {"Q?", "Q?", "QUESTION / open question"},
+    {"✓", "[x]", "confirmed / true / verified"},
+    {"◐", "[~]", "partial / probable / in-progress"},
+    {"○", "[ ]", "pending / possible / unknown"},
+    {"✗", "[!]", "failed / false / blocked / rejected"},
+    {"⊗", "x*", "bahuvrihi compound (having X-Y)"},
+    {"⊕", "xor", "exclusive or"},
+    {"∀", "all", "for all / universal quantifier"},
+    {"∃", "any", "exists / existential quantifier"},
+    {"∈", "in", "member-of"},
+    {"⊆", "<:", "subset"},
+    {"⊂", "<:", "strict-subset"},
+    {"∪", "|+", "union"},
+    {"∩", "&+", "intersect"},
+    {"@", "@", "avyayibhava (at / per / in scope of)"},
+}
+
+@(private="file")
+glyph_info :: proc(g: string) -> (Glyph_Info, bool) {
+    for gi in GLYPH_TABLE do if gi.glyph == g do return gi, true
+    return Glyph_Info{}, false
+}
+
+@(private="file")
+rune_at_line_col :: proc(text: string, line, col: int) -> (rune, int, int) {
+    // Walk to line `line` (0-based) , then `col` runes in. Return the
+    // rune + its byte-start + byte-end in `text`.
+    cur_line := 0
+    i := 0
+    for i < len(text) && cur_line < line {
+        if text[i] == '\n' { cur_line += 1 }
+        i += 1
+    }
+    // i is at start of line `line`. Now walk col runes in.
+    rune_idx := 0
+    for i < len(text) && rune_idx < col {
+        _, sz := utf8_decode(text, i)
+        if sz == 0 do break
+        i += sz
+        rune_idx += 1
+    }
+    if i >= len(text) do return 0, i, i
+    r, sz := utf8_decode(text, i)
+    return r, i, i + sz
+}
+
+// Extract the "identifier/glyph" starting at byte-offset `byte_start`.
+// For the ASCII modal-glyphs (W! R! M? N! I> Q? P> D>), include the
+// trailing punctuation. Otherwise return the single rune.
+@(private="file")
+hover_token_at :: proc(text: string, byte_start: int, byte_end: int) -> string {
+    if byte_start >= len(text) do return ""
+    // Check modal-glyph prefix : W! R! M? N! I> Q? P> D>
+    if byte_start + 2 <= len(text) {
+        two := text[byte_start:byte_start+2]
+        switch two {
+        case "W!", "R!", "M?", "N!", "I>", "Q?", "P>", "D>":
+            return two
+        }
+    }
+    return text[byte_start:byte_end]
+}
+
+@(private="file")
+handle_hover :: proc(state: ^Lsp_State, params: ^J_Value, id: ^J_Value) -> ^J_Value {
+    result := j_null()
+    td := get_prop(params, "textDocument")
+    pos := get_prop(params, "position")
+    if td == nil || pos == nil do return mk_response(id, result)
+    uri, _ := get_str_from(td, "uri")
+    doc, ok := state.docs[uri]
+    if !ok do return mk_response(id, result)
+
+    line_v := get_prop(pos, "line")
+    col_v := get_prop(pos, "character")
+    if line_v == nil || col_v == nil do return mk_response(id, result)
+    line := int(line_v.n_int) if line_v.n_is_int else int(line_v.n)
+    col := int(col_v.n_int) if col_v.n_is_int else int(col_v.n)
+
+    _, bs, be := rune_at_line_col(doc.text, line, col)
+    tok := hover_token_at(doc.text, bs, be)
+    if info, found := glyph_info(tok); found {
+        result = j_obj()
+        contents := j_obj()
+        j_put(contents, "kind", j_str("markdown"))
+        body := fmt.tprintf("**%s** (`%s`) — %s", info.glyph, info.ascii, info.meaning)
+        j_put(contents, "value", j_str(body))
+        j_put(result, "contents", contents)
+    }
+    return mk_response(id, result)
+}
+
+// ---------- completion ----------
+
+@(private="file")
+Completion_Item :: struct { label, insert, detail: string }
+
+@(private="file")
+COMPLETION_ITEMS := []Completion_Item{
+    {"§ section",          "§ ",            "start a new section"},
+    {"§§ subsection",      "§§ ",           "subsection (depth 2)"},
+    {"§§§ sub-sub",        "§§§ ",          "sub-subsection (depth 3)"},
+    {"W! MUST",            "W! ",           "hard requirement"},
+    {"R! SHOULD",          "R! ",           "strong recommendation"},
+    {"M? MAY",             "M? ",           "optional / discretion"},
+    {"N! MUST NOT",        "N! ",           "prohibition"},
+    {"I> INSIGHT",         "I> ",           "key claim / important note"},
+    {"Q? QUESTION",        "Q? ",           "open question"},
+    {"D> DECISION",        "D> ",           "decision needed"},
+    {"→ flow",             "→",             "then / yields / maps-to"},
+    {"⇒ implies",          "⇒",             "logical implication"},
+    {"∀ forall",           "∀",             "universal quantifier"},
+    {"∃ exists",           "∃",             "existential quantifier"},
+    {"⊗ having",           "⊗",             "bahuvrihi compound (having X-Y)"},
+    {"✓ confirmed",        "✓",             "evidence : confirmed"},
+    {"◐ partial",          "◐",             "evidence : partial / probable"},
+    {"○ pending",          "○",             "evidence : pending"},
+    {"✗ failed",           "✗",             "evidence : failed / rejected"},
+    {"@frame",             "@frame",        "avyayibhava : per-frame scope"},
+    {"@run",               "@run",          "avyayibhava : per-run scope"},
+    {"@tick",              "@tick",         "avyayibhava : per-tick scope"},
+}
+
+@(private="file")
+handle_completion :: proc(state: ^Lsp_State, params: ^J_Value, id: ^J_Value) -> ^J_Value {
+    items := j_arr()
+    for ci in COMPLETION_ITEMS {
+        it := j_obj()
+        j_put(it, "label", j_str(ci.label))
+        j_put(it, "insertText", j_str(ci.insert))
+        j_put(it, "detail", j_str(ci.detail))
+        // kind 1 = Text, 14 = Keyword, 21 = Constant. Use 14 for CSL glyphs.
+        j_put(it, "kind", j_int(14))
+        append(&items.arr, it)
+    }
+    result := j_obj()
+    j_put(result, "isIncomplete", j_bool(false))
+    j_put(result, "items", items)
+    return mk_response(id, result)
+}
+
+// ---------- documentSymbol ----------
+// Emit one SymbolInformation per top-level `§ name` or `§§ name` etc.
+@(private="file")
+handle_document_symbol :: proc(state: ^Lsp_State, params: ^J_Value, id: ^J_Value) -> ^J_Value {
+    td := get_prop(params, "textDocument")
+    if td == nil do return mk_response(id, j_arr())
+    uri, _ := get_str_from(td, "uri")
+    doc, ok := state.docs[uri]
+    if !ok do return mk_response(id, j_arr())
+
+    symbols := j_arr()
+    // Simple text-scan for lines that begin with § (or §§, §§§).
+    lines_iter := 0
+    line_idx := 0
+    for line_start := 0; line_start < len(doc.text); /* advanced inline */ {
+        // find end-of-line
+        line_end := line_start
+        for line_end < len(doc.text) && doc.text[line_end] != '\n' do line_end += 1
+        line := doc.text[line_start:line_end]
+        trimmed := line
+        // strip leading whitespace
+        lead := 0
+        for lead < len(trimmed) && (trimmed[lead] == ' ' || trimmed[lead] == '\t') do lead += 1
+        t := trimmed[lead:]
+        if len(t) > 0 && t[0] == '\xc2' && len(t) > 1 && t[1] == '\xa7' {
+            // starts with § (UTF-8 0xC2 0xA7). Count depth.
+            depth := 0
+            j := 0
+            for j + 1 < len(t) && t[j] == '\xc2' && t[j + 1] == '\xa7' {
+                depth += 1
+                j += 2
+            }
+            // skip whitespace after §s
+            for j < len(t) && (t[j] == ' ' || t[j] == '\t') do j += 1
+            // rest-of-line is the symbol name
+            name := t[j:]
+            if len(name) > 0 {
+                sym := j_obj()
+                j_put(sym, "name", j_str(name))
+                // SymbolKind : 2 = Module, 5 = Class, 23 = Struct
+                j_put(sym, "kind", j_int(5 if depth == 1 else 23))
+                // range : whole line
+                rng := j_obj()
+                s := j_obj(); j_put(s, "line", j_int(i64(line_idx)))
+                              j_put(s, "character", j_int(0))
+                e := j_obj(); j_put(e, "line", j_int(i64(line_idx)))
+                              j_put(e, "character", j_int(i64(len(line))))
+                j_put(rng, "start", s); j_put(rng, "end", e)
+                j_put(sym, "range", rng)
+                // selectionRange : same as range (simpler than finding the
+                // specific name span)
+                sr := j_obj()
+                ss := j_obj(); j_put(ss, "line", j_int(i64(line_idx)))
+                               j_put(ss, "character", j_int(0))
+                se := j_obj(); j_put(se, "line", j_int(i64(line_idx)))
+                               j_put(se, "character", j_int(i64(len(line))))
+                j_put(sr, "start", ss); j_put(sr, "end", se)
+                j_put(sym, "selectionRange", sr)
+                append(&symbols.arr, sym)
+            }
+        }
+        line_idx += 1
+        line_start = line_end + 1
+        _ = lines_iter
+    }
+    return mk_response(id, symbols)
+}
+
 @(private="file")
 handle_did_close :: proc(state: ^Lsp_State, params: ^J_Value) {
     td := get_prop(params, "textDocument")
@@ -413,6 +657,12 @@ lsp_server_main :: proc() -> int {
             handle_did_change(&state, params)
         case "textDocument/didClose":
             handle_did_close(&state, params)
+        case "textDocument/hover":
+            resp = handle_hover(&state, params, id)
+        case "textDocument/completion":
+            resp = handle_completion(&state, params, id)
+        case "textDocument/documentSymbol":
+            resp = handle_document_symbol(&state, params, id)
         case:
             // Unknown method : if it has an id, respond with error ; else ignore.
             if id != nil {

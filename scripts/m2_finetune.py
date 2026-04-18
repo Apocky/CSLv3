@@ -67,7 +67,8 @@ def check_env() -> tuple[bool, str]:
     return True, ""
 
 
-def build_training_corpus(mode: str = "joint") -> list[dict]:
+def build_training_corpus(mode: str = "joint",
+                          train_filter: str = "") -> list[dict]:
     """Assemble training examples from the corpus.
 
     `mode` (Session-16 isolation experiment) :
@@ -90,6 +91,12 @@ def build_training_corpus(mode: str = "joint") -> list[dict]:
     """
     pairs: list[dict] = []
     csl_files = sorted(EVAL_DIR.glob("C*_CSL.csl"))
+    # Session-17 : optional fixture-filter for generalization experiment.
+    # train_filter = "C1,C2,C3,C4,C5,C6,C7" restricts training to those.
+    if train_filter:
+        wanted = set(s.strip().upper() for s in train_filter.split(",") if s.strip())
+        csl_files = [p for p in csl_files
+                     if any(p.stem.upper().startswith(w + "_") for w in wanted)]
     for csl in csl_files:
         stem = csl.stem.replace("_CSL", "")
         en = PARAPHRASES / f"{stem}.en"
@@ -161,8 +168,9 @@ def train(args) -> int:
     print(f"[env] torch {torch.__version__} ; cuda={torch.cuda.is_available()}")
     print(f"[env] mode={args.mode} base={args.base} rank={args.rank}")
 
-    pairs = build_training_corpus(mode=args.mode)
-    ds_path = write_training_dataset(pairs, TRAINING_DIR / args.mode)
+    pairs = build_training_corpus(mode=args.mode, train_filter=args.train_filter)
+    ds_suffix = args.mode + (f"_{args.train_filter.replace(',', '')}" if args.train_filter else "")
+    ds_path = write_training_dataset(pairs, TRAINING_DIR / ds_suffix)
 
     # Build prompt/completion → completion-only-loss dataset.
     tokenizer = AutoTokenizer.from_pretrained(args.base, use_fast=True)
@@ -211,9 +219,10 @@ def train(args) -> int:
     model = get_peft_model(model, lora_cfg)
     model.print_trainable_parameters()
 
-    # Session-16 : each run goes under ARTIFACTS/<mode>[_<rank>]/
+    # Session-16 : each run goes under ARTIFACTS/<mode>[_<rank>][_<filter>]/
     suffix = args.mode
     if args.rank != 16: suffix += f"_r{args.rank}"
+    if args.train_filter: suffix += f"_{args.train_filter.replace(',', '')}"
     out_dir = ARTIFACTS / suffix
     out_dir.mkdir(parents=True, exist_ok=True)
     targs = TrainingArguments(
@@ -288,6 +297,10 @@ def main() -> int:
                     help="isolation-experiment mode (Session-16) : joint "
                          "trains on EN->CSL prompt/completion pairs ; csl-only "
                          "and en-only train pure LM loss on respective halves")
+    ap.add_argument("--train-filter", default="",
+                    help="comma-list of fixture stems (e.g. C1,C2,C3,C4,C5,C6,C7) "
+                         "to restrict training to ; remainder is implicitly the "
+                         "held-out test set. Session-17 generalization experiment.")
     args = ap.parse_args()
 
     if args.build_corpus_only:

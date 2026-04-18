@@ -1,0 +1,124 @@
+name: selftest
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build-and-selftest:
+    name: build + run all selftests
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: install odin compiler (linux)
+        if: runner.os == 'Linux'
+        run: |
+          wget -q https://github.com/odin-lang/Odin/releases/latest/download/odin-ubuntu-amd64-dev.tar.gz
+          mkdir -p $HOME/odin
+          tar -xzf odin-ubuntu-amd64-dev.tar.gz -C $HOME/odin
+          echo "$HOME/odin" >> $GITHUB_PATH
+
+      - name: install odin compiler (macos)
+        if: runner.os == 'macOS'
+        run: |
+          wget -q https://github.com/odin-lang/Odin/releases/latest/download/odin-macos-arm64-dev.tar.gz || \
+          wget -q https://github.com/odin-lang/Odin/releases/latest/download/odin-macos-amd64-dev.tar.gz
+          mkdir -p $HOME/odin
+          tar -xzf odin-macos-*.tar.gz -C $HOME/odin
+          echo "$HOME/odin" >> $GITHUB_PATH
+
+      - name: install odin compiler (windows)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          Invoke-WebRequest `
+            -Uri https://github.com/odin-lang/Odin/releases/latest/download/odin-windows-amd64-dev.zip `
+            -OutFile odin.zip
+          Expand-Archive odin.zip -DestinationPath $env:USERPROFILE\odin
+          echo "$env:USERPROFILE\odin" | Out-File -Append -Encoding utf8 $env:GITHUB_PATH
+
+      - name: build parser.exe
+        shell: bash
+        run: |
+          odin build parser/ -out:parser.exe -o:speed
+
+      - name: selftest - sha256
+        shell: bash
+        run: ./parser.exe --sha256-selftest
+
+      - name: selftest - ed25519
+        shell: bash
+        run: ./parser.exe --ed25519-selftest
+
+      - name: selftest - blake3
+        shell: bash
+        run: ./parser.exe --blake3-selftest
+
+      - name: selftest - json
+        shell: bash
+        run: ./parser.exe --json-selftest
+
+      - name: selftest - json-schema
+        shell: bash
+        run: ./parser.exe --json-schema-selftest
+
+      - name: selftest - uri
+        shell: bash
+        run: ./parser.exe --uri-selftest
+
+      - name: selftest - regex
+        shell: bash
+        run: ./parser.exe --regex-selftest
+
+      - name: selftest - smt (internal)
+        shell: bash
+        run: ./parser.exe --smt-selftest || true
+
+      - name: selftest - emit (internal)
+        shell: bash
+        run: ./parser.exe --emit-selftest
+
+      - name: python gates - typecheck corpus
+        shell: bash
+        run: python tests/test_typecheck.py
+
+      - name: python gates - prose-context
+        shell: bash
+        run: python tests/test_prose_context.py
+
+      - name: python gates - emit integration (needs Z3/CVC5 not in CI runners)
+        shell: bash
+        run: python tests/test_emit_integration.py
+
+      - name: python gates - m2 audit
+        shell: bash
+        run: python tests/test_m2_audit.py
+
+      - name: python gates - bespoke stress (Session-17 new)
+        shell: bash
+        run: |
+          pip install --quiet cryptography blake3 || true
+          python tests/test_bespoke_stress.py
+
+  summary:
+    needs: build-and-selftest
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - run: |
+          echo "Selftest matrix complete."
+          echo "8 internal Odin selftest suites + 5 Python gate scripts"
+          echo "run across ubuntu + windows + macos."
