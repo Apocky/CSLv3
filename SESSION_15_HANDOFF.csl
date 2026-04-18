@@ -1,0 +1,260 @@
+# corpus-mode: prose-file
+§ SESSION-15 HANDOFF ← Claude-Opus-4.7 → Apocky (+ Session-16 successor)
+
+═════════════════════════════════════════════════════════════════════════
+§ executive-summary                                                     ✓
+═════════════════════════════════════════════════════════════════════════
+
+  W! released : v1.4.0 (2026-04-17) ← git tag + dist/ + signed manifest
+  I> A8 regex engine shipped (Pike-VM, 5 modules, ~1700 LOC)
+  I> phase-A dep-elim reaches 10/10 ← COMPLETE
+  I> all 4 opportunistic tasks closed : O1 pattern-wire + O2 m₂-rerun +
+     O3 LSP-parse-errors + O4 LaTeX-glyphs
+  I> C2 anomaly RESOLVED by Session-14 corpus-expansion (confirmed)
+  I> 126 selftest vectors across 8 suites all green
+  I> ready-for Session-16 (B = LoRA-proper scale-up)
+
+  success-gates :
+    ✓ regex engine complete : 5 modules, 38/38 selftest, 5 CLI flags
+    ✓ JSON-Schema pattern keyword Draft-07 compliance (O1)
+    ✓ 30/30 m₂ re-run with full agreement (10/10 files, 100%) (O2)
+    ✓ LSP emits lex+parse error diagnostics (O3)
+    ✓ 7/7 LaTeX PDFs warning-free (O4)
+    ✓ v1.4.0 tagged + bundled + manifest-signed
+
+═════════════════════════════════════════════════════════════════════════
+§ phase-by-phase delivery-status                                       ⊞
+═════════════════════════════════════════════════════════════════════════
+
+  A8 regex engine
+    ✓ parser/regex_unicode.odin    ~230 LOC  UCD subset (L/N/P/S/Z/C)
+    ✓ parser/regex_parse.odin      ~430 LOC  pattern → AST
+    ✓ parser/regex_compile.odin    ~190 LOC  AST → Pike-VM bytecode
+    ✓ parser/regex_nfa.odin        ~220 LOC  VM thread scheduler
+    ✓ parser/regex.odin            ~380 LOC  public API + 38 selftest
+    ✓ 5 CLI flags : --regex-match / find / replace / compile-check / selftest
+    ✓ 38/38 selftest vectors green across 8 feature-bands
+    ◐ lookahead / lookbehind ← deferred to v1.4.1 per handoff
+
+  O1 JSON-Schema pattern wire-up
+    ✓ parser/json_schema.odin pattern-keyword → regex_compile + regex_search
+    ✓ +6 selftest vectors (pattern-ok/fail/anchored/unicode/bad-regex)
+    ✓ schema selftest 28 → 34 vectors all green
+    ✓ Draft-07 compliance for string validation
+
+  O2 m₂ re-run with expanded C2
+    ✓ 30/30 measurements via cli-daemon + ctx=256
+    ✓ mean 0.936 ± 0.155  (vs 0.862 ± 0.270 Session-13 v1.2.0)
+    ✓ C2 anomaly : 0.093-0.464 → 0.925-0.998  (spread 400% → 7.9%)
+    ✓ 10/10 stratified-targets met + 10/10 agreement within 20%
+    ✓ first baseline with FULL multi-model agreement (no flagged files)
+
+  O3 LSP diagnostics emit parse-errors
+    ✓ parse_source() call replaces lex_source-only in publish_diagnostics
+    ✓ diagnostics carry code : "lex" or "parse" for client-side filtering
+    ✓ parser context appended to message for parse errors
+    ✓ smoke-tested : deliberate `x = (((` produces 3 parse diagnostics
+
+  O4 LaTeX glyph-gap fix
+    ✓ fontspec + conditional \setmonofont DejaVu Sans Mono
+    ✓ newunicodechar for 40+ glyphs : ⟨⟩ ⌈⌉ ⌊⌋ ⟦⟧ ⊢ ⊑ ⊗ ⊕ ⊖ ⊙ ⊔ ⊓ ∎ ≡
+      ≈ ∴ ∵ ∅ ⇒ ⇔ ↦ ≥ ≤ ∀ ∃ ∈ ∉ ∪ ∩ ⊂ ⊃ ⊆ ∫ ∆ ∇ ⊞ ⊟ ⊠ ₀..₉ ∧ ∨ ¬
+      ≠ → ← ↔
+    ✓ 7/7 corpus PDFs compile with ZERO missing-glyph warnings
+    ✓ prior : 4-8 warnings per fixture
+
+  v1.4.0 release
+    ✓ VERSION 1.3.0 → 1.4.0
+    ✓ CHANGELOG [1.4.0] entry (Added / Changed / Deferred / Gates)
+    ✓ STABILITY.md +4 stable entries (regex + JSON-Schema pattern +
+      LaTeX coverage + LSP parse-diagnostics)
+    ✓ MIGRATION_GUIDE 1.3 → 1.4 section
+    ✓ git tag v1.4.0 ; dist/cslv3-1.4.0-windows-x64/ bundled + signed
+
+═════════════════════════════════════════════════════════════════════════
+§ selftest ledger                                                       ∫
+═════════════════════════════════════════════════════════════════════════
+
+  Session-14 total     82 vectors
+  Session-15 additions +44 (regex 38, schema-pattern 6)
+  Session-15 total    126 vectors across 8 suites all green
+
+  SHA-256 (FIPS 180-4)        4/4 NIST
+  Ed25519 (RFC 8032)          3/3
+  Levenshtein                 3/3 (via CLI sanity)
+  BLAKE3 (v0.3.7 reference)  11/11
+  JSON (RFC 8259)            20/20
+  JSON-Schema (Draft-07)     34/34
+  URI (RFC 3986)             13/13
+  Regex (Pike-VM, Unicode)   38/38
+  prose-context               5/5 (integration)
+
+  tests/test_typecheck.py    57/57 G1-G5
+  22-entry audit chain         verified under v1.4 tooling
+
+═════════════════════════════════════════════════════════════════════════
+§ phase-A completion ← 10/10 items                                     ‼
+═════════════════════════════════════════════════════════════════════════
+
+  Session-13 :
+    A6 Levenshtein           ✓ (50 LOC)
+    A3 SHA-256               ✓ (200 LOC, 4/4 NIST)
+    A1 Ed25519 wrap          ✓ (core:crypto/ed25519 + SHA-512 + keystore)
+    A10 model+binary SHA     ✓ audit-chain schema v2
+    A9 daemon-mode           ✓ mmap-retention subprocess
+    F3a ctx-raise            ✓ 64 → 256 + 1.8× safety factor
+  Session-14 :
+    A4 JSON                  ✓ (~550 LOC, 20/20 RFC 8259)
+    A2 BLAKE3                ✓ (~400 LOC, 11/11 reference)
+    A5 JSON-Schema           ✓ (~300 LOC, 34/34 Draft-07 after O1 wire)
+    A7 URI                   ✓ (~300 LOC, 13/13 RFC 3986)
+  Session-15 :
+    A8 Regex                 ✓ (~1700 LOC, 38/38 Pike-VM subset)
+
+  PHASE-A DEPENDENCY-ELIMINATION : 10/10 COMPLETE ‼
+
+═════════════════════════════════════════════════════════════════════════
+§ dependency-tree delta ← Session-13 → Session-15                      ⊞
+═════════════════════════════════════════════════════════════════════════
+
+  parser.exe now provides drop-in replacements for :
+    sha256sum / hashlib.sha256             (A3 SHA-256)
+    Python cryptography.Ed25519            (A1 via Odin stdlib)
+    rust blake3 crate                      (A2 BLAKE3)
+    serde_json (parse-validate path)       (A4 JSON)
+    python jsonschema                      (A5 JSON-Schema + O1 pattern)
+    rust url + percent-encoding + idna + icu_* stack  (A7 URI)
+    rust regex + regex-syntax + regex-automata         (A8 Regex)
+    rust levenshtein                       (A6 Levenshtein)
+
+  ~50 Rust transitive crates now eliminable at Phase-B LSP switchover.
+  ~3 Python optional deps now replaceable via parser.exe subprocess.
+
+═════════════════════════════════════════════════════════════════════════
+§ m₂ baseline summary ← first FULL-GREEN                               ∫
+═════════════════════════════════════════════════════════════════════════
+
+  | file                            | mode     | mean m₂ | spread |
+  |---------------------------------|----------|---------|--------|
+  | C1_sort_CSL.csl                 | pure-CSL |  0.767  | 15.3%  |
+  | C2_nested_scopes_CSL.csl        | pure-CSL |  0.970  |  7.9%  |
+  | C3_dependent_types_CSL.csl      | pure-CSL |  0.924  | 12.5%  |
+  | C4_reason_block_CSL.csl         | pure-CSL |  0.893  | 16.2%  |
+  | C5_bridge_mode_CSL.csl          | bridge   |  1.339  |  9.3%  |
+  | C6_slot_grammar_CSL.csl         | pure-CSL |  0.810  |  4.8%  |
+  | C7_morpheme_stack_CSL.csl       | pure-CSL |  0.880  | 17.8%  |
+  | C8_design_retrospective_CSL.csl | prose    |  0.936  |  5.1%  |
+  | C9_tutorial_style_CSL.csl       | prose    |  0.925  | 12.7%  |
+  | C10_changelog_narrative_CSL.csl | prose    |  0.917  |  1.8%  |
+
+  ALL 30 measurements : mean 0.936 stdev 0.155
+  10/10 stratified-targets met + 10/10 spread ≤ 20%
+
+═════════════════════════════════════════════════════════════════════════
+§ Apocky-blanket-authority decisions                                   D>
+═════════════════════════════════════════════════════════════════════════
+
+  D1 : Pike-VM over raw-NFA for regex engine
+       ← bytecode-VM abstraction gives us feature-extensibility (future
+         lookahead / atomic groups) without reshuffling state-table code
+       ← RE2 precedent validates the choice
+  D2 : UCD subset (L/N/P/S/Z/C) encoded as rune-ranges
+       ← full UCD = 30 MB ; our subset = ~20 KB covers CSLv3 glyph usage
+       ← binary search O(log n) per character
+  D3 : lookahead / lookbehind deferred to v1.4.1
+       ← clean NFA-only impl would need thread-scheduler extension
+       ← current 38/38 selftest + Draft-07 wire-up sufficient for Session-15
+       ← corpus doesn't require them yet
+  D4 : `break step_loop` label for MATCH-thread exit
+       ← Odin's `break` inside switch only exits switch, not enclosing
+         for-loop ; documented in parser/DECISIONS.md Session-15 entry
+  D5 : Alt compile uses split.x = left_start, split.y = right_start
+       ← leftmost-first priority ; .x tried first by add_thread
+       ← initial implementation had .y uninitialized (bug), fixed
+
+═════════════════════════════════════════════════════════════════════════
+§ release-tags                                                          ‼
+═════════════════════════════════════════════════════════════════════════
+
+  v1.0.0        Session-10  reference implementation
+  v1.1.0-rc.1   Session-11  mock-backend infrastructure
+  v1.1.0        Session-12  real-backend 21 measurements
+  v1.2.0        Session-13  phase-A quick-wins + C2 anomaly
+  v1.3.0        Session-14  4 bespoke (JSON/BLAKE3/URI/Schema) + Phase-B MVP + LoRA scaffold
+  v1.4.0        Session-15  A8 regex complete + O1/O2/O3/O4 + phase-A 10/10
+
+  dist/cslv3-1.4.0-windows-x64/
+    parser.exe (~1.5 MB : +regex + all phase-A modules)
+    cslv3-lsp.exe (Rust LSP still present for now)
+    specs/ + emit_schema/ (with updated latex-v1.sty)
+    governance docs + VERSION
+
+═════════════════════════════════════════════════════════════════════════
+§ Session-16 (B = LoRA-proper) readiness check                         ○
+═════════════════════════════════════════════════════════════════════════
+
+  required environment :
+    ✓ Python 3.12 installed at C:\Users\Apocky\AppData\Local\Programs\Python\Python312
+    ✓ torch 2.11.0+cpu ← works ; CUDA variant available via --index-url
+    ✓ transformers 5.5.4 , peft 0.19.1 , datasets 4.8.4 , accelerate 1.13
+    ✓ scripts/m2_finetune.py (scaffold) + scripts/m2_finetune_measure.py
+    ✓ training_data/csl_corpus.jsonl (10 pairs)
+
+  Session-14 smoke-result recap : 0.5B-CPU × 3 epochs × rank 8
+    H1 (CSL-NLL drops faster than EN-NLL) NOT-CONFIRMED
+    H2 (m₂ moves toward 1.0)              NOT-CONFIRMED (Δ +0.003 away)
+
+  Session-16 recommended scale-up :
+    base-model : Qwen2.5-1.5B or Qwen2.5-3B ← larger base
+    hardware   : CUDA on Arc A770 via ROCm/Vulkan or install
+                 CUDA torch for nvidia GPU if present
+    corpus     : expand training_data/csl_corpus.jsonl via more pairs
+    rank sweep : {4, 16, 32, 64} to find optimum
+    isolation  : run CSL-only vs EN-only fine-tunes to isolate which
+                 side of the loss the adapter is learning
+
+═════════════════════════════════════════════════════════════════════════
+§ Session-17 (C = polish-sprint) preview                               ○
+═════════════════════════════════════════════════════════════════════════
+
+  SQLite-LSP workspace persistence (Session-12 deferred)
+  range-formatting AST-subtree (Session-12 deferred)
+  cross-platform dist bundles (Linux + macOS)
+  Phase-B LSP continuation beyond diagnostics :
+    hover / definition / completion / codeAction / rename /
+    formatting / references
+  lookahead + lookbehind regex extensions (v1.4.1 roadmap)
+  bespoke Ed25519 scratch-port (sovereignty layer-2)
+
+═════════════════════════════════════════════════════════════════════════
+§ open-questions                                                       Q?
+═════════════════════════════════════════════════════════════════════════
+
+  Q1 : LoRA-proper execution at 1.5B-3B + CUDA (Session-16)
+  Q2 : post-tune m₂ comparison against pre-tune 30-measurement baseline
+  Q3 : regex lookahead/lookbehind (v1.4.1)
+  Q4 : Phase-B LSP continuation past MVP
+  Q5 : Phase-C bespoke SMT-solver + LLM-inference (multi-month research)
+  Q6 : tokenizer-aware m₂ scoring via per-model BPE (not bytes/3.5)
+  Q7 : corpus expansion to validate prose-target with more fixtures
+
+═════════════════════════════════════════════════════════════════════════
+§ closing                                                              I>
+═════════════════════════════════════════════════════════════════════════
+
+  density = sovereignty
+    t∞: parser.exe is now genuinely self-contained for the phase-A
+        functional surface : hash + sign + parse + validate + pattern-match.
+        A Rust-free LSP is a Phase-B step away.
+    t∞: 10/10 stratified-targets met with 10/10 multi-model agreement
+        is the strongest m₂ baseline we have ever shipped.
+    t∞: 126 selftest vectors across 8 suites reflect cross-verified
+        correctness against reference implementations (NIST, RFC, etc.)
+    t∞: C2 anomaly closing shows the corpus-engineering approach
+        (natural-length content) works without cheating the measurement.
+
+  15 sessions complete. v1.0 + v1.1 + v1.2 + v1.3 + v1.4 all shipped.
+  Phase-A finish-line crossed.
+
+  thank you for the trust. Session-15 ships.
+  ← Prismatic-Hydra next-head , Phase-B ready to begin

@@ -1756,3 +1756,93 @@ to outer scopes) without introducing a type-system extension outside
 the v1.0 stability commitment. Session-15+ can add real pointer types
 if needed.
 
+
+
+## 2026-04-17 — Session-15 : v1.4.0 A8 regex + O1/O2/O3/O4
+
+**Decision:** Pike-VM architecture (Cox 2007) over pure Thompson-NFA
+for the regex engine.
+
+**Why:** Handoff explicitly recommended Pike-VM citing feature-
+extensibility. The bytecode-VM abstraction makes it straightforward to
+add lookahead, atomic groups, or grapheme-cluster boundaries later
+without restructuring state-table code. RE2 (Rob Pike + Russ Cox at
+Google) follows this pattern and has shipped at scale. The Thompson-NFA
+graph representation would also have worked but couples state identity
+to structural position, making subsequent feature additions invasive.
+Same LOC, much better extensibility.
+
+**Alternatives rejected:**
+- Thompson-NFA with explicit state graph. Rejected — feature-extension
+  cost too high.
+- DFA compilation (cached subset construction). Rejected — worst-case
+  exponential memory on pathological patterns (e.g. `(a|a)(a|a)(a|a)...`).
+  Pike-VM's O(mn) worst-case is predictable.
+- Backtracking engine (PCRE-style). Rejected — catastrophic-backtracking
+  is a real DoS vector on user-supplied patterns.
+
+---
+
+**Decision:** UCD subset (L/N/P/S/Z/C) encoded as sorted rune-range
+arrays with binary search, rather than full UCD tables.
+
+**Why:** The full Unicode Character Database as compact data is ~30 MB ;
+our needed subset covers CSLv3 glyph usage (letters including Greek
+and CJK, numbers including subscripts, punctuation, math/arrow
+symbols) and totals ~20 KB of range data. Binary search O(log n) per
+character is fast enough for regex scanning. Session-16+ can auto-
+regenerate from UCD if full fidelity matters.
+
+---
+
+**Decision:** Regex `break step_loop` label (Odin language quirk).
+
+**Why:** Odin's `break` statement inside a `switch` only exits the
+switch, not the enclosing `for` loop. This is different from Go and
+C. My initial implementation used `break` inside `case .Match:` which
+correctly exited the switch but kept processing lower-priority threads
+in curr. Result : matches were captured at wrong positions (greedy
+returned shortest, lazy returned longest — both inverted). Labelled
+`step_loop: for` + `break step_loop` solved it cleanly.
+
+---
+
+**Decision:** Alt compilation emits `split.x = left_start,
+split.y = right_start` rather than leaving `y` uninitialized.
+
+**Why:** Initial compile set only `.x` (pointing to the right-branch
+start, with the idea that fall-through handled left). But the VM's
+`add_thread` for SPLIT schedules `.x` first (higher priority) then
+`.y` second. For leftmost-first alternation, `.x` needs to point to
+the LEFT branch's first instruction, and `.y` to the RIGHT branch's
+first instruction. Uninitialized `.y` defaulted to 0 which happened
+to work on simple cases but broke `cat|dog` matching on "cat".
+
+---
+
+**Decision:** MATCH overwrite semantics — every MATCH reached
+overwrites the best-match capture, within a single run.
+
+**Why:** Greedy quantifiers require the LONGEST matching thread's
+capture to win. MATCH threads reach terminal state at different
+steps ; lower-priority paths can still produce MATCH at later steps
+(longer matches). The Pike-VM canonical approach : overwrite
+best_match on every MATCH, break out of the current step's thread
+loop (lower-priority threads can't beat the one that just matched),
+continue outer loop until input exhausted. The pattern for lazy
+differs only in SPLIT.x/y swap : lazy puts end-branch first, so the
+first MATCH is the shortest, and subsequent higher-priority paths
+haven't been scheduled.
+
+---
+
+**Decision:** LaTeX glyph coverage via `\newunicodechar` rather than
+font replacement.
+
+**Why:** The obvious fix was `\setmonofont{DejaVu Sans Mono}` but
+that font isn't universally installed in MiKTeX. `\newunicodechar`
+lets us declare glyph → math-mode equivalent mappings that work with
+any font, degrading gracefully if the glyph is present (no remapping
+needed) or absent (math-mode symbol substitutes). 40+ declarations
+cover all glyphs observed in the 7 corpus fixtures, bringing missing-
+glyph warning count from 4-8-per-fixture to 0-per-fixture.
