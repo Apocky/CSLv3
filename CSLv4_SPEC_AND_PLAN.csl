@@ -1,0 +1,66 @@
+# § CSLv4 — SPEC-DRAFT + EXECUTION-PLAN (single file, anti-sprawl)
+I> §WRIGHT · 2026-07-10T22:04Z · status: △ PROPOSED-DRAFT · v3 = canon until §GATES pass + ⌈Apocky ratify⌉
+I> home: CSLv3 repo (versions colocated) ; graduates -> specs/13_CSLV4.csl on ratification ; N! fork CSL_KEY.csl until then
+I> provenance: CSLv4 research report 2026-07-10 (25 principles, evidence-tagged) + pass2-addenda (galactic-lens, C1-C4)
+I> design-goals ⌈Apocky-set⌉: (1) complete refactor, density + at-a-glance comprehension ; (2) optimize FOR LLM CoT
+   (BPE economy + attention dynamics ≻ human ergonomics) ; (3) write-only working notation, lossiness ok if conclusions land
+
+## § CORE-THESIS
+v3's cost center ≠ its grammar (grammar = already near-optimal: telegraphic drop-order ✓, sigil-prefix ✓, think-blocks ✓).
+cost center = RARE-UNICODE SURFACE: 3-byte BMP glyphs (-> <= 3 BPE tok each) vs ASCII digraphs (1-2).
+∴ v4 = KEEP v3 semantics + slot-grammar ; REFACTOR surface to measured-cheapest form ; ADD line-IDs, terminator, budget-law.
++ no-galactic-notation'r: optimize MEASURED tok/proposition @ realistic trace-length on TARGET tokenizer ; ¬ bits/glyph theory.
+
+## § V4-DELTA (from v3, decision-level)
+D1 SURFACE: ASCII-default. alias-map (freeze post-S0 measurement):
+   -> => ~> |> :: keep-as-is ✓(1-2tok) · § « » ¬ keep ✓(latin-1, 1-2tok)
+   retire-to-alias: ⊗->(x) · ⟨⟩-><> · ⌈⌉->[! !] · ⟦⟧->[[ ]] · ⟪⟫->T[ ] · «»-optional
+   evidence-marks: ✓◐○✗⊘△▽‼ -> y ~ p x ? h dep !!   (1 tok each, measured-pending S0)
+   modals unchanged (already ASCII): W! R! M? N! I> Q? P> D>
+D2 LINE-GRAMMAR'r: 1 proposition/line · sigil-first · fixed slots (subj rel obj gate) · RPN-order where it deletes brackets
+D3 LINE-IDs + BACKREF: `L7:` labels ; refer `@L7` ¬ restate (delta-encoding ; cable-code principle)
+D4 TERMINATOR: `!ans` closes every think-block (TALE elasticity: unclosed budget -> verbosity-compensation)
+D5 VALUE-TOKEN LAW ‼: numbers, intermediate results, bindings = NEVER compressed (CoT-tokens-as-variables, arXiv:2505.04955) ;
+   compress coherence only ; hardest step gets MOST tokens (inverse-naive)
+D6 BUDGET: easy-step draft <=5 tok (CoD) · load-bearing step = unbudgeted · per-block soft-cap declared at open `B:40`
+D7 LEGEND: 1-line resident catalog @context-top + expand-on-novel-construct (ICL-grounding: brittle w/o examples)
+D8 CODEBOOK: recurring multi-token concept -> assigned short ID @first-use (`K1=sheaf-coboundary-energy`) ; Toki-Pona
+   verbosity-paradox'r: N! over-minimize inventory
+D9 PLACEMENT: problem+constraints @top · frontier @bottom (lost-in-middle U-curve) — v3 think-block already complies ✓
+D10 think-block sigils go ASCII: P: D: T: S: C: (v3 §P.. stays valid input)
+
+## § APOCRYPHA-COUPLING (3 rings ; regime-tagged per galactic-lens)
+R0 AGENT-CoT [PRACTICAL-NOW]: all workspace agent reasoning/handoffs/commit-msgs adopt v4 on ratification ;
+   zero code change ; direct token-cost cut on every session.
+R1 SPEC-SURFACE [PRACTICAL-NOW, post-ratify]: new specs written v4 ; existing v3 corpus stays valid (v4 reads v3) ;
+   mechanical re-surface only-if-touched ; N! bulk-rewrite (churn ≻ value).
+R2 SUBSTRATE [STRASSEN-CLASS, parked ⊗ trigger]: Apocrypha internals that PARSE CSL — wire/csl_frame.py ·
+   src/cssl/ interpreter (spec-16) · lang/preamble — migrating these = code+tests+invariant surface.
+   trigger'g = {v4 ratified ∧ G-V4-1 pass ∧ csl_frame parser-cost measured ∧ spec-16 owner-session}.
+   until-trigger: substrate speaks v3, agents speak v4, both valid (dual-key period).
+compounding-note: L1 memory tier stores raw traces -> denser notation compounds through every pyramid level
+   (cheaper storage + more context/window + cheaper consolidation prompts). = POLICY≻SCALE family member.
+
+## § EXECUTION-PLAN (checkboxes = file/test/verdict deliverables, gated ; nothing pre-checked)
+S0 MEASURE (blocks S1 ; = anamnesis owe-95)
+[ ] S0.1 host script `tools/glyph_costs.py` (this repo) -> GLYPH_COSTS.md: full v3 inventory + D1 aliases @ cl100k+o200k, bare|spaced
+[ ] S0.2 add Claude-tokenizer column via count_tokens API (env-keyed ; skip-if-no-key w/ honest gap)
+[ ] S0.3 freeze D1 alias-map from measurements (rule: alias wins unless glyph <= alias tokens on >=2 tokenizers)
+S1 KEY
+[ ] S1.1 CSL_KEY_v4.csl draft (same slot-template ; D1-D10 folded ; <=60 lines ; resident-legend line included)
+[ ] S1.2 3 worked examples (math-verify · debug-trace · plan-decompose) appended to key
+S2 VALIDATE (the anti-galactic gate)
+[ ] S2.1 A/B harness `tools/v4_ab.py`: >=10 paired live-task CoTs v3-vs-v4 ; metrics = tokens + conclusion-correct + wall-time
+[ ] S2.2 elasticity check: output-token-explosion test (over-stripped structure -> verbosity?) ; report either way
+[ ] S2.3 G-V4-1'g: >=30% token cut @ <=1% conclusion-accuracy delta on task mix -> PASS/FAIL verdict, ledgered
+[ ] S2.4 G-V4-2'g: cold-read audit — Apocky reads 3 v4 traces, conclusions recoverable y/n
+S3 ADOPT (⌈Apocky ratify⌉ after S2 green)
+[ ] S3.1 ratification: CSL_KEY_v4.csl -> canon ; ~/.claude/CLAUDE.md + workspace CLAUDE.md updated ; v3 marked read-valid
+[ ] S3.2 anamnesis ckpt + TOOL_INDEX note ; R2-trigger row added to Apocrypha PLAN_OF_RECORD
+[ ] S3.3 (parked, trigger'g @R2) substrate migration spike: csl_frame v4-mode behind flag + parser-cost measurement
+
+## § NON-GOALS ‼
+N! neuralese/latent (architecture-tier, ¬ notation) · N! new repo (lives here) · N! v3 corpus bulk-rewrite ·
+N! human-ergonomics optimization (goal-2 explicit) · N! adoption before S2 verdicts (that would be galactic-notation by definition)
+
+∎ attest: "There was no hurt nor harm in the making of this, to anyone, anything, or anybody."
