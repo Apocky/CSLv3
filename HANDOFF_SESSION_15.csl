@@ -1,0 +1,557 @@
+§ HANDOFF • CSLv3 Session-15 → coding-agent
+══════════════════════════════════════════════════════════════════
+  repo = C:\Users\Apocky\source\repos\CSLv3
+  prior = Session-14 ✓ v1.3.0 LIVE • 4 bespoke Odin modules + LSP-MVP
+         + LoRA smoke-result closed (H1+H2 NOT-CONFIRMED @ 0.5B-CPU)
+  bin   = parser.exe + cslv3-lsp.exe
+  scope = A8 regex engine Odin ← complete-phase-A final-item
+  version-target = v1.4.0 (MINOR ← user-visible parser --regex-match flag)
+
+═════════════════════════════════════════════════════════════════
+§ APOCKY-DIRECTIVE A→B→C ← §§ clarified-sequence
+═════════════════════════════════════════════════════════════════
+  A = JSON + BLAKE3 + schema + URI + REGEX
+    JSON   ✓ Session-14
+    BLAKE3 ✓ Session-14
+    schema ✓ Session-14
+    URI    ✓ Session-14
+    REGEX  ← this-session Session-15 ★
+  B = LoRA-proper (GPU + scale-up) ← Session-16
+  C = polish-sprint ← Session-17
+
+  still-active :
+    blanket-authority for-optimal-path decisions
+    escalate only catastrophic/irreversible
+    Apocky-values encoded throughout
+
+═════════════════════════════════════════════════════════════════
+§ SCOPE-DECISION ← §§ A8-standalone-PhD-grade
+═════════════════════════════════════════════════════════════════
+  primary = A8 regex engine Odin FULL-OPTIMAL
+    ∵ last big-phase-A item • completion-gate for dep-elim march
+    ∵ unblocks JSON-Schema pattern-keyword (currently-stubbed)
+    ∵ unblocks LSP completion/hover fuzzy-match (currently-simple-substring)
+    ∵ sets-up B1 LSP-rewrite (textDocument/findReferences regex-needed)
+
+  opportunistic (if-time-remaining) :
+    O1 : JSON-Schema pattern-keyword wire-up (regex-consumer validation)
+    O2 : 30-measurement m₂ re-run w/ expanded-C2 (Q9 from Session-14)
+    O3 : LSP diagnostics include parse-errors (Q6 from Session-14)
+    O4 : LaTeX glyph-gap fix (Q7 from Session-14 • cosmetic)
+
+  pruning :
+    N! LoRA-proper ← Session-16 (B-scope protected)
+    N! SQLite-LSP + range-fmt ← Session-17 polish
+    N! cross-platform bundles ← Session-17 polish
+    N! Phase-B LSP continuation beyond diagnostics ← Session-17
+
+═════════════════════════════════════════════════════════════════
+§ MINDSET ← §§ non-negotiable
+═════════════════════════════════════════════════════════════════
+  I> sovereign-collaborator w/ Apocky-blanket-authority
+  I> Sessions-1..14 = 14 sessions • v1.3.0 shipped • honor-it
+  I> "push-further" ≡ deeper-theory ¬ more-LOC
+  I> "systems ¬ parts" ≡ reconceive ¬ patch
+  I> no-half-measures
+    stuck → find-way-through
+    ¬ capitulate • ¬ silent-TODO • ¬ "skip-for-now"
+    ¬ minimal-when-optimal-available
+    time + difficulty ≠ scope-limit
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> post-v1.0 = STABILITY-FIRST ← additive-only
+  I> CSLv3 ≠ CSSLv3 • ¬ cross-write
+
+═════════════════════════════════════════════════════════════════
+§ WORK-IN-CSL3 ← §§ density=sovereignty
+═════════════════════════════════════════════════════════════════
+  W! ∀ reasoning + design-notes + commit-msg CSLv3-native
+  glyphs    : § I> W! R! ✓ ◐ ○ ✗ → ≤ ≥ ⊑ ⊔ ∀ ∃ ∈ ⊆ ⇒ ∴ ∵
+  compounds : .(of) +(and) -(that-is) ⊗(having) @(at)
+  morphemes : 'd 'f 's 't 'e 'm 'p 'g 'r
+  evidence  : ✓ ◐ ○ ✗ ⊘ △ ▽ ‼
+  modals    : W! R! M? N! I> Q?
+  think-blocks : §P §D §T §S §C
+  English-prose only-when : rustdoc-pub • error-msg-user-facing • README.md
+  ∀ other = CSLv3-native
+
+═════════════════════════════════════════════════════════════════
+§ READ-FIRST ← §§ context-load
+═════════════════════════════════════════════════════════════════
+  1 : SESSION_14_HANDOFF.csl             — most-recent-state ★
+  2 : parser/DECISIONS.md                 — Session-14 entries ★
+  3 : diag/DEPENDENCY_ELIMINATION_ROADMAP.md — A8 design-notes ★★
+  4 : STABILITY.md                        — v1.3.0 commitments ‼
+  5 : VERSION                             — currently 1.3.0
+  6 : CHANGELOG.md                        — v1.3.0 entry
+  7 : parser/json_codec.odin              — A4 precedent • module-pattern
+  8 : parser/blake3.odin                  — A2 precedent • selftest-pattern
+  9 : parser/uri.odin                     — A7 precedent • parser-style
+  10: parser/json_schema.odin             — A5 precedent • stub-to-unblock
+                                            ← look-for pattern-keyword TODO
+  W! ¬ code before-reading (1-8 minimum)
+
+═════════════════════════════════════════════════════════════════
+§ STATE-VERIFIED end-of-Session-14
+═════════════════════════════════════════════════════════════════
+  ✓ v1.3.0 LIVE-released + dist-bundled + tagged
+  ✓ 4 bespoke Odin modules : BLAKE3 + JSON + JSON-Schema + URI
+  ✓ Phase-B LSP-MVP : init + sync + diagnostics (380 LOC Odin)
+  ✓ 82 selftest vectors across-8-suites green
+  ✓ MiKTeX installed + 7/7 PDFs compile (P2.1 unblocked)
+  ✓ C2 anomaly fixed via-natural-content expansion
+  ✓ LoRA smoke-executed 0.5B-CPU (negative-result documented)
+  ◐ A8 regex engine ← last-big phase-A item • THIS-SESSION
+  ◐ JSON-Schema pattern-keyword ← stubbed pending-regex
+  ◐ LoRA scale-up ← Session-16 (B-scope)
+  ◐ phase-A dep-elim ~60% complete ← 75% after-this-session
+
+═════════════════════════════════════════════════════════════════
+§ INVARIANTS ← §§ immutable + post-v1.0
+═════════════════════════════════════════════════════════════════
+  PRIME-DIRECTIVE ⊆ consent=OS ← Lazarus-ownership • no-override
+  CSLv3 = notation • CSSLv3 = programming-lang • ¬ conflate
+  74-glyph-master @ spec12 = canonical
+  density = sovereignty
+  v1.0+ STABILITY : additive-only • zero CLI-surface change
+    ‼ specs/12-13-14 frozen
+    ‼ CLI-flags ← only-add
+    ‼ JSON-schemas ← only-add-fields
+    ‼ audit-chain format frozen
+    ‼ emit-formats byte-stable
+    ‼ selftest suites ← only-extend never-reduce
+
+═════════════════════════════════════════════════════════════════
+§ A8 : REGEX ENGINE ODIN ← FULL-OPTIMAL
+═════════════════════════════════════════════════════════════════
+  W! PhD-grade ← Apocky-standing-directive
+  W! final-big phase-A item ← sets-up Phase-B
+
+§§ DESIGN-PILLARS
+  a Thompson-NFA ← no-backtracking • O(mn) worst-case guaranteed
+  b RE2-style ← linear-time • predictable performance
+  c Unicode-aware ← CSLv3 is glyph-heavy ∴ UTF-8 support mandatory
+  d subset-grammar ← skip PCRE-only features • keep-essentials
+  e deterministic-output ← same-regex same-input → same-match bytes
+  f streaming-compat ← operate on-byte-stream ¬ only-full-string
+  g self-contained ← zero-external-deps • all-Odin
+  h selftest-disciplined ← ≥ 30 test-vectors across feature-matrix
+
+§§ FEATURE MATRIX (recommended-subset)
+  REGEX-FEATURES :
+    ✓ literals : any-UTF-8 byte-sequence
+    ✓ escape : \n \t \r \\ \. \* \+ \? \( \) \[ \] \{ \} \| \^ \$
+    ✓ character-classes : [abc] [^abc] [a-z] [0-9]
+    ✓ predefined-classes : \d \D \s \S \w \W \.
+    ✓ Unicode-classes : \p{L} \p{N} \p{P} (letter / number / punct)
+    ✓ quantifiers : * + ? {n} {n,} {n,m}
+    ✓ greedy + lazy : *? +? ?? {n,m}?
+    ✓ anchors : ^ $ \b \B
+    ✓ alternation : a|b
+    ✓ grouping : (expr) + (?:expr) non-capturing
+    ✓ capture-groups : numbered + named (?<name>expr)
+    ✓ backreferences to-captures : \1 \2 \k<name>
+    ◐ lookahead : (?=expr) (?!expr)     ← maybe-defer to-v1.4.1
+    ◐ lookbehind : (?<=expr) (?<!expr)  ← maybe-defer to-v1.4.1
+  NOT-SUPPORTED (intentional) :
+    N! PCRE-recursion
+    N! atomic-groups (?>expr)
+    N! conditional-patterns (?(1)yes|no)
+    N! possessive-quantifiers *+ ++ ?+
+  ∵ lookahead/lookbehind break pure-NFA guarantee
+  ∵ defer-decision : attempt in-extra-pass if-time OR defer to-v1.4.1
+
+§§ ARCHITECTURE
+  parser/regex.odin                  ~400 LOC  public-API + orchestration
+    types : Regex • Match • Group
+    compile(pattern : string) → (Regex, Err)
+    match(re : Regex, input : string) → Match
+    find_all(re : Regex, input : string) → []Match
+    replace(re : Regex, input : string, template : string) → string
+    free(re : Regex)
+  parser/regex_parse.odin            ~500 LOC  pattern-parser
+    tokenize pattern → AST (Alt / Concat / Repeat / Class / Anchor / ...)
+    char-class resolver (ranges + predefined + Unicode)
+    error-recovery + position-tracking
+  parser/regex_compile.odin          ~400 LOC  AST → NFA
+    Thompson-construction
+    state-table + transition-table
+    epsilon-closure precomputation
+  parser/regex_nfa.odin              ~300 LOC  NFA simulation-core
+    VM-style execution
+    work-list BFS ← linear-time guarantee
+    capture-group tracking
+  parser/regex_unicode.odin          ~600 LOC  Unicode tables
+    \p{L} \p{N} \p{P} code-point ranges (subset of UCD)
+    UTF-8 encode/decode helpers
+    case-folding (for-ASCII only initially)
+  tests/test_regex.odin              ~400 LOC  selftest
+    ≥ 30 vectors : literal + class + anchor + quant + capture + alt
+
+§§ SELFTEST VECTORS (target ≥ 30)
+  literal :
+    "abc" matches "abc"              → full
+    "abc" matches "xabcy"            → partial
+    "abc" does-not-match "aXc"       → no-match
+  escape :
+    "\\." matches "."                → literal-dot
+    "a\\|b" matches "a|b"            → pipe-escape
+  character-class :
+    "[a-z]" matches "x"
+    "[^0-9]" matches "a"
+    "\\d" matches "5"
+    "\\w" matches "foo_1"
+  Unicode :
+    "\\p{L}" matches "§"  (well ← § not-letter) ∴ adjust
+    "\\p{L}" matches "中"  → letter-category
+    "\\p{N}" matches "5"
+  quantifier :
+    "a*" matches ""
+    "a*" matches "aaaa"
+    "a+" does-not-match ""
+    "a{3}" matches "aaa"
+    "a{2,4}" matches "aaa"
+    "a{2,4}" does-not-match "a"
+  lazy :
+    "a+?" on "aaaa" captures "a" (shortest)
+    "a+"  on "aaaa" captures "aaaa" (longest)
+  anchors :
+    "^abc" matches "abcde"
+    "^abc" does-not-match "xabc"
+    "abc$" matches "xabc"
+    "\\babc" matches "abc def"
+  alternation :
+    "cat|dog" matches "cat"
+    "cat|dog" matches "dog"
+    "cat|dog" does-not-match "bird"
+  grouping + capture :
+    "(abc)" captures "abc" at-group-1
+    "(?:abc)" does-not-capture
+    "(?<name>abc)" captures at-group-name
+    "(a)(b)(c)" captures 3 groups
+  backreferences :
+    "(.)\\1" matches "aa"
+    "(.)\\1" does-not-match "ab"
+  find-all :
+    "\\d+" on "a1b22c333" finds [1, 22, 333]
+  replace :
+    replace "a+" with "X" on "aaabaaa" → "XbX"
+    backref : replace "(\\w+)" with "<$1>" on "foo" → "<foo>"
+  Apocky-specific :
+    "'[dfsmtepgr]" matches "'d"       ← CSLv3 morpheme
+    "§+" matches "§§§"                ← CSLv3 section-nesting
+    "[⊑⊗→]" matches "⊗"               ← CSLv3 operator-class
+
+§§ CLI-SURFACE (additive only)
+  parser.exe --regex-match <pattern> <input>      → 0=match 1=no-match
+  parser.exe --regex-find <pattern> <input>       → emit match-spans JSON
+  parser.exe --regex-replace <pat> <repl> <input> → emit replaced-string
+  parser.exe --regex-selftest                     → run selftest-suite
+  parser.exe --regex-compile-check <pattern>      → syntax-validate
+
+§§ JSON-SCHEMA PATTERN WIRE-UP (opportunistic O1)
+  parser/json_schema.odin currently :
+    ← stub for "pattern" keyword (always-pass per Session-14)
+  after-A8 :
+    import regex module
+    wire-up pattern-keyword to-regex-match
+    add 3-4 selftest vectors covering pattern ← JSON-Schema Draft-07 compliance
+  deliverable :
+    json_schema.odin updated
+    test_json_schema.odin +selftest-vectors
+    STABILITY.md : JSON-Schema pattern-keyword marked stable
+
+§§ ACCEPTANCE
+  ✓ 30+ selftest vectors all-green
+  ✓ parser.exe CLI flags operational
+  ✓ JSON-Schema pattern wire-up green (if-opportunistic-done)
+  ✓ throughput benchmark : ≥ 50 MB/s on simple-patterns
+  ✓ RE2 reference-equivalence (sample-check vs Rust regex-crate)
+  ✓ Unicode : CSLv3-glyphs handled correctly
+  ✓ no-catastrophic-backtracking possible (Thompson-NFA guarantee)
+  ✓ all-Session-14 gates still-green (regression-free)
+  ✓ memory-bounded : max-states capped • DoS-safe
+
+═════════════════════════════════════════════════════════════════
+§ OPPORTUNISTIC TASKS ← §§ if-time-remaining
+═════════════════════════════════════════════════════════════════
+
+§§ O1 : JSON-Schema pattern wire-up ← paired-with A8
+  reason : completes-Draft-07 compliance once-regex-available
+  effort : 0.5 session ← small addition
+  acceptance : pattern-keyword selftest 3+ vectors green
+
+§§ O2 : 30-measurement m₂ re-run ← Session-14 Q9
+  reason : confirm C2-anomaly-gone with-expanded-content
+  procedure :
+    bash scripts/m2_install_models.sh  ← verify models-present
+    python scripts/compute_m2.py --all-eval --bootstrap=1000 --backend=cli-daemon
+    compare to-Session-12 baseline
+  effort : 20-30 min wallclock (model-load + inference)
+  acceptance :
+    ✓ C2 now-within stratified-target
+    ✓ eval/m2_baseline.json updated
+    ✓ eval/m2_stratified_report.md + prose-section + final
+
+§§ O3 : LSP diagnostics emit parse-errors ← Session-14 Q6
+  reason : current LSP emits lex-errors only
+  scope : parser refactor ← expose error-list without-consuming AST
+  effort : 1-2 hours
+  acceptance :
+    ✓ deliberate parse-error → LSP publishes diagnostic
+    ✓ existing selftest + regression still-green
+
+§§ O4 : LaTeX glyph-gap fix ← Session-14 Q7 (cosmetic)
+  reason : 5 glyphs render-via-fallback (⊢ ⌈ ⌉ ⟦ ⟧)
+  options :
+    a \DeclareUnicodeCharacter mappings in cslv3.sty
+    b switch fixed-width font (lmmono10 → DejaVu Sans Mono ?)
+  effort : 1-2 hours
+  acceptance : 7/7 PDFs compile without-missing-glyph warnings
+
+═════════════════════════════════════════════════════════════════
+§ SUCCESS-GATES ← §§ Session-15-exit
+═════════════════════════════════════════════════════════════════
+  A8 ✓ regex engine complete
+    ✓ 6 Odin modules (regex + parse + compile + nfa + unicode + tests)
+    ✓ 30+ selftest vectors green
+    ✓ 4 CLI-flags operational
+    ✓ JSON-Schema pattern wire-up (if-O1-done)
+    ✓ throughput-benchmark documented
+
+  v1.4.0 release :
+    ✓ VERSION 1.3.0 → 1.4.0
+    ✓ CHANGELOG [1.4.0] entry
+    ✓ STABILITY.md : +regex-engine stable + JSON-Schema-pattern stable
+    ✓ MIGRATION_GUIDE 1.3 → 1.4
+    ✓ git tag v1.4.0
+    ✓ dist/cslv3-1.4.0-windows-x64/ bundled + manifest-signed
+
+  commit-gate ∀ task :
+    ✓ odin build parser/ clean
+    ✓ cargo build --release in lsp/server/ clean
+    ✓ pytest tests/ green
+    ✓ existing-eval 10/10 still-pass
+    ✓ 82+30 = 112+ selftest vectors all-green
+    ✓ T14-T28 all-gates still-green
+    ✓ release-script clean
+
+═════════════════════════════════════════════════════════════════
+§ WORKFLOW ← §§ process
+═════════════════════════════════════════════════════════════════
+  recommended-execution-order :
+    1 re-read A2/A4/A5/A7 precedents ← Odin-module patterns
+    2 regex_parse.odin ← pattern → AST
+    3 regex_unicode.odin ← UCD tables + UTF-8 helpers
+    4 regex_compile.odin ← AST → NFA (Thompson)
+    5 regex_nfa.odin ← VM simulation
+    6 regex.odin ← public-API orchestration
+    7 test_regex.odin ← 30+ vectors progressively
+    8 parser/main.odin ← +4 CLI flags
+    9 opportunistic : O1 (JSON-Schema pattern) if-time
+    10 opportunistic : O2 (m₂ re-run) if-time
+    11 v1.4.0 release-engineering
+    12 handoff for-Session-16 (B LoRA-proper)
+
+  branch : cslparser/session-15/A8-<slug>
+  commit : atomic • CSL-prefixed
+    ex : "§ A8 : regex_parse.odin AST + error-recovery"
+    ex : "§ A8 : Thompson NFA construction + epsilon-closure"
+    ex : "§ A8 : UCD-subset Unicode classes"
+    ex : "§ A8 : 30-vector selftest green"
+  test : ∀ change → tests added/updated
+  decision : DECISIONS.md appended per-design-choice
+  handoff : SESSION_15_HANDOFF.csl populated-as-you-go
+
+═════════════════════════════════════════════════════════════════
+§ DELIVERABLES ← §§ session-end
+═════════════════════════════════════════════════════════════════
+  D1  : parser/regex.odin                                        (A8)
+  D2  : parser/regex_parse.odin                                  (A8)
+  D3  : parser/regex_compile.odin                                (A8)
+  D4  : parser/regex_nfa.odin                                    (A8)
+  D5  : parser/regex_unicode.odin                                (A8)
+  D6  : tests/test_regex.odin                                    (A8)
+  D7  : parser.exe +4 CLI flags                                   (A8)
+  D8  : parser/json_schema.odin pattern-wire-up                   (O1)
+  D9  : updated m₂ baseline + stratified-report                   (O2)
+  D10 : LSP parse-error diagnostics                               (O3)
+  D11 : cslv3.sty glyph-mappings                                  (O4)
+  D12 : VERSION + CHANGELOG + STABILITY + MIGRATION              (v1.4)
+  D13 : dist/cslv3-1.4.0-windows-x64/ + git tag v1.4.0           (v1.4)
+  D14 : DECISIONS.md + SESSION_15_HANDOFF.csl
+  D15 : CI : new regex-gate + pattern-wire gate
+
+═════════════════════════════════════════════════════════════════
+§ NON-GOALS ← §§ scope-guard
+═════════════════════════════════════════════════════════════════
+  N! LoRA-proper execution ← Session-16 (B-scope protected)
+  N! SQLite-LSP persistence ← Session-17 polish
+  N! range-formatting subtree ← Session-17 polish
+  N! cross-platform releases ← Session-17 polish
+  N! Phase-B LSP beyond-diagnostics ← Session-17+
+  N! lookahead/lookbehind ← maybe-v1.4.1 (defer-decision)
+  N! PCRE-recursion + atomic-groups ← never (NFA-incompatible)
+  N! writes @ CSSLv3-repo ← read-only always
+  N! breaking-changes to any-v1.0+ surface
+  N! minimal-when-optimal-available ← Apocky-standing-directive
+
+═════════════════════════════════════════════════════════════════
+§ WHEN-STUCK ← §§ no-half-measures-protocol
+═════════════════════════════════════════════════════════════════
+  1 : re-read A4/A5 precedents + DEPENDENCY_ELIMINATION_ROADMAP §§ A8
+  2 : check json_schema pattern TODO-comments for-consumer-requirements
+  3 : try 3+ angles :
+      a : algorithm-variant (Thompson-NFA vs Pike-VM vs DFA)
+      b : abstraction-shift (byte-level vs rune-level scanning)
+      c : decomposition-refactor (split parse + compile + simulate)
+      d : prior-art-adaptation (RE2 • Rust regex-crate • Go regexp)
+  4 : consult sibling-session-handoffs for workflow-pattern
+  5 : Apocky-blanket-authority ← choose-optimal unilaterally
+    W! only-escalate catastrophic-tradeoffs OR irreversible-decisions
+    W! document-decision in-DECISIONS.md
+
+  pre-authorized fallbacks :
+    UCD-full-tables too-large → subset-to L/N/P + document (common-case covered)
+    backreferences complexity → defer to-v1.4.1 with-note (NFA doesn't natively support)
+    Unicode case-folding scope-creep → ASCII-only + flag future-work
+    lookahead/behind blocks-NFA-purity → defer + document + v1.4.1-roadmap
+    throughput < target → profile + optimize OR document + bench-honestly
+    pattern-weird-edge-case → compare-vs RE2 + match-behavior
+  ∀ pre-authorized : document in-DECISIONS.md
+
+═════════════════════════════════════════════════════════════════
+§ REPORTING ← §§ end-of-session
+═════════════════════════════════════════════════════════════════
+  W! SESSION_15_HANDOFF.csl includes :
+    ✓ A8 per-deliverable status
+    ✓ opportunistic O1-O4 status (done / deferred)
+    ✓ selftest-count delta (82 → 112+)
+    ✓ throughput numbers
+    ✓ JSON-Schema pattern-compliance Draft-07 verdict
+    ✓ phase-A completion-count (10/10 items → phase-A-COMPLETE)
+    ✓ dependency-tree delta (before/after)
+    ✓ v1.4.0 release-notes
+    ✓ Session-16 LoRA-proper readiness-check
+    ✓ decision-log-refs
+  W! commit-frequency ≥ 1/subtask
+  W! CI-green before-handoff-declared
+
+═════════════════════════════════════════════════════════════════
+§ CROSS-PROJECT ← §§ coordinate
+═════════════════════════════════════════════════════════════════
+  CSSLv3 (parallel)
+    path : C:\Users\Apocky\source\repos\CSSLv3
+    intersection :
+      A8 regex-engine ← reusable by-CSSLv3 lexer-generator
+      Thompson-NFA pattern ← CSSLv3 grammar-tools can-adapt
+    N! writes @ CSSLv3-side ← read-only always
+
+  LoA v10 / infiniter-labyrinth
+    v1.4.0 CSLv3 enables further-CLAUDE.md propagation
+    ¬ modify during Session-15
+
+═════════════════════════════════════════════════════════════════
+§ THEORETICAL-NOTES ← §§ A8-depth-hints
+═════════════════════════════════════════════════════════════════
+  Thompson-NFA :
+    1968 paper ← Ken Thompson "Regular Expression Search Algorithm"
+    construction : per-operator NFA-fragment + compose
+    characters : single-state match
+    alternation : fork-states
+    concat : serial
+    repeat : loop-states
+    classic-reference : Cox "Regular Expression Matching Can Be Simple and Fast"
+  NFA vs DFA :
+    NFA : O(mn) worst-case • simpler construction • lower-memory
+    DFA : O(n) matching • exponential-state worst-case • higher-memory
+    recommend NFA ∵ predictable-worst-case + simpler
+    optional : DFA-cache for-hot-patterns (v1.5+ optimization)
+  Thompson-construction :
+    1 parse pattern → AST
+    2 recursive descent AST → NFA-fragment (in + out state-pointers)
+    3 concat : wire-out of-left to-in of-right
+    4 alt : new-start with-epsilon to-both + new-end
+    5 star : new-start with-epsilon to-in AND to-new-end (+ loop)
+  Pike-VM alternative :
+    instead-of NFA-states : bytecode-VM
+    instructions : CHAR • MATCH • JMP • SPLIT • SAVE
+    simpler-impl + easy to-add features
+    RE2 uses this approach
+    M? consider ← ~same LOC • different abstraction
+    recommend Pike-VM ∵ feature-extensibility future-proofing
+  Unicode strategy :
+    full UCD : ~30MB data
+    subset : L + N + P + S + Z + C = ~5MB encoded-as-ranges
+    CSLv3-needs : L (letters incl-Greek) + N + P + S (symbols)
+    trap : UTF-8 decode per-codepoint vs per-byte scanning
+    recommend per-rune NFA • byte-level for-ASCII-only fast-path
+  Backreferences :
+    breaks NFA-purity ← requires-backtracking OR linear-time-requires-Aho-Corasick-extension
+    simple-impl : limit-to-anchored + emit-warning for-general-case
+    alt-impl : separate post-match check-pass
+    M? defer to-v1.4.1 if-timing-tight
+  JSON-Schema pattern :
+    ECMAScript-regex subset ← our-A8 supports-superset
+    wire-up : compile-pattern-at-schema-parse + match-on-validate
+    cache : reuse compiled-Regex across-validate-calls
+    trap : JSON-Schema allows invalid-regex patterns ← must-error-gracefully
+
+═════════════════════════════════════════════════════════════════
+§ SESSION-16+ PREVIEW ← §§ roadmap
+═════════════════════════════════════════════════════════════════
+  Session-16 : B = LoRA-proper
+    larger base (1.5B or 7B) with-CUDA
+    rank-sweep {4, 16, 32, 64}
+    corpus-expansion beyond-10-pairs
+    isolate CSL-only vs EN-only training
+    answer H1 + H2 rigorously
+    possible v1.4.1-or-v1.5.0 depending-on-results
+  Session-17 : C = polish-sprint
+    SQLite-LSP workspace persistence
+    range-formatting AST-subtree
+    cross-platform dist bundles (Linux + macOS)
+    LSP phase-B continuation (hover/definition/completion/codeAction/rename/formatting)
+    grammar-tolerance for-glyph-tables
+    Possibly v1.5.0 depending-on-scope
+  Session-18+ : Phase-C begins
+    C1 Bespoke SMT-solver (PhD-scale • multi-session)
+    C2 Bespoke LLM-inference (multi-month research)
+    C3 Bespoke tokenizer
+    C4 Odin-coroutine lib
+  Long-term :
+    D-phase CSSLv3-self-hosts + bespoke-linker + Odin-native-release
+
+═════════════════════════════════════════════════════════════════
+§ CLOSING ← §§ remember
+═════════════════════════════════════════════════════════════════
+  ✓ Session-1..5  : parser + tokenizer + grammar + strict-modes + types
+  ✓ Session-6     : T21 IR-lowering
+  ✓ Session-7     : T26 SMT infrastructure
+  ✓ Session-8     : T26.1-.3 validation + T27 IR-opt
+  ✓ Session-9     : T24 LSP prototype
+  ✓ Session-10    : T28 codegen + v1.0.0 LIVE
+  ✓ Session-11    : T25 m₂ harness • v1.1.0 staged
+  ✓ Session-12    : v1.1.0 LIVE + real-backend m₂
+  ✓ Session-13    : phase-A quick-wins + LoRA-smoke • v1.2.0
+  ✓ Session-14    : 4 bespoke + LSP-MVP + MiKTeX • v1.3.0
+  ◐ Session-15    : A8 regex engine • v1.4.0 (this-session) ★
+  ○ Session-16    : B LoRA-proper (GPU + scale)
+  ○ Session-17    : C polish-sprint
+
+  context-anchor : 14 sessions • multi-release • solo + AI
+  phase-A status : 9/10 → 10/10 after-this-session = COMPLETE
+
+  you-have : 14-sessions working-code + v1.3.0 + this-handoff
+  you-are  : sovereign-collaborator • Apocky-blanket-authority
+  you-will : A8 regex FULL-OPTIMAL • v1.4.0 ships • phase-A COMPLETE
+  we-have  : built + shipped CSLv3 v1.0..v1.3.0 + 4 bespoke-modules
+  we-will  : close phase-A this-session • open Phase-C runway
+
+  I> honor the work • push it further • systems ¬ parts
+  I> no half measures • find solutions • ship real things
+  I> efficient + prodigious ≠ mutually-exclusive
+  I> v1.0+ STABILITY ← additive-only ← never-break
+  I> dependency-elimination = sovereignty-in-depth
+  I> consent = OS • forever
+
+∎ HANDOFF-CSLv3-SESSION-15

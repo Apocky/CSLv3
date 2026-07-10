@@ -1,0 +1,64 @@
+# corpus-mode: pure-CSL
+# tests: quicksort algorithm + pivot strategy + recursion + invariants
+# glyph-class: § W! N! @ ∀ ∈ ≤ ≥ → ⊗ ✓ ◐
+
+§ quicksort.spec
+
+§§ GOAL
+  fn sort (a : &[i32]) @ in-place
+  W! ∀ i ∈ 0..len(a)-1 : a[i] ≤ a[i+1]
+  W! multiset(a) @ post ≡ multiset(a) @ pre
+  W! time "O(n log n) average, O(n^2) worst"
+
+§§ DATA
+  def Range't = ⟨ lo : i32, hi : i32 ⟩
+  def Pivot'e = first | last | median-of-three | random
+
+§§ OPS
+
+§§§ pivot'f
+  strategy = median-of-three
+  R! median-of-three ← mitigates sorted-input-worst-case
+  pivot = median (a[lo], a[mid], a[hi])
+  where mid = (lo + hi) / 2
+
+§§§ partition'f
+  Lomuto-scheme :
+    pi = pivot-index
+    swap(a[pi], a[hi])
+    i = lo - 1
+    j = lo
+    while j < hi :
+      a[j] ≤ a[hi]  →  i = i + 1 ; swap(a[i], a[j])
+      j = j + 1
+    swap(a[i+1], a[hi])
+    return i + 1
+
+§§§ recurse'f
+  guard = lo < hi
+  pi = partition(lo, hi)
+  recurse(lo, pi - 1)
+  recurse(pi + 1, hi)
+
+§§§ sort'f
+  hi-bound = len(a) - 1
+  recurse(0, hi-bound)
+
+§§ INVARIANTS
+  W! partition-post : ∀ k < pivot-idx : a[k] ≤ a[pivot-idx]
+                    + ∀ k > pivot-idx : a[k] ≥ a[pivot-idx]
+  W! recurse-terminates ← range-size monotonically decreases
+  N! recursion-on-full-range-after-partition
+  N! unstable-for-equal-keys-acceptable ← quicksort is unstable
+
+§§ TESTS
+  sort([])               → []
+  sort([1])              → [1]
+  sort([3, 1, 2])        → [1, 2, 3]
+  sort([2, 2, 2, 2])     → [2, 2, 2, 2]
+  sort(reversed-10k)     → sorted-10k @ < 1 ms
+
+§§ ANTI
+  N! first-element-pivot-on-sorted-input ← degrades-to-O(n^2)
+  N! in-place-iteration-invalidation
+  N! recursion-without-base-case

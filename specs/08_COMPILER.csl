@@ -1,5 +1,6 @@
 § CSLv3 REFERENCE COMPILER
-I> CSSL is a separate project ¬ part-of-CSLv3
+I> CSSL ≡ Sigil compiler (cssl.dev) · separate-project ¬ part-of-CSLv3
+I> CSSL = Caveman Sigil Substrate Language · Sigil = shorthand · ¬ "Spec/Signal Language" (misdecode)
 I> this spec = reference compiler/parser for CSLv3 notation only
 I> ingests CSLv3 source → typed-AST → IR → x86-64 ∨ SPIR-V
 I> CSLv3 executable subset = notation that reads as code + spec simultaneously
@@ -8,9 +9,9 @@ R! ← APL: rank-polymorphic operators
 R! ← Agda: dependent types as specs
 
 § SCOPE
-  ✗ this spec does ¬ describe CSSL (separate language, separate repo)
+  ✗ this spec does ¬ describe CSSL/Sigil (compiler @ cssl.dev · separate project)
   ✓ this spec describes the reference compiler for CSLv3 executable subset
-  ✓ parser implementation: C:\Users\Apocky\source\repos\CSLv3\parser\
+  ✓ parser implementation: parser/ (this repo)
 
 § PIPELINE
   source.csl
@@ -122,7 +123,7 @@ R! ← Agda: dependent types as specs
   W! IR validates all ⌈constraints⌉ + ⌊preconditions⌋ at compile-time where possible
 
 § REFERENCE IMPLEMENTATION
-  location: C:\Users\Apocky\source\repos\CSLv3\parser\
+  location: parser/ (this repo)
   language: Odin (stdlib only)
   binary:   parser.exe
   usage:

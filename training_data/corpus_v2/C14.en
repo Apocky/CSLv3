@@ -1,0 +1,15 @@
+This fixture specifies a deterministic finite state machine with five states (idle, loading, ready, error, terminated) and five events (start, data-arrived, fail, reset, shutdown). The transition function takes the state machine and an event and returns the resulting new state. The contract is determinism (every state-event pair maps to exactly one successor), totality (every state-event pair must have a defined transition), and absence of unreachable states.
+
+The data layout is a record holding the current state, a history log of past (state, event) pairs, and a free-form context string that the user can attach.
+
+The transition table is enumerated explicitly. From idle: start advances to loading, shutdown terminates. From loading: data-arrived advances to ready, fail advances to error. From ready: reset returns to idle, shutdown terminates. From error: reset returns to idle, shutdown terminates. Terminated is a sink state: any event keeps the machine in terminated.
+
+The transition operation looks up the next state in the table, asserts that it is defined (the not-found sentinel is prohibited), appends the (state, event) pair to history, updates the state field, and returns the new state.
+
+A can-fire query returns true when the given (state, event) pair appears in the table. An is-accept query returns true when the state is either ready or terminated.
+
+The required invariants: every entry in the transition table has a valid from-state and to-state; terminated is absorbing (once reached, it stays reached); history grows monotonically (entries are appended, never removed); transitioning out of terminated to any non-terminated state is forbidden; mutating the state field outside of the transition operation is forbidden.
+
+Test cases: the initial state is idle; firing start moves to loading; firing data-arrived from loading moves to ready; the cycle ready → reset → start → data-arrived returns to ready; firing shutdown from any state moves to terminated; for every event, firing it from terminated leaves the machine in terminated.
+
+Anti-patterns explicitly prohibited: side effects inside the transition function (it must be pure over state+event); a sneaky back-door that resets from terminated; unbounded history growth (the spec recommends capping the log or using a ring buffer for long-lived machines).

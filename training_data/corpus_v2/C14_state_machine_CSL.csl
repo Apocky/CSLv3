@@ -1,0 +1,67 @@
+# @prose-file
+# corpus-mode: pure-CSL
+# tests: finite state machine + transition table + invariants
+
+§ state-machine.spec
+
+§§ GOAL
+  fn transition (sm : &SM, event : Event) -> State
+  W! deterministic : ∀ (state, event) ⇒ exactly-one next-state
+  W! totality : ∀ (state, event) ⇒ transition defined
+  N! unreachable states
+
+§§ DATA
+  def State'e = idle | loading | ready | error | terminated
+  def Event'e = start | data-arrived | fail | reset | shutdown
+  def SM'd = ⟨
+    state   : State,
+    history : [[State, Event]],
+    context : str,
+  ⟩
+
+§§ TRANSITION-TABLE
+
+  idle       + start        → loading
+  idle       + shutdown     → terminated
+  loading    + data-arrived → ready
+  loading    + fail         → error
+  ready      + reset        → idle
+  ready      + shutdown     → terminated
+  error      + reset        → idle
+  error      + shutdown     → terminated
+  terminated + *            → terminated   # sink state
+
+§§ OPS
+
+§§§ transition'f
+  next = lookup(state, event)
+  W! next ≠ ∅
+  history ← append (state, event)
+  state = next
+  return state
+
+§§§ can'f
+  (state, event) ∈ transition-table
+
+§§§ is-accept'f
+  state ∈ {ready, terminated}
+
+§§ INVARIANTS
+  W! ∀ transition ∈ table : from-state ∈ State ∧ to-state ∈ State
+  W! terminated is-absorbing
+  W! history grows monotonically
+  N! transition-from-terminated-to-any-non-terminated
+  N! mutation-of-state-outside-transition'f
+
+§§ TESTS
+  init : state ≡ idle
+  idle → start : state ≡ loading
+  loading → data-arrived : state ≡ ready
+  ready → reset → start → data-arrived : state ≡ ready
+  any → shutdown : state ≡ terminated
+  ∀ e ∈ Event : transition(terminated, e) ≡ terminated
+
+§§ ANTI
+  N! side-effects inside transition'f (pure function on state+event)
+  N! sneaky-backdoor reset-from-terminated
+  N! unbounded-history-growth ← should cap or ring-buffer

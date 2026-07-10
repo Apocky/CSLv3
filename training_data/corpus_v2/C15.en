@@ -1,0 +1,19 @@
+This fixture specifies a single-threaded cooperative event loop with priority-queue-based task scheduling and IO-readiness polling. The top-level run operation is blocking: it returns when the loop is explicitly stopped. The contract includes cooperative scheduling (no preemption inside a handler), determinism (the same input queue produces the same output order), and fairness (no task starvation).
+
+The data model defines a Task with an id, a handler reference, a deadline timestamp, and a repeats flag. A Loop contains a priority queue of tasks ordered by deadline, a list of pending IO readiness events (file-descriptor plus readiness kind), a stopped flag, and a monotonic tick counter. Readiness is an enumeration covering read, write, and error.
+
+Submit pushes a task into the priority queue, asserting that the task's deadline is at or after the current time.
+
+Poll-io gathers the registered file descriptors and invokes an OS select with a timeout computed from the next deadline minus now. Each (fd, readiness) pair that returns ready is appended to the loop's io-pending list.
+
+Drain-ready snapshots the current time, then repeatedly pops the front of the task queue while its deadline is at or before now. Each popped task's handler is invoked. If the task is marked repeating, a new instance is pushed back with its deadline advanced by one period.
+
+Tick increments the tick counter, drains the io-pending list, drains the ready-task bucket, and returns early if the loop was stopped during the pass.
+
+Run loops tick-after-tick while the loop is not stopped, invoking poll-io and tick in each iteration.
+
+Required invariants: tasks are sorted by deadline in ascending order; every handler must return in bounded time (the cooperative contract); the tick counter must be monotonically non-decreasing. Pre-emption inside a handler is forbidden; nested run calls (re-entering the loop) are forbidden; handlers must not modify the loop state directly, instead submitting new tasks.
+
+Test cases: submit-then-run fires each non-repeating handler exactly once; a task with a past deadline fires immediately on the first tick; stopping inside a handler allows the current tick to complete before returning; tasks sharing a deadline fire in submission order (FIFO within the deadline bucket).
+
+Anti-patterns explicitly prohibited: busy-spinning when no tasks are ready (use the poll timeout to sleep); silently dropping tasks when the queue grows too large (bound the queue and either reject submissions or block the submitter); inconsistent clock reads across handlers (snapshot the time once per tick).

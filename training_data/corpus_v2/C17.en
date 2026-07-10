@@ -1,0 +1,15 @@
+This fixture specifies an LRU (Least-Recently-Used) cache built as a hybrid of a doubly-linked list and a hashtable. The two operations are get (retrieve a value if present) and put (insert or update a value, evicting the LRU entry when at capacity). The contract requires amortized O(1) for both operations, a strict capacity bound (length never exceeds capacity), and the LRU policy (on access, the entry moves to the most-recently-used end).
+
+The data layout uses a Node record with a key, value, and previous/next pointers for the list, and an LRU record containing the hashtable from keys to node pointers, a head sentinel (most-recently-used side), a tail sentinel (least-recently-used side), the capacity, and the current length.
+
+Get looks up the key in the hashtable. If not found, it returns the not-found sentinel. If found, it unlinks the node from its current list position and re-links it at the head, making it the most recently used. The node's value is then returned.
+
+Put looks up the key. If the key already has a node, put updates the value, unlinks, and re-links at head (bumping it to MRU). If the key is new and the cache is at capacity, put identifies the victim as the node before the tail sentinel, unlinks it, removes its entry from the hashtable, and decrements the length. Then a fresh node is allocated and linked at head; the map gets a new entry; the length increments.
+
+Unlink patches the prev and next pointers around a node to remove it from the chain. Link-at-head inserts a node immediately after the head sentinel by patching four pointers.
+
+Required invariants: length never exceeds capacity; every key in the map has a matching list node; every list node has a matching map entry; the head sentinel is always on the MRU side; the tail sentinel is always on the LRU side. Orphan nodes (in-list but not in-map) are forbidden; stale map entries (in-map but not in-list) are forbidden.
+
+Test cases: inserting A, then B, then C yields list order [C, B, A]; getting A bumps it to front, yielding [A, C, B]; with capacity 3, inserting D evicts B (the LRU), yielding [D, A, C]; getting a missing key returns the not-found sentinel.
+
+Anti-patterns explicitly prohibited: scanning the list linearly to find the LRU (defeats the O(1) contract — the doubly-linked list IS the LRU order); unbounded growth (enforce capacity-based eviction); map-list inconsistency (every unlink must pair with a map remove, and vice versa).

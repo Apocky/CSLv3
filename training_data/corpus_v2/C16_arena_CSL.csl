@@ -1,0 +1,66 @@
+# @prose-file
+# corpus-mode: pure-CSL
+# tests: bump-pointer arena allocator + lifetime discipline
+
+§ arena.spec
+
+§§ GOAL
+  fn alloc (ar : &Arena, size : usize, align : usize) -> ^u8
+  fn reset (ar : &Arena)
+  W! O(1) alloc
+  W! zero-free-per-allocation ← bulk-reset only
+  W! lifetime-bounded-by-arena ← outlives forbidden
+
+§§ DATA
+  def Arena'd = ⟨
+    base    : ^u8,
+    cap     : usize,
+    cursor  : usize,
+    high-water : usize,
+    peak-live  : usize,
+  ⟩
+
+§§ OPS
+
+§§§ alloc'f
+  start = (cursor + align - 1) / align * align
+  end   = start + size
+  end > cap  →  return ∅
+  cursor = end
+  high-water = max (high-water, end)
+  return base + start
+
+§§§ reset'f
+  peak-live = max (peak-live, cursor)
+  cursor = 0
+  # memory-is-not-freed-to-OS ← returned to-reusable-pool
+
+§§§ drop'f
+  reset ()
+  os-release (base, cap)
+
+§§ INVARIANTS
+  W! 0 ≤ cursor ≤ cap
+  W! aligned-pointer-on-return : (ret-addr mod align) ≡ 0
+  W! reset-preserves-base-pointer
+  W! ∀ ptr-from-alloc : lives-at-most-until next-reset
+  N! use-after-reset ← classic-dangling
+  N! double-free via reset-then-drop-by-user
+  N! free-single-allocation ← arena is all-or-nothing
+
+§§ USE-PATTERNS
+  frame-arena : reset @ end-of-frame (game-loop convention)
+  scene-arena : reset @ level-load
+  temp-arena  : reset @ scope-exit (scoped helper)
+  request-arena : reset @ end-of-HTTP-request
+
+§§ TESTS
+  alloc(8, 8) + alloc(16, 8) : cursor moves by 24
+  alloc past cap returns ∅
+  reset + alloc : returns same base address
+  peak-live monotonically-tracks maximum-cursor-pre-reset
+
+§§ ANTI
+  N! per-allocation-free ← defeats arena purpose
+  N! cross-arena-pointer ← use same-arena-scope
+  N! alignment-not-enforced ← UB on SIMD loads

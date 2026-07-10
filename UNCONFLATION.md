@@ -80,3 +80,11 @@ $ cd parser && /c/odin/odin.exe build .
 - Chose `parser/` over `CSLv3\` root for the Odin code. The task prompt said "parent folder CSLv3" but organizing `.odin` files as siblings to `.md` files is ugly. `parser/` is descriptive and preserves the module boundary. Apocky may override.
 - Chose `cslparser` as the Odin package name (not `cslv3` — would conflict with the notation itself when written in text).
 - Preserved the original `CLAUDE_CODE_TASK.md` as `CLAUDE_CODE_TASK_1_HISTORICAL.md` rather than rewriting its CSSL2 mentions. Task prompts are historical records; modifying them in place would obscure what was actually asked.
+
+## Update (2026-04-17) — CSSL identity resolved
+
+As of April 2026, CSSL is identified as **Sigil** — the same programming language under two names. CSSL (Caveman Sigil Substrate Language) is the full form; Sigil is the shorthand. It lives in the CSSLv3 repository and is publicly documented at cssl.dev. The "separate language that lives in a separate repo (TBD by Apocky)" phrasing in the original entry above is superseded by this identification.
+
+CSLv3 (this repo) remains distinct from CSSL/Sigil. The unconflation rule `CSSL ≠ CSLv3` still holds and is still enforced. What has changed is that CSSL is no longer a TBD placeholder — it has a concrete identity and a public home.
+
+Common misdecode to guard against: CSSL does *not* expand to "Caveman Spec/Signal Language." The middle word is **Sigil**, not Spec/Signal.

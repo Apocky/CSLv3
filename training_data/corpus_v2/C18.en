@@ -1,0 +1,17 @@
+This fixture specifies a token-bucket rate limiter. The single primary operation is try-acquire, which takes a cost and returns true if the bucket has enough tokens (decrementing them) or false otherwise. The contract is threefold: the average rate must not exceed the configured requests-per-second; bursts up to the configured capacity are permitted; callers that end up queued must be serviced in FIFO order.
+
+The Limiter record holds the current token count as a float, a capacity (the maximum tokens the bucket can hold), the refill rate in tokens per second, and the timestamp of the last refill.
+
+Refill computes the elapsed time since the last refill, multiplies by the rate to derive the number of new tokens earned, adds them to the current count (clamped to capacity), and updates the last-refill timestamp to now.
+
+Try-acquire calls refill first. If the requested cost is at or below the current token count, it subtracts the cost and returns true. Otherwise it returns false.
+
+Wait-and-acquire is a blocking variant. After refill, it rejects immediately if the cost exceeds capacity (a cost larger than the bucket will never be satisfiable). Otherwise it loops: computing how many tokens are needed, sleeping for that many seconds divided by the rate, and refilling. Once tokens suffice, the cost is deducted and the operation returns true.
+
+Required invariants: the token count is always in zero-to-capacity range; the rate is strictly positive; refill is monotonic in time (last-refill never decreases). Negative token counts (caused by skipping refill before accounting) are forbidden; unbounded waiting without a configured timeout is forbidden; concurrent modification without a mutex is forbidden.
+
+The spec explicitly compares common rate-limiting strategies: token-bucket allows bursts with simple math and is the recommended strategy; leaky-bucket smooths output but disallows bursts; fixed-window is cheap but suffers boundary hot-spots; sliding-window is accurate but O(log n) per accept.
+
+Test cases: starting full and requesting a burst-of-capacity succeeds entirely; exhausting the bucket then waiting for one refill interval yields exactly one more accept; a cost above capacity is always rejected; under two concurrent callers, the total accepted rate over an interval is at most capacity plus the interval times the rate.
+
+Anti-patterns explicitly prohibited: clock-skew correction inside refill (that's caller responsibility); refilling on every request even when not needed (prefer a batch pattern); using integer tokens when the cost is fractional.

@@ -31,29 +31,43 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EVAL = ROOT / "eval"
 PARA = EVAL / "paraphrases"
+CORPUS_V2 = ROOT / "training_data" / "corpus_v2"
 REPORT = ROOT / "diag" / "M2_FINETUNE_INTERPRETATION.md"
 DELTA_JSON = EVAL / "m2_finetune_delta.json"
 
 
-def _discover_pairs() -> list[dict]:
+def _discover_pairs(include_v2: bool = True) -> list[dict]:
     pairs = []
-    for csl in sorted(EVAL.glob("C*_CSL.csl")):
-        stem = csl.stem.replace("_CSL", "")
-        en = PARA / f"{stem}.en"
-        if not en.exists():
-            en = EVAL / f"{stem}_EN.md"
-        if not en.exists():
-            continue
-        mode = "pure-CSL"
-        for ln in csl.read_text(encoding="utf-8", errors="replace").splitlines()[:5]:
-            if ln.startswith("# corpus-mode:"):
-                mode = ln.split(":", 1)[1].strip()
-        pairs.append({
-            "stem": stem,
-            "mode": mode,
-            "csl_text": csl.read_text(encoding="utf-8"),
-            "en_text":  en.read_text(encoding="utf-8"),
-        })
+    sources: list[tuple[Path, str]] = [(EVAL, "eval")]
+    if include_v2 and CORPUS_V2.exists():
+        sources.append((CORPUS_V2, "corpus_v2"))
+    for src_dir, src_tag in sources:
+        for csl in sorted(src_dir.glob("C*_CSL.csl")):
+            stem = csl.stem.replace("_CSL", "")
+            short = stem.split("_", 1)[0]
+            cands = [
+                PARA / f"{stem}.en",
+                EVAL / f"{stem}_EN.md",
+                csl.parent / f"{stem}.en",
+                csl.parent / f"{stem}_EN.md",
+                PARA / f"{short}.en",
+                csl.parent / f"{short}.en",
+            ]
+            en = next((c for c in cands if c.exists()), None)
+            if en is None:
+                continue
+            mode = "pure-CSL"
+            for ln in csl.read_text(encoding="utf-8", errors="replace").splitlines()[:5]:
+                if ln.startswith("# corpus-mode:"):
+                    mode = ln.split(":", 1)[1].strip()
+            pairs.append({
+                "stem": stem,
+                "short": short,
+                "source": src_tag,
+                "mode": mode,
+                "csl_text": csl.read_text(encoding="utf-8"),
+                "en_text":  en.read_text(encoding="utf-8"),
+            })
     return pairs
 
 

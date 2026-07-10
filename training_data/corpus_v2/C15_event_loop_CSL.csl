@@ -1,0 +1,75 @@
+# @prose-file
+# corpus-mode: pure-CSL
+# tests: single-threaded event loop + task queue + timers + IO readiness
+
+§ event-loop.spec
+
+§§ GOAL
+  fn run (loop : &Loop) @ blocking
+  W! cooperative : no-preemption inside-handler
+  W! deterministic-scheduling @ same-input-queue ⇒ same-output-order
+  W! fairness : no-task-starvation
+
+§§ DATA
+  def Task'd = ⟨
+    id      : u64,
+    fn      : &Handler,
+    deadline: timestamp,
+    repeats : bool,
+  ⟩
+  def Loop'd = ⟨
+    tasks      : PriorityQueue.Task @ deadline,
+    io-pending : [[FD, Readiness]],
+    stopped    : bool,
+    tick       : u64,
+  ⟩
+  def Readiness'e = read | write | err
+
+§§ OPS
+
+§§§ submit'f
+  t : Task
+  loop.tasks ← push t
+  W! task.deadline ≥ now'f
+
+§§§ poll-io'f
+  fds = gather-registered-fds
+  ready = os-select (fds, timeout=next-deadline - now)
+  ∀ (fd, r) ∈ ready : loop.io-pending ← append (fd, r)
+
+§§§ drain-ready'f
+  now = now'f
+  while loop.tasks.peek.deadline ≤ now :
+    task = loop.tasks.pop
+    task.fn.call ()
+    task.repeats → loop.tasks ← push (task @ deadline + period)
+
+§§§ tick'f
+  loop.tick = loop.tick + 1
+  drain-io-pending
+  drain-ready
+  loop.stopped → return
+
+§§§ run'f
+  while ¬ loop.stopped :
+    poll-io ()
+    tick ()
+
+§§ INVARIANTS
+  W! tasks sorted-by-deadline ascending
+  W! ∀ handler.call : handler-returns-in-bounded-time
+  W! loop.tick monotonically-increases
+  N! pre-emption inside-handler
+  N! nested-run'f (re-entrant loop)
+  N! handler-modifies-loop-state-directly ← must-submit-new-task
+
+§§ TESTS
+  submit(t) + run → t.fn called exactly-once ∀ non-repeating t
+  submit(t) with past deadline → fires immediately on first tick
+  stop inside-handler → run returns after current-tick completes
+  N-tasks with same deadline → FIFO-within-deadline-bucket
+
+§§ ANTI
+  N! busy-spin when no-tasks-ready ← use poll-timeout to sleep
+  N! drop-tasks silently when queue grows ← bound + reject-or-block
+  N! global-clock inconsistency across-handlers ← snapshot once per tick

@@ -1,0 +1,19 @@
+This fixture specifies an open-addressed hash-table with linear probing. The goal is to provide put, get, and delete operations with amortized constant time, while keeping the load factor at or below 0.75.
+
+The data layout uses a fixed-capacity array of slots. Each slot stores a cached hash, a key, a value, and a state flag. The state is one of empty, filled, or tombstone. The table as a whole tracks the slot array, the number of slots ever used, the number of currently filled slots, the capacity, and a seed that is fed into the hash function.
+
+The hash function must be deterministic in the sense that equal keys produce equal hashes. It should approximate a uniform distribution across 64-bit outputs, though the spec does not demand cryptographic strength.
+
+The probe strategy is linear, with step size one. The starting probe position for key k is the hash of k taken modulo the capacity. Lookup scans consecutively from the start position, skipping tombstones, until it either finds a filled slot whose key equals the target (returning the slot index) or it hits an empty slot (returning not-found).
+
+Put runs lookup first. If lookup returns a slot index, the operation updates the value in place and returns true, signalling replacement. If lookup returns not-found, the operation probes for the first empty or tombstoned slot, writes a new Slot record with the hash, key, value, and a filled state, increments the filled count, and returns false, signalling insertion. Before any of this, if the load factor is at or above 0.75, the table is resized to double capacity.
+
+Delete runs lookup. If the key is not present, it returns false. If the key is present, the slot state is flipped to tombstone and the filled count is decremented. The capacity is not reclaimed until the next resize.
+
+Resize allocates a new slot array at double the old capacity, then iterates the old filled slots and re-puts each key-value pair against the new table. Tombstones are not carried over.
+
+The invariants required throughout: filled count never exceeds used count, which never exceeds capacity; for every filled slot, the cached hash matches the hash of the stored key; the load factor after every operation stays at or below 0.75; lookup never treats a tombstone as a match; and resize never runs concurrently with an iteration over the old slot array.
+
+Test cases: inserting a key and retrieving it yields the stored value; inserting twice under the same key retains the second value; deleting then looking up yields the not-found sentinel; re-inserting after deletion works cleanly; resize preserves every binding.
+
+Anti-patterns explicitly prohibited: linear probing without tombstones (this breaks delete-then-lookup soundness because the gap between a deleted slot and a subsequently inserted clashing key would stop the probe chain); probe step equal to capacity (degenerates the table to a single candidate slot); and chain-based collision handling (this implementation is open-addressed by spec).

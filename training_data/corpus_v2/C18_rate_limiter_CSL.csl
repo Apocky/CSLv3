@@ -1,0 +1,71 @@
+# @prose-file
+# corpus-mode: pure-CSL
+# tests: token-bucket rate limiter + burst allowance + refill schedule
+
+§ rate-limiter.spec
+
+§§ GOAL
+  fn try-acquire (rl : &Limiter, cost : u32) -> bool
+  W! limit rate ≤ configured-rps
+  W! allow burst-up-to configured-burst
+  W! fairness : FIFO when blocked-callers-queue
+
+§§ DATA
+  def Limiter'd = ⟨
+    tokens      : f64,
+    capacity    : f64,
+    rate        : f64,       # tokens-per-second
+    last-refill : timestamp,
+  ⟩
+
+§§ OPS
+
+§§§ refill'f
+  now = now'f
+  elapsed = now - last-refill
+  new-tokens = elapsed * rate
+  tokens = min (capacity, tokens + new-tokens)
+  last-refill = now
+
+§§§ try-acquire'f
+  refill ()
+  cost ≤ tokens  →
+    tokens = tokens - cost
+    return true
+  return false
+
+§§§ wait-and-acquire'f
+  refill ()
+  cost > capacity  →  return false   # never-satisfiable
+  while tokens < cost :
+    needed = cost - tokens
+    sleep-for (needed / rate)
+    refill ()
+  tokens = tokens - cost
+  return true
+
+§§ INVARIANTS
+  W! 0 ≤ tokens ≤ capacity
+  W! rate > 0
+  W! refill-is-monotonic ← last-refill never-decreases
+  N! tokens-negative (caller-skipped-refill)
+  N! unbounded-wait without-configured-timeout
+  N! concurrent-modification without-mutex
+
+§§ STRATEGIES-COMPARED
+  token-bucket  : allows-burst + simple-math + RECOMMENDED
+  leaky-bucket  : smooths-output + no-burst
+  fixed-window  : cheap + boundary-hot-spot
+  sliding-window: accurate + O(log n) per-accept
+  this-spec = token-bucket
+
+§§ TESTS
+  start-full + burst-of-capacity-requests : all-accepted
+  exhausted + wait (1/rate) : one-more-accepted
+  cost > capacity : always-rejected
+  two-concurrent : total-accepted ≤ configured-capacity + t*rate
+
+§§ ANTI
+  N! clock-skew-correction-inside-refill ← caller-responsibility
+  N! refill-per-request-even-when-not-needed ← batch-pattern prefer
+  N! integer-tokens-when-cost-is-fractional

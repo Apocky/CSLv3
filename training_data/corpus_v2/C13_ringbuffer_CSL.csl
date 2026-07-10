@@ -1,0 +1,63 @@
+# corpus-mode: pure-CSL
+# tests: circular ring buffer + head/tail cursors + overflow policy
+# glyph-class: § W! N! @ ∀ ∈ ≠ → ⊗
+
+§ ringbuffer.spec
+
+§§ GOAL
+  fn push (buf : &Ring, v : T) -> bool
+  fn pop  (buf : &Ring) -> T
+  fn len  (buf : &Ring) -> u32
+  W! lock-free + single-producer + single-consumer
+  W! O(1) ∀ ops
+
+§§ DATA
+  def Ring'd = ⟨
+    slots : &[T],
+    cap   : u32,
+    head  : u32,          # atomic @ write
+    tail  : u32,          # atomic @ write
+  ⟩
+  def OverflowPolicy'e = drop-new | overwrite-old | error
+
+§§ OPS
+
+§§§ push'f
+  next-tail = (tail + 1) mod cap
+  next-tail ≡ head  →  return false  # full
+  slots[tail] = v
+  store-release(tail, next-tail)
+  return true
+
+§§§ pop'f
+  tail ≡ head  →  return ∅  # empty
+  v = slots[head]
+  next-head = (head + 1) mod cap
+  store-release(head, next-head)
+  return v
+
+§§§ len'f
+  t = load-acquire(tail)
+  h = load-acquire(head)
+  (t - h + cap) mod cap
+
+§§ INVARIANTS
+  W! head + tail ∈ 0..cap-1
+  W! cap = power-of-2 ← enables mod-via-mask optimization
+  W! ∀ read-from-slot : happens-after producer-write
+  W! ∀ write-to-slot  : happens-after consumer-read @ same-slot
+  N! two-consumers-concurrent
+  N! two-producers-concurrent
+  N! resize-while-in-use
+
+§§ TESTS
+  init-empty : pop → ∅
+  push(x) ; pop → x
+  fill-cap-minus-1 : push returns true ; push-one-more returns false
+  drain-then-refill-preserves-FIFO
+
+§§ MEMORY-ORDERING
+  release on producer-store-tail  ← makes slot write visible
+  acquire on consumer-load-tail    ← sees slot write
+  release on consumer-store-head   ← frees slot for producer
+  acquire on producer-load-head    ← sees slot freed

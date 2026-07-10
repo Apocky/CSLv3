@@ -1,0 +1,15 @@
+This fixture specifies quicksort for a mutable integer array, operating in place. The required outcome is that after the call, the array is sorted in non-decreasing order, the multiset of elements is preserved (no keys gained, none lost), and the asymptotic time is O(n log n) average with a documented O(n^2) worst-case degradation.
+
+The data model introduces a Range record with a low and high index, and a Pivot enumeration covering the candidate strategies: first, last, median-of-three, and random. The chosen strategy for this spec is median-of-three, which mitigates the pathological worst-case that hits quicksort on already-sorted input under a first-element pivot.
+
+The pivot operation computes the median of three sampled positions (low, middle, and high) and returns the index of the median value. The middle is computed as the integer average of low and high.
+
+The partition operation follows the Lomuto scheme. It swaps the chosen pivot to the high end of the range, then walks an index j from low to high minus one, maintaining a second index i that points one past the last element known to be less-than-or-equal-to the pivot. On each iteration, if a[j] is at most the pivot, i advances and a[i] swaps with a[j]. After the walk, the pivot is swapped back into position i+1, and that index is returned as the final pivot position.
+
+Recursion takes a lo and hi pair. If lo is less than hi, partition is invoked and yields a pivot index. The function then recurses on lo-through-pivot-minus-one and pivot-plus-one-through-hi. The top-level sort launches recurse with the full range.
+
+The required invariants: after partition, every key left of the pivot is at most the pivot, and every key right of the pivot is at least the pivot; recursion must terminate because each sub-range is strictly smaller than its parent; recursing on the full range after partition (i.e., without shrinking) is forbidden; and the spec explicitly accepts instability for equal keys, which is a known property of plain quicksort.
+
+Test cases: empty and singleton inputs pass through unchanged; three-element unsorted input yields the sorted permutation; an all-equal input stays as-is; a reverse-sorted input of 10,000 elements must sort in under one millisecond.
+
+Anti-patterns explicitly prohibited: using the first element as the pivot on sorted input, which degrades to O(n^2); invalidating an in-place iteration by triggering a re-allocation; and writing recursion without a base case.

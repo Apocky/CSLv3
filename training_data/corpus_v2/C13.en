@@ -1,0 +1,15 @@
+This fixture specifies a lock-free ring buffer for single-producer, single-consumer use. The three operations are push (enqueue), pop (dequeue), and len (current size). All operations must be O(1).
+
+The ring is a record containing a slot array, a fixed capacity, and two atomic cursors: head for the consumer to read from, and tail for the producer to write to. The overflow policy is enumerated (drop-new, overwrite-old, or error), but the default behaviour specified here is "error" — push returns false when the ring is full.
+
+Push computes the next tail position as (tail + 1) modulo capacity. If that would collide with head, the ring is full and push returns false. Otherwise the value is written into slots at the current tail, and the tail is advanced with a release-store so the consumer can see the write. Push returns true on success.
+
+Pop checks whether tail equals head; if so the ring is empty and the operation returns the empty sentinel. Otherwise it reads the value at the current head position and advances head with a release-store. Pop returns the read value.
+
+Len samples both cursors with acquire loads and returns (tail minus head plus capacity) modulo capacity, which gives the number of unconsumed elements.
+
+Required invariants: head and tail are always in 0..capacity-1; capacity must be a power of two to enable the mod-via-mask optimization; every consumer read from a slot happens-after the matching producer write; every producer write happens-after the consumer has freed that slot. Two concurrent consumers are forbidden, as are two concurrent producers, and resizing the ring while in use.
+
+Test cases: an empty ring returns the empty sentinel from pop; a single push followed by pop round-trips the value; filling to capacity-minus-one returns true on each push and the next push returns false; draining and refilling preserves FIFO order.
+
+Memory-ordering requirements: producer stores tail with release to publish the slot write; consumer loads tail with acquire to observe the slot write; consumer stores head with release to signal that the slot is reclaimable; producer loads head with acquire to observe the reclamation. These pairings are what make the data structure lock-free under the single-producer-single-consumer contract.

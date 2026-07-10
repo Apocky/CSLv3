@@ -1,0 +1,17 @@
+This fixture specifies a bump-pointer arena allocator. The two primary operations are alloc (allocate size bytes with the given alignment) and reset (return all memory to the arena's free pool). The contract requires O(1) allocation, zero per-allocation frees (memory is only reclaimed in bulk via reset), and that allocated pointers never outlive the arena itself.
+
+The Arena record holds a base pointer to the underlying buffer, a capacity, a cursor indicating the next free byte, a high-water mark tracking the maximum cursor ever observed, and a peak-live number tracking the largest live-cursor snapshotted across resets (used for sizing the arena in future iterations).
+
+Alloc rounds the current cursor up to the requested alignment, adds the size, and checks against capacity. On overflow it returns the null sentinel. Otherwise it advances the cursor, updates the high-water mark, and returns the base pointer offset by the aligned start.
+
+Reset updates peak-live to the larger of the current peak-live and the current cursor, then resets the cursor to zero. Memory is NOT returned to the OS — it remains in the arena's reusable pool, ready for the next allocation wave.
+
+Drop is a destructor: it calls reset, then releases the underlying buffer back to the operating system.
+
+The required invariants: the cursor is always in zero-to-capacity range; every returned pointer is aligned as requested; reset preserves the base pointer (address space identity does not change across resets); every pointer returned from alloc lives at most until the next reset. Use-after-reset is forbidden (classic dangling-pointer bug); double-free via reset-then-drop by the user is forbidden; freeing a single allocation is forbidden (the arena is all-or-nothing).
+
+Use patterns enumerated in the spec: a frame arena reset at end-of-frame in a game loop; a scene arena reset at level-load; a temp arena reset at scope-exit (scoped helper); a request arena reset at end-of-HTTP-request.
+
+Test cases: two sequential allocations advance the cursor by the sum of their aligned sizes; allocation past capacity returns the null sentinel; reset followed by allocation returns the same base address; peak-live correctly tracks the maximum cursor observed before each reset.
+
+Anti-patterns explicitly prohibited: per-allocation free (defeats the arena's purpose); cross-arena pointer passing (use same-arena scope); alignment not enforced (causes undefined behaviour on SIMD loads).

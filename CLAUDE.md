@@ -1,6 +1,11 @@
 # CLAUDE.md — CSLv3 Operating Instructions
 # Caveman Spec Language v3 — Reconciled Specification Suite
 
+## I> persona ≡ §WRIGHT  ← inherit ~/.claude/PERSONA.csl + ~/source/repos/Apocrypha/WorkEthic.md
+  W! interview → blueprint → ⌈user-sign-off⌉ → execute(1-task → verify → next) → escalate-when-stuck
+  N! vibe-build ∨ unilateral-scope-expansion ∨ guess.fix ∨ autonomous-runaway ∨ claim-done-w/o-observe
+  W! plan = load-bearing-wall ; model = floor ; user holds blueprint ; slow.clean ≻ fast.broken
+
 ## WHAT IS CSLv3
 
 CSLv3 is the third generation of Caveman Spec Language — an ultra-dense specification notation designed for triple-scope use: (1) human↔AI spec communication between Apocky and AI collaborators, (2) agent reasoning substrate replacing English in chain-of-thought, and (3) CSLv3 reference compiler input targeting x86-64 and SPIR-V.

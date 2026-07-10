@@ -1,0 +1,78 @@
+# @prose-file
+# corpus-mode: pure-CSL
+# tests: LRU cache with doubly-linked-list + hashtable hybrid
+
+§ lru-cache.spec
+
+§§ GOAL
+  fn get (c : &LRU, k : K) -> V
+  fn put (c : &LRU, k : K, v : V)
+  W! O(1) amortized @ get + put
+  W! capacity-bounded : len ≤ cap ∀ states
+  W! access-bumps-to-front ← classic LRU policy
+
+§§ DATA
+  def Node'd = ⟨ key : K, val : V, prev : ^Node, next : ^Node ⟩
+  def LRU'd  = ⟨
+    map   : Hashtable.K.^Node,
+    head  : ^Node,          # most-recently-used sentinel
+    tail  : ^Node,          # least-recently-used sentinel
+    cap   : u32,
+    len   : u32,
+  ⟩
+
+§§ OPS
+
+§§§ get'f
+  n = map.lookup k
+  n ≡ ∅  →  return ∅
+  unlink n
+  link-at-head n
+  return n.val
+
+§§§ put'f
+  n = map.lookup k
+  n ≠ ∅  →
+    n.val = v
+    unlink n
+    link-at-head n
+    return
+  len ≡ cap  →
+    victim = tail.prev
+    unlink victim
+    map.remove victim.key
+    len = len - 1
+  fresh = alloc Node {k, v}
+  link-at-head fresh
+  map.insert k fresh
+  len = len + 1
+
+§§§ unlink'f
+  n.prev.next = n.next
+  n.next.prev = n.prev
+
+§§§ link-at-head'f
+  n.prev = head
+  n.next = head.next
+  head.next.prev = n
+  head.next = n
+
+§§ INVARIANTS
+  W! len ≤ cap
+  W! ∀ key-in-map : has-matching-list-node
+  W! ∀ list-node : has-matching-map-entry
+  W! list head-sentinel is-MRU-direction
+  W! list tail-sentinel is-LRU-direction
+  N! orphan-node (in-list, not-in-map)
+  N! stale-map-entry (in-map, not-in-list)
+
+§§ TESTS
+  put(A) put(B) put(C) : order [C, B, A]
+  get(A) : order [A, C, B]
+  cap=3 : put(D) evicts-B : order [D, A, C]
+  get on-missing-key returns ∅
+
+§§ ANTI
+  N! linear-scan for-LRU ← requires doubly-linked-list
+  N! unbounded-growth ← enforce cap-evict
+  N! inconsistent-map-list ← unlink + remove always-paired

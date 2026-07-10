@@ -1,0 +1,84 @@
+# corpus-mode: pure-CSL
+# tests: open-addressed hash-table spec + invariants + operations
+# glyph-class: § ⊗ @ W! N! → ∈ ∀ ∃ ≥ ≤ ≠ ⌈ ⌉
+# features: associative-container + load-factor + probing + resize
+
+§ hashtable.spec
+
+§§ GOAL
+  fn put (k : K, v : V) -> bool
+  fn get (k : K) -> V
+  fn has (k : K) -> bool
+  fn del (k : K) -> bool
+  W! amortized-O(1) ∀ ops
+  W! load-factor ≤ 0.75
+
+§§ DATA
+  def Slot't = ⟨ hash : u64, key : K, val : V, state : State ⟩
+  def State = empty | filled | tombstone
+  def Table't = ⟨
+    slots : &[Slot],
+    n_used : u32,
+    n_filled : u32,
+    cap : u32,
+    seed : u64,
+  ⟩
+
+§§ OPS
+
+§§§ hash'f
+  W! k1 ≡ k2 ⇒ hash(k1) ≡ hash(k2)
+  R! distribution ≈ uniform @ u64
+
+§§§ probe'f
+  strategy : linear
+  step = 1
+  start = hash(k) mod cap
+
+§§§ lookup'f
+  i = probe.start(k)
+  while slots[i].state ≠ empty :
+    slots[i].state = filled + slots[i].key ≡ k  →  return i
+    i = (i + probe.step) mod cap
+  return ∅
+
+§§§ put'f
+  load = n_filled @ table / cap @ table
+  load ≥ 0.75  →  resize(cap * 2)
+  i = lookup(k)
+  i ≠ ∅  →  slots[i].val = v ; return true
+  i = probe-to-empty-or-tomb
+  slots[i] = Slot⟨ hash(k), k, v, filled ⟩
+  n_filled = n_filled + 1
+  return false
+
+§§§ del'f
+  i = lookup(k)
+  i ≡ ∅  →  return false
+  slots[i].state = tombstone
+  n_filled = n_filled - 1
+  return true
+
+§§§ resize'f
+  new-cap = ⌈ old-cap * 2 ⌉
+  ∀ old-slot ∈ old-slots @ filled :
+    put'f @ new-table(old-slot.key, old-slot.val)
+
+§§ INVARIANTS
+  W! n_filled ≤ n_used ≤ cap
+  W! ∀ slot : slot.state ≡ filled ⇒ hash(slot.key) ≡ slot.hash
+  W! load-factor-post-op ≤ 0.75
+  N! lookup-returns-tombstone-as-match
+  N! resize-during-iteration
+
+§§ TESTS
+  put(x, 1) → get(x) ≡ 1
+  put(x, 1) ; put(x, 2) → get(x) ≡ 2
+  put(x, 1) ; del(x) → get(x) ≡ ∅
+  ∀ k : put(k, v) ; del(k) ; put(k, v') → get(k) ≡ v'
+  resize-preserves-all-bindings
+
+§§ ANTI
+  N! linear-probe-without-tombstones ← breaks-delete-lookup-soundness
+  N! probe-step=cap ← degenerates-to-empty-table
+  N! hash-collision-handled-by-chaining ← this-impl is-open-addressed

@@ -49,6 +49,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EVAL_DIR = ROOT / "eval"
 PARAPHRASES = EVAL_DIR / "paraphrases"
+CORPUS_V2 = ROOT / "training_data" / "corpus_v2"   # Session-18 synthetic
 ARTIFACTS = ROOT / "artifacts" / "lora_weights"
 TRAINING_DIR = ROOT / "training_data"
 REPORT = ROOT / "diag" / "M2_FINETUNE_INTERPRETATION.md"
@@ -90,19 +91,33 @@ def build_training_corpus(mode: str = "joint",
     recommendation. Joint training confounds the two.
     """
     pairs: list[dict] = []
+    # Session-18 : pull from eval/ (original C1-C10) + training_data/corpus_v2
+    # (synthetic C11+). The paraphrase for eval fixtures lives in
+    # eval/paraphrases/<stem>.en ; for corpus_v2 it lives alongside.
     csl_files = sorted(EVAL_DIR.glob("C*_CSL.csl"))
+    if CORPUS_V2.exists():
+        csl_files += sorted(CORPUS_V2.glob("C*_CSL.csl"))
     # Session-17 : optional fixture-filter for generalization experiment.
-    # train_filter = "C1,C2,C3,C4,C5,C6,C7" restricts training to those.
+    # train_filter = "C1,C2,..." restricts training to those.
     if train_filter:
         wanted = set(s.strip().upper() for s in train_filter.split(",") if s.strip())
         csl_files = [p for p in csl_files
                      if any(p.stem.upper().startswith(w + "_") for w in wanted)]
     for csl in csl_files:
         stem = csl.stem.replace("_CSL", "")
-        en = PARAPHRASES / f"{stem}.en"
-        if not en.exists():
-            en = EVAL_DIR / f"{stem}_EN.md"
-        if not en.exists():
+        # Session-18 : paraphrase resolver walks candidate locations.
+        # Also accepts the "C<N>.en" short form used by corpus_v2.
+        short = stem.split("_", 1)[0]   # "C17_lru_cache" -> "C17"
+        cands = [
+            PARAPHRASES / f"{stem}.en",
+            EVAL_DIR / f"{stem}_EN.md",
+            csl.parent / f"{stem}.en",
+            csl.parent / f"{stem}_EN.md",
+            PARAPHRASES / f"{short}.en",
+            csl.parent / f"{short}.en",
+        ]
+        en = next((p for p in cands if p.exists()), None)
+        if en is None:
             print(f"[skip] no EN pair for {csl.name}", file=sys.stderr)
             continue
         m = discover_mode(csl)

@@ -1976,3 +1976,61 @@ matrix (ubuntu + windows + macos) produces native binaries on each
 runner, so the full 3-OS dist bundle is achievable there. On a bare
 dev host, the user gets their-platform bundle locally without
 extra infrastructure.
+
+---
+
+## 2026-04-18 — Synthetic corpus lives outside `eval/`
+
+**Decision:** Hand-written / synthesized training-only fixtures live
+in `training_data/corpus_v2/` rather than `eval/`. Each fixture
+carries a `# @prose-file` header so the parser treats it as a prose
+file and skips lex/parse strictness.
+
+**Why:** The 10-fixture reference corpus under `eval/` is gated by
+G3 (typecheck-must-pass). Opening the door to cheaply-synthesized
+fixtures would either require bringing each new fixture to full
+typecheck-compliance (expensive) or relaxing G3 (breaks the v1.0
+stability commitment on the curated corpus). The split solves both :
+`eval/` stays immutable and strict ; `training_data/corpus_v2/` is
+additive and only has to parse-through-as-prose.
+
+**Alternatives rejected:**
+- Relax G3 for specific files : ad-hoc , brittle , tempts further
+  opt-outs.
+- Keep all corpus in `eval/` and typecheck every addition : budget
+  doesn't fit (Session-18 added 8 fixtures in one sitting).
+- Single flat corpus dir : loses the "what's a stable claim vs what's
+  just training data" distinction we want downstream consumers to see.
+
+**Consequence:** Measurement scripts (`m2_finetune_measure.py` ,
+`m2_pretrain.py`) now walk both directories. Other pipelines (m₁
+stratified , m₂ targets , quality ladder) intentionally only walk
+`eval/` — the curated corpus is what defines those claims.
+
+---
+
+## 2026-04-18 — D-track pretrain scaffold uses byte-level tokenization
+
+**Decision:** `scripts/m2_pretrain.py` uses byte-level tokenization
+(vocab = 256 bytes + 3 specials) rather than a proper BPE.
+
+**Why:** Scaffold-phase priority is pipeline-plumbing correctness ,
+not modelling capacity. Byte-level has zero setup cost , handles
+UTF-8 glyphs perfectly (each byte is a valid token) , and makes the
+train+sample path trivially deterministic. For an ≈ 0.85 M-param
+model trained for 50 steps on ≈ 80 KB , the choice of tokenizer is
+below the noise floor of other limitations.
+
+**Alternatives rejected:**
+- HuggingFace tokenizer preset : adds a heavy dependency graph for
+  the scaffold and we explicitly want this track to be from-scratch
+  CSLv3-native , not HF-tokenizer-shaped.
+- Custom BPE training pass : right answer for Session-19+ at 10-100 M
+  params ; waste of time at scaffold scale.
+- Character-level (codepoint) : fine , but byte-level is simpler and
+  multi-byte UTF-8 cost is negligible at this scale.
+
+**Consequence:** When Session-19+ scales up , byte-level becomes the
+ceiling : at 10 M-100 M params the model wastes capacity on
+relearning ASCII letter distributions. That's the signal to swap in
+a proper BPE , not a reason to prematurely optimise now.
