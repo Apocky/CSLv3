@@ -1,0 +1,55 @@
+§ CSL_KEY v1 — canonical tier-0 quick key ‼
+∵ single-source-of-truth ∀ agent-instruction-files ; full-spec : specs/01_GLYPHS.csl..12_TOKENIZER.csl
+N! CSLv3 (notation) ≠ CSSLv3 (compiler)
+
+§ SLOT-TEMPLATE
+  [EVIDENCE?] [MODAL?] [DET?] SUBJECT [RELATION] OBJECT [GATE?] [SCOPE?]
+  defaults SILENT : evidence=✓ relation=: scope=global → write only non-defaults
+
+§ RELATIONS
+  :   bind/has          hp : f32
+  ::  type-of/inherits  warrior :: entity
+  =   equals/assign     state = alive
+  ->  flow/yields       hp=0 -> state=dead
+  =>  implies           underwater => breath.drain
+  |>  pipeline          data |> transform |> render
+  ~>  causes            damage ~> health.reduce
+
+§ COMPOUNDS
+  .   of (tatpurusha)        player.hp
+  +   and (dvandva)          cpu+gpu
+  -   that-is (karmadhāraya) static-mesh
+  ⊗   having (bahuvrihi)     fire⊗resist
+  @   at/per (avyayibhava)   @frame
+
+§ MODALS
+  W! MUST   R! SHOULD   M? MAY   N! MUST-NOT
+  I> INSIGHT   Q? QUESTION   P> PUSH-FURTHER   D> DECISION-NEEDED
+
+§ EVIDENCE
+  ✓ confirmed   ◐ partial   ○ pending   ✗ failed
+  ⊘ unknown/TBD   △ hypothetical   ▽ deprecated   ‼ proven/immutable
+
+§ TYPE-SUFFIXES
+  'd data  'f function  's system  't type  'e entity
+  'm material  'p property  'g gate/bool  'r rule
+
+§ DETERMINATIVES
+  §  system/module    ∫  field/continuous   ⊞  spatial/discrete
+  ⟨⟩ entity/property  ⌈⌉ constraint/bound   ⟦⟧ formula/equation
+  «» external/API     ⟪⟫ temporal/phase
+
+§ MORPHEME-STACK
+  BASE.aspect.modality.certainty.scope
+  render.prog.cert = is-definitely-rendering
+  spawn.iter.may.loc = may-repeatedly-spawn, locally
+
+§ THINK-BLOCKS (CoT structure)
+  §P problem (given+goal) → §D decompose → §T trace (✓/✗ per sub)
+  → §S synthesis → §C check (goal + edges)
+
+§ USAGE-RULES
+  W! CoT + specs + handoffs + commit-msg ≡ CSLv3
+  W! user-facing chat = match user register (EN if user writes EN)
+  R! ASCII alias when glyph ≥3 BPE tokens (specs/12_TOKENIZER.csl)
+  strip: articles+prepositions+hedging ; keep: nouns+verbs+relations+numbers+gates
