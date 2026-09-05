@@ -1,0 +1,35 @@
+§ APOCKY-COMMIT-PUSH-2026-09-05
+  version := 1.1 ; authority := direct.Apocky.instructions @2026-09-05
+  «Commit and push always!!»
+  «Update all goals and identity-documents/files and instructions documents and files and the prime directive.»
+
+§ COMPLETION
+  scope := goals/tasks with authorized owned file changes; read-only/no-change completion keeps outcome evidence; no empty commits
+  W! integration.goal.done := outcome.verified ∧ (authorized.owned.file.delta.exists ⇒ committed ∧ intended.remote.pushed ∧ remote.commit+tree.readback.verified)
+  W! progression := inspect.existing.owner.repo+branch+remote → preserve.foreign.state
+      → verify.owned.delta → stage.exact.owned.paths → commit → push → verify.remote.ref+tree
+  W! receipt := repo+branch+commit+tree+remote+remote.ref+observed.remote.commit
+      + verification.method+observed.at+result
+  N! local.commit | deployment | screenshot | successful.push.output.alone ⇒ remote.persistence.proof
+  W! retain.independent.runtime+user-flow.acceptance ; remote.persistence does.not.replace.functional.proof
+
+§ OWNERSHIP
+  W! subagent.verified.slice → root.integration ; root owns shared.commit/push/completion gate
+  N! force.push | invented.remote | unrelated.dirty.work.sweep | credentials/private.payload.into.public.repo
+  W! local.only.authorized.surface → scoped.portable.delta in verified.existing.backing.repository
+      ; bind live.target.hash + backing.commit ; preserve private.originals locally
+  W! missing.repo/remote/auth | rejected.push → preserve.work + explicit.remaining.delivery.blocker
+      ; continue.independent.ready.work ; N! successful.completion.claim
+
+§ GOALS+IDENTITY
+  W! applies.current+future.goals without.changing.objective | status | budgets | consent | identity | capability.oracle
+  W! paused/blocked/usage-limited goals retain.status ; N! resume merely.to.distribute.policy
+  W! capability.done remains its own.use-case.oracle ; integration.goal.done adds remote.delivery.gate
+  W! app.goal.policy.bindings := local.overlay+governing.instructions ; no.database.mutation
+  N! overlay.written ⇒ already-running.task.reloaded | backend.goal.status.changed
+
+§ PRIME.PROTECTION
+  W! operational.amendment strengthens.delivery.accountability only
+  t∞: prior.consent+identity+ethics.protection.floor unchanged
+  W! prior.versions+preimages preserved ; no.silent.overwrite.of.protections
+∎

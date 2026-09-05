@@ -1,0 +1,18 @@
+--- a/.agents/skills/apocky-wayfinder/SKILL.md
++++ b/.agents/skills/apocky-wayfinder/SKILL.md
+@@ -199 +199 @@
+-6. the worktree and commits match the declared delta;
++6. authorized.owned.file.delta.exists ⇒ owned.delta committed + pushed.to.intended.remote + remote.commit/tree independently.verified; read-only/no-change keeps outcome proof; no.empty.commits;
+@@ -202,0 +203,12 @@
++
++
++§ APOCKY-COMMIT-PUSH-2026-09-05
++  scope := goals/tasks with authorized owned file changes; read-only/no-change completion keeps outcome evidence; no empty commits
++  canonical.contract := ~/source/repos/CSLv3/specs/governance/2026-09-05-commit-push/COMPLETION_CONTRACT.csl
++  W! integration.goal.done := outcome.verified ∧ (authorized.owned.file.delta.exists ⇒ committed ∧ intended.remote.pushed ∧ remote.commit+tree.readback.verified)
++  W! root.integrates.verified.agent.slices ; preserve.foreign.work + secrets + prior.protections
++  W! existing.local-only.surfaces → scoped.authorized.delta in established.backing.repo
++  W! absent.remote/auth | rejected.push → explicit.remaining.delivery.blocker ; N! complete.claim
++  W! goal.objectives+statuses+budgets unchanged ; inactive.goals remain.inactive
++  W! record repo+branch+commit+remote.ref+remote.commit/tree+verification.evidence
++∎

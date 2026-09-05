@@ -1,0 +1,52 @@
+{
+  "format": "JSON merge patch",
+  "target": "source/repos/Apocv4/specs/wayfinder/APOCV4_GOAL_INDEX_2026-07-31.json",
+  "patch": {
+    "version_control": {
+      "policy_id": "APOCKY-COMMIT-PUSH-2026-09-05",
+      "canonical_contract": "~/source/repos/CSLv3/specs/governance/2026-09-05-commit-push/COMPLETION_CONTRACT.csl",
+      "required": [
+        "verify_owned_change",
+        "commit_owned_change",
+        "push_to_verified_existing_remote",
+        "verify_remote_commit_and_tree"
+      ],
+      "integration_owner": "root",
+      "completion_gate": "outcome.verified ∧ (authorized.owned.file.delta.exists ⇒ committed ∧ intended.remote.pushed ∧ remote.commit+tree.readback.verified)",
+      "local_only_rule": "Preserve live original; publish only authorized scoped delta to established backing repository and bind target hash to backing commit",
+      "missing_remote_or_rejected_push": "Explicit remaining delivery blocker; preserve work; continue independent ready work; do not declare complete",
+      "preserve": [
+        "objectives",
+        "goal_statuses",
+        "budgets",
+        "consent",
+        "identity",
+        "capability_acceptance_oracles",
+        "foreign_work"
+      ],
+      "forbidden": [
+        "force_push",
+        "invented_remote",
+        "private_payload_in_public_repo",
+        "app_database_mutation",
+        "resume_inactive_goal_for_policy_distribution"
+      ],
+      "remote_evidence_fields": [
+        "repo",
+        "branch",
+        "commit",
+        "tree",
+        "remote",
+        "remote_ref",
+        "observed_remote_commit",
+        "observed_remote_tree",
+        "verified_at",
+        "method",
+        "result"
+      ],
+      "scope": "goals/tasks with authorized owned file changes; read-only/no-change completion keeps outcome evidence; no empty commits",
+      "read_only_or_no_change": "Requested outcome evidence remains required; no empty commits and no remote gate without authorized owned file changes"
+    }
+  },
+  "preservation": "Every existing key/value, including objective/status/budgets/phase counts, remains equal"
+}

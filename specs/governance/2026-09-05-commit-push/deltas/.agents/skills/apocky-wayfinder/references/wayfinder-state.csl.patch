@@ -1,0 +1,16 @@
+--- a/.agents/skills/apocky-wayfinder/references/wayfinder-state.csl
++++ b/.agents/skills/apocky-wayfinder/references/wayfinder-state.csl
+@@ -60,0 +61,13 @@
++
++
++§ APOCKY-COMMIT-PUSH-2026-09-05
++  completion.version_control := outcome.verified ∧ (authorized.owned.file.delta.exists ⇒ committed ∧ intended.remote.pushed ∧ remote.commit+tree.readback.verified)
++  phase += { push_refs[], remote_verification_refs[] }
++  slice += { push_ref, remote_verification_ref, integration_owner }
++  handoff += { intended_remote_refs{}, observed_remote_refs{}, remote_verification_refs[] }
++  remote_verification := { repo, branch, commit, tree, remote, remote_ref,
++      observed_remote_commit, observed_remote_tree, verified_at, method, result }
++  W! preserve.existing.objective+status+budget ; authorized.owned.file.delta.exists ⇒ missing.remote.evidence cannot.satisfy.completion
++  scope := goals/tasks with authorized owned file changes; read-only/no-change completion keeps outcome evidence; no empty commits
++  canonical.contract := ~/source/repos/CSLv3/specs/governance/2026-09-05-commit-push/COMPLETION_CONTRACT.csl
++∎

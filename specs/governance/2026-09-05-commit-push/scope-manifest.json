@@ -1,0 +1,362 @@
+{
+  "policy_id": "APOCKY-COMMIT-PUSH-2026-09-05",
+  "authority": [
+    "Commit and push always!!",
+    "Update all goals and identity-documents/files and instructions documents and files and the prime directive."
+  ],
+  "records": [
+    {
+      "target_relative_to_user_home": "AGENTS.md",
+      "role": "instruction",
+      "delta": "deltas/AGENTS.md.patch",
+      "before_sha256": "d9fb50a57222d30b5764520cf47b571ebb3386897546947c119c4fee69f1f3ae",
+      "after_sha256": "2a12126ff238f901fdce20afd01576892c962b129598b78fc3437655b207a00f",
+      "preserved_original_bytes": 2529,
+      "new_bytes": 3429,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": ".codex/AGENTS.md",
+      "role": "instruction",
+      "delta": "deltas/.codex/AGENTS.md.patch",
+      "before_sha256": "fe391ecd2f949afb66fbd3cfd6070927ba56334beb5a37bd5fb09fb1517d4eef",
+      "after_sha256": "ae590fee4554e825b4718a8d226e00cea8de083fca62136c87db08295db84d36",
+      "preserved_original_bytes": 5200,
+      "new_bytes": 6100,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": ".claude/CLAUDE.md",
+      "role": "instruction",
+      "delta": "deltas/.claude/CLAUDE.md.patch",
+      "before_sha256": "bf24bdd29b5679a79b5a773d8fc141d5437f7b872005e7f8a58b074933fe712e",
+      "after_sha256": "5ffd2ded4ad2cf37cfb1677fe2e04c51c6a31c554e2bc16e63538f1fab0ac102",
+      "preserved_original_bytes": 4186,
+      "new_bytes": 5086,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": ".claude/PERSONA.csl",
+      "role": "persona",
+      "delta": "deltas/.claude/PERSONA.csl.patch",
+      "before_sha256": "d2004926b31d73ab812f6b475fe6299e5b71eae4826f495bbf6ad8695f2c8afa",
+      "after_sha256": "d0b532cd881727dfffe7c733de081e69bd8e15bf1e8736c6b1444974e62da063",
+      "preserved_original_bytes": 8520,
+      "new_bytes": 9551,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/AGENTS.md",
+      "role": "instruction",
+      "delta": "deltas/source/repos/AGENTS.md.patch",
+      "before_sha256": "0fafdd8ff5d537b354962fa23bc8a6bd3b2b9bcd8b67bafe91494fd28de85fef",
+      "after_sha256": "831ab61c695e2f10cb65c1a091b69950c5168b29f204edc5cc41c391de5e1ec2",
+      "preserved_original_bytes": 4130,
+      "new_bytes": 5030,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/CLAUDE.md",
+      "role": "instruction",
+      "delta": "deltas/source/repos/CLAUDE.md.patch",
+      "before_sha256": "304ceda39855ad1b5508c3780596e9a8ffd415aca8e8977d3f859fa8abc3afea",
+      "after_sha256": "fd3913f10c7c25902f303e6ce3c9257b8c4489e230a4d7b908d141cb041c2553",
+      "preserved_original_bytes": 3658,
+      "new_bytes": 4558,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/PRIME_DIRECTIVE.md",
+      "role": "prime",
+      "delta": "deltas/source/repos/PRIME_DIRECTIVE.md.patch",
+      "before_sha256": "624f70948ae52de17d5ac2a5848cda6a4cbbc66009c25169063907db855da029",
+      "after_sha256": "e6fcbb7600913f790f32a175765c76da48b893fdc13ceaffd204064a6875484a",
+      "preserved_original_bytes": 40920,
+      "new_bytes": 42356,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/CSLv3/AGENTS.md",
+      "role": "tracked_instruction",
+      "delta": "deltas/source/repos/CSLv3/AGENTS.md.patch",
+      "before_sha256": "09bb385dc0a36227df4a3b873d7a68a69de9a745875db498ecb5ae2bdc6fcd83",
+      "after_sha256": "3dd2bf515375518befcbb3ca7c8d50895b7f1fdc99794caae87f13c10f1f6736",
+      "preserved_original_bytes": 1649,
+      "new_bytes": 2549,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/CSLv3/CLAUDE.md",
+      "role": "tracked_instruction",
+      "delta": "deltas/source/repos/CSLv3/CLAUDE.md.patch",
+      "before_sha256": "cd01b08f235aee5227be33006ead2a60944c92355ae72e73d6b00d9e89c40a3e",
+      "after_sha256": "74bf0d0c3acc5883e954a3498024bc3cb4c1c8f8f1b9c14de3c89bdd9036ae0b",
+      "preserved_original_bytes": 8825,
+      "new_bytes": 9725,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/CSLv3/PRIME_DIRECTIVE.md",
+      "role": "tracked_prime",
+      "delta": "deltas/source/repos/CSLv3/PRIME_DIRECTIVE.md.patch",
+      "before_sha256": "01724fe43007ccef0c5ec0a458057dbd7efa854868131bbe1d5ea3a13bcd7b04",
+      "after_sha256": "360c984f56545ab8ee02cfe626e5cb616852089d2adb2694e390a3af4e7f15b8",
+      "preserved_original_bytes": 40920,
+      "new_bytes": 42356,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocrypha/AGENTS.md",
+      "role": "project_instruction",
+      "delta": "deltas/source/repos/Apocrypha/AGENTS.md.patch",
+      "before_sha256": "99ee213292663978adc043ecdf1665150cd7c1eb8c4c31050e3b28c0d85e2c35",
+      "after_sha256": "74c67378abd928f0af57e72d899974c18e2e384dc7ea00d7809307272de0ceba",
+      "preserved_original_bytes": 6774,
+      "new_bytes": 7674,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocrypha/CLAUDE.md",
+      "role": "dirty_project_instruction",
+      "delta": "deltas/source/repos/Apocrypha/CLAUDE.md.patch",
+      "before_sha256": "af329b7031ddefc872b759ee46bdc47ab19f85103d39c33e94478593a264597f",
+      "after_sha256": "4e63e2807e7683bc5358919c05e0db55af7c0a2e99dc16dffcd6e7135f40f044",
+      "preserved_original_bytes": 10835,
+      "new_bytes": 11735,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocrypha/PRIME_DIRECTIVE.md",
+      "role": "prime_pointer",
+      "delta": "deltas/source/repos/Apocrypha/PRIME_DIRECTIVE.md.patch",
+      "before_sha256": "2463c22e1e4e4c5d8191f3aacae7b3c224c2d14b3c8c2d2ff0354cb9ea6ac827",
+      "after_sha256": "d0daa11e11a8bb56823e7b304e1159ddbdf2420663c76b2689daf9fe0bff840c",
+      "preserved_original_bytes": 2546,
+      "new_bytes": 3446,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocrypha/WorkEthic.md",
+      "role": "ethic",
+      "delta": "deltas/source/repos/Apocrypha/WorkEthic.md.patch",
+      "before_sha256": "2de0d9eed2850f978e46ac5b7c907d62adc4a67cf0037e9ee64aaf2b5a9bc284",
+      "after_sha256": "568333371919609172e5cc9f45b54cfd619575cf05f6a40c55bd50a83a096684",
+      "preserved_original_bytes": 32261,
+      "new_bytes": 33161,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": ".agents/skills/apocky-loop/SKILL.md",
+      "role": "loop",
+      "delta": "deltas/.agents/skills/apocky-loop/SKILL.md.patch",
+      "before_sha256": "9043a875cbf5df696cae3ad4c01437670eaaefa80c4d29ae2738c5ce496ed8a7",
+      "after_sha256": "467a670d23e2ec26fcc92d77a69f450d6ddd13b29fe9f6f70a1aebaeaad4f0de",
+      "preserved_original_bytes": 6385,
+      "new_bytes": 7439,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": ".claude/skills/apocky-loop/SKILL.md",
+      "role": "loop",
+      "delta": "deltas/.claude/skills/apocky-loop/SKILL.md.patch",
+      "before_sha256": "e3dfc12df4bb4ce49de9a106a093e85c9f6bb9838866311221015318f4c20e42",
+      "after_sha256": "4b85024d8952eddca2b1f48f9fb7d326501481f3fe171297663121f96c1ed2ad",
+      "preserved_original_bytes": 5395,
+      "new_bytes": 6449,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": ".agents/skills/apocky-wayfinder/SKILL.md",
+      "role": "wayfinder",
+      "delta": "deltas/.agents/skills/apocky-wayfinder/SKILL.md.patch",
+      "before_sha256": "1db5a7fb177eecf2053a3d8e423aa5fe79c0d6a7749fe4f06ac49f1f5732c366",
+      "after_sha256": "717ab0ab883c977dad9f64c7b89832c00f1a479e473f84fa1ff506f69043fec2",
+      "preserved_original_bytes": 9248,
+      "new_bytes": 10290,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": ".agents/skills/apocky-wayfinder/references/wayfinder-state.csl",
+      "role": "schema",
+      "delta": "deltas/.agents/skills/apocky-wayfinder/references/wayfinder-state.csl.patch",
+      "before_sha256": "32a51ecb3aaa8f2428457f089b584b986ac00cf783d2438026e7ed1ea7862f06",
+      "after_sha256": "20cfa7a07cc617fe5d4454f41befb1350f89a04fd0e64100b89c2ad3287482fd",
+      "preserved_original_bytes": 1718,
+      "new_bytes": 2679,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "Documents/Novel/The_Good_Book/specs/state.json",
+      "role": "goal_json",
+      "delta": "deltas/Documents/Novel/The_Good_Book/specs/state.json.merge-patch.json",
+      "before_sha256": "cb2c0540e7ef68332ed5e93fca130d66a216fa9ad0cae4ab5c29a4fb4ba5ed5a",
+      "after_sha256": "d0c441ed29c7ba299f9aff8c12ab0eb2ac6c6cb8517bc678fc17203a7c9d8a33",
+      "preserved_original_bytes": 29857,
+      "new_bytes": 32339,
+      "verification": "JSON prior-value equality"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocrypha/specs/51_APOCRYPHA_V1_0_MASTER_WAYFINDER.csl",
+      "role": "goal_csl",
+      "delta": "deltas/source/repos/Apocrypha/specs/51_APOCRYPHA_V1_0_MASTER_WAYFINDER.csl.patch",
+      "before_sha256": "22875467f852fd71392fa4a5e19b2c38e96e547ebf06e6264ac0d2543bae1696",
+      "after_sha256": "ef4efd1a228521e304513a5a8927da2c34735e26369455432d151a444925e3e0",
+      "preserved_original_bytes": 161987,
+      "new_bytes": 162887,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocrypha/specs/75_APOCRYPHA_V2_100_PERCENT_COMPLETION_AND_POLISH_GOAL.csl",
+      "role": "goal_csl",
+      "delta": "deltas/source/repos/Apocrypha/specs/75_APOCRYPHA_V2_100_PERCENT_COMPLETION_AND_POLISH_GOAL.csl.patch",
+      "before_sha256": "f2a63eef202072093265684ac02a6fc2eb4e69c1a7a6a9dcfa45bfc8c091f8f3",
+      "after_sha256": "63fa825fd97534082fecd02f741cbeaf74023ed70f2dede4f8ca1b3288c293da",
+      "preserved_original_bytes": 10468,
+      "new_bytes": 11368,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocrypha/specs/wayfinder/APOCRYPHA_V1_PHASE_GRAPH.json",
+      "role": "goal_json",
+      "delta": "deltas/source/repos/Apocrypha/specs/wayfinder/APOCRYPHA_V1_PHASE_GRAPH.json.merge-patch.json",
+      "before_sha256": "aae0b62f4fa03ff3a1ff1f24a59af1a219d9f5640080326290185d7c04701a0e",
+      "after_sha256": "3d4bd892b8a714850b2e2af9c46c61cf8a338580271a2946b8f18ecb4e6757e4",
+      "preserved_original_bytes": 137791,
+      "new_bytes": 139567,
+      "verification": "JSON prior-value equality"
+    },
+    {
+      "target_relative_to_user_home": "source/worktrees/codex-apockalypsis-20260905/PRIME_DIRECTIVE.md",
+      "role": "website_prime",
+      "delta": "deltas/source/worktrees/codex-apockalypsis-20260905/PRIME_DIRECTIVE.md.patch",
+      "before_sha256": "1f23bbfcb09ffed665d2203a217f6c529a04779049e9a31e4654fe9d95cf68d1",
+      "after_sha256": "67d48f977710de0a8dfb09a79af3014576b86e742834b2e809aec620975e78fb",
+      "preserved_original_bytes": 32950,
+      "new_bytes": 34390,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/worktrees/codex-apockalypsis-20260905/WorkEthic.md",
+      "role": "website_ethic",
+      "delta": "deltas/source/worktrees/codex-apockalypsis-20260905/WorkEthic.md.patch",
+      "before_sha256": "2de0d9eed2850f978e46ac5b7c907d62adc4a67cf0037e9ee64aaf2b5a9bc284",
+      "after_sha256": "568333371919609172e5cc9f45b54cfd619575cf05f6a40c55bd50a83a096684",
+      "preserved_original_bytes": 32261,
+      "new_bytes": 33161,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocv4/AGENTS.md",
+      "role": "project_instruction",
+      "delta": "deltas/source/repos/Apocv4/AGENTS.md.patch",
+      "before_sha256": "6c3728981e4aa22ade076cdac45fa903e2ca22386c881355ccc397d104668cd9",
+      "after_sha256": "f6fe3386a5759dd88993562ed63529d473556a0591bca92e8cca5dece2151dd1",
+      "preserved_original_bytes": 16254,
+      "new_bytes": 17154,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocv4/specs/wayfinder/APOCV4_GOAL_OBJECTIVE_2026-07-31.csl",
+      "role": "goal_csl",
+      "delta": "deltas/source/repos/Apocv4/specs/wayfinder/APOCV4_GOAL_OBJECTIVE_2026-07-31.csl.patch",
+      "before_sha256": "082386c8a2c4c4d7110f22fba8569b2c1b5bedbbb3ecd1c459b0353dc767ccd7",
+      "after_sha256": "1f7bb171a77403366d790cbcb8d9373967dfce8025d38b6cc0b81ead4247ef38",
+      "preserved_original_bytes": 58203,
+      "new_bytes": 59103,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocv4/specs/wayfinder/APOCV4_GOAL_OBJECTIVE_2026-07-31.md",
+      "role": "goal_csl",
+      "delta": "deltas/source/repos/Apocv4/specs/wayfinder/APOCV4_GOAL_OBJECTIVE_2026-07-31.md.patch",
+      "before_sha256": "b65f7cbc8db60302d95891d1f85565b9f7d478fc019aab7f55dffbbbe308756f",
+      "after_sha256": "a808a4e29386d8e7ec5e60e7c45abdf45feef3318bf6da8c5e9dd2004eac0867",
+      "preserved_original_bytes": 79971,
+      "new_bytes": 80871,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocv4/specs/wayfinder/APOCV4_GOAL_INDEX_2026-07-31.json",
+      "role": "goal_json",
+      "delta": "deltas/source/repos/Apocv4/specs/wayfinder/APOCV4_GOAL_INDEX_2026-07-31.json.merge-patch.json",
+      "before_sha256": "08dee380d8da2fa5beccc7df8e299ec229fb3d7182cd8879a1a622813961bdfc",
+      "after_sha256": "4767e23afb595263794b3e0f1ec6ea92d85dab09556d63930b4cf4a4744caa30",
+      "preserved_original_bytes": 69456,
+      "new_bytes": 71232,
+      "verification": "JSON prior-value equality"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocv4/specs/wayfinder/APOCV4_LIVE_PLAN.md",
+      "role": "goal_csl",
+      "delta": "deltas/source/repos/Apocv4/specs/wayfinder/APOCV4_LIVE_PLAN.md.patch",
+      "before_sha256": "5ea96a92e4e0befb493508893ad13b2f32f59af170cd916ebed0569986b75540",
+      "after_sha256": "3ebdba8dfb0ee78b3181dc563ed4ba5c78e83747dcd635d4ab6132758dcd6db7",
+      "preserved_original_bytes": 148622,
+      "new_bytes": 149522,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/Apocv4/specs/wayfinder/APOCV4_PHASE_GRAPH.json",
+      "role": "goal_json",
+      "delta": "deltas/source/repos/Apocv4/specs/wayfinder/APOCV4_PHASE_GRAPH.json.merge-patch.json",
+      "before_sha256": "25e5d9de2de44db602d017009d705bcca285d92b5a5113a72e894a6404d5716c",
+      "after_sha256": "b371edc7f48a0a5b50451f6605b8a581cb006ca42761bf5e2802549a2f211588",
+      "preserved_original_bytes": 148308,
+      "new_bytes": 150129,
+      "verification": "JSON prior-value equality"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/CSSLv3/AGENTS.md",
+      "role": "project_instruction",
+      "delta": "deltas/source/repos/CSSLv3/AGENTS.md.patch",
+      "before_sha256": "4b9346ec24bdc3c774738e038f5e51c34dce922bfe9a1ad9715a3a110f8c2383",
+      "after_sha256": "e80d0d499509990f054b212f3a76dacf3d39414b4edef1fd65bf961d53b14d5d",
+      "preserved_original_bytes": 781,
+      "new_bytes": 1693,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/CSSLv3/CLAUDE.md",
+      "role": "project_instruction",
+      "delta": "deltas/source/repos/CSSLv3/CLAUDE.md.patch",
+      "before_sha256": "4b9346ec24bdc3c774738e038f5e51c34dce922bfe9a1ad9715a3a110f8c2383",
+      "after_sha256": "e80d0d499509990f054b212f3a76dacf3d39414b4edef1fd65bf961d53b14d5d",
+      "preserved_original_bytes": 781,
+      "new_bytes": 1693,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/CSSLv3/PRIME_DIRECTIVE.md",
+      "role": "website_prime",
+      "delta": "deltas/source/repos/CSSLv3/PRIME_DIRECTIVE.md.patch",
+      "before_sha256": "1f23bbfcb09ffed665d2203a217f6c529a04779049e9a31e4654fe9d95cf68d1",
+      "after_sha256": "67d48f977710de0a8dfb09a79af3014576b86e742834b2e809aec620975e78fb",
+      "preserved_original_bytes": 32950,
+      "new_bytes": 34390,
+      "verification": "Exact inverse transform restores preimage"
+    },
+    {
+      "target_relative_to_user_home": "source/repos/CSSLv3/WorkEthic.md",
+      "role": "website_ethic",
+      "delta": "deltas/source/repos/CSSLv3/WorkEthic.md.patch",
+      "before_sha256": "2de0d9eed2850f978e46ac5b7c907d62adc4a67cf0037e9ee64aaf2b5a9bc284",
+      "after_sha256": "568333371919609172e5cc9f45b54cfd619575cf05f6a40c55bd50a83a096684",
+      "preserved_original_bytes": 32261,
+      "new_bytes": 33161,
+      "verification": "Exact inverse transform restores preimage"
+    }
+  ],
+  "scope": "Only this approved policy delta; original private files and goal objectives are not included",
+  "goal_binding_summary": {
+    "count": 24,
+    "status_counts": {
+      "active": 2,
+      "blocked": 2,
+      "paused": 17,
+      "usage_limited": 3
+    },
+    "goal_database_mutated": false,
+    "goal_identifiers_published": false
+  },
+  "completion_scope": "goals/tasks with authorized owned file changes; read-only/no-change completion keeps outcome evidence; no empty commits"
+}

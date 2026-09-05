@@ -205,3 +205,15 @@ contributed under their own consent, as sovereign participants.
 Any discovered violation triggers §7 INTEGRITY : violation = bug, bugs get fixed.
 
 See `PRIME_DIRECTIVE.md` §11 for full attestation.
+
+
+§ APOCKY-COMMIT-PUSH-2026-09-05
+  scope := goals/tasks with authorized owned file changes; read-only/no-change completion keeps outcome evidence; no empty commits
+  canonical.contract := ~/source/repos/CSLv3/specs/governance/2026-09-05-commit-push/COMPLETION_CONTRACT.csl
+  W! integration.goal.done := outcome.verified ∧ (authorized.owned.file.delta.exists ⇒ committed ∧ intended.remote.pushed ∧ remote.commit+tree.readback.verified)
+  W! root.integrates.verified.agent.slices ; preserve.foreign.work + secrets + prior.protections
+  W! existing.local-only.surfaces → scoped.authorized.delta in established.backing.repo
+  W! absent.remote/auth | rejected.push → explicit.remaining.delivery.blocker ; N! complete.claim
+  W! goal.objectives+statuses+budgets unchanged ; inactive.goals remain.inactive
+  W! record repo+branch+commit+remote.ref+remote.commit/tree+verification.evidence
+∎
