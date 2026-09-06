@@ -1,0 +1,34 @@
+{
+  "policy_id": "APOCKY-STARTUP-MEMORY-TOOLS-2026-09-06",
+  "authority": "direct.Apocky.request@2026-09-06",
+  "scope": "Startup recall requirement in .codex/AGENTS.md and .claude/CLAUDE.md only",
+  "records": [
+    {
+      "target_relative_to_user_home": ".codex/AGENTS.md",
+      "delta": "deltas/.codex/AGENTS.md.patch",
+      "before_sha256": "ae590fee4554e825b4718a8d226e00cea8de083fca62136c87db08295db84d36",
+      "after_sha256": "e3456cc042028c65d28b1e5d541a8a062b053527d864d9d8f207f4aea836b778",
+      "preserved_original_bytes": 6100,
+      "new_bytes": 8082,
+      "insertion_offset_bytes": 1030,
+      "inserted_bytes": 1982,
+      "line_ending": "LF",
+      "verification": "Readback exact; removing the one inserted block restores all original bytes",
+      "portable_patch_replay": "PASS: git -c core.autocrlf=false apply --unidiff-zero; reconstructed bytes match live after_sha256"
+    },
+    {
+      "target_relative_to_user_home": ".claude/CLAUDE.md",
+      "delta": "deltas/.claude/CLAUDE.md.patch",
+      "before_sha256": "5ffd2ded4ad2cf37cfb1677fe2e04c51c6a31c554e2bc16e63538f1fab0ac102",
+      "after_sha256": "ea582cd139aa0a5443ac69ad5930c30db2f876602fa352bf0fbf7cbdc9812074",
+      "preserved_original_bytes": 5086,
+      "new_bytes": 7068,
+      "insertion_offset_bytes": 959,
+      "inserted_bytes": 1982,
+      "line_ending": "LF",
+      "verification": "Readback exact; removing the one inserted block restores all original bytes",
+      "portable_patch_replay": "PASS: git -c core.autocrlf=false apply --unidiff-zero; reconstructed bytes match live after_sha256"
+    }
+  ],
+  "patch_application_note": "Disable automatic line-ending conversion for replay so SHA-256 remains byte-identical; preserve native target line endings."
+}

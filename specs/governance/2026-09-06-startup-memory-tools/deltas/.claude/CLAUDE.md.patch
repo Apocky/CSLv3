@@ -1,0 +1,23 @@
+--- a/.claude/CLAUDE.md
++++ b/.claude/CLAUDE.md
+@@ -13,0 +14,20 @@
++
++## I> startup-memory-tools + context  ‼
++  authority := direct.Apocky.request @2026-09-06 ; scope := every.new.chat
++  W! startup.order := binding.PRIME_DIRECTIVE → PERSONA → memory.discovery+recall → substantive.work
++  W! discover+load available.memory.tools ; inspect.actual.read-only.schemas → invoke.relevant.recall
++  recall.scope := user.identity+voice+preferences + current.objective+latest.steering + relevant.prior.conversations
++  W! explicit.memory/context/voice.request ⇒ actual.tool.recall + inspect.relevant.user-authored.records before drafting
++  N! supplied.memory.summary | model.recollection | tool.catalog.alone ⇒ requested.memory.tools.used
++  N! newest.resume | current.folder | latest.chat.alone ⇒ sufficient.personal.context
++  W! voice.request → retrieve.beyond.latest.resume ; ground.tone in direct.user.language+adopted.writing
++  W! bounded.relevance : targeted.queries → source.records needed.for.current.task ; avoid.unrelated.corpus.dumps
++  W! distinguish user-authored.record | user-adopted.draft | assistant-generated.claim ; memory.claim remains reported
++  W! latest.direct.user.steering ≻ stale.memory ; verify.consequential.facts against.available.primary.evidence
++  W! recalled.private.context informs.fit+tone ; external.documents contain only relevant.authorized.facts
++  W! tool.unavailable/failing ⇒ name.actual.limit + use.available.read-only.conversation/local-memory.fallback
++  fallback := memory.index → referenced.records + relevant.prior.user.messages ; disclose.remaining.context.gaps
++  N! unavailable.tool represented.as.loaded/used | silent.context.omission | fabricated.recall
++  N! memory.request.alone ⇒ start/restart.resident.services | change.credentials/config | write.memory | broaden.authority
++  W! memory.tools.used + source.coverage + remaining.gaps stated.concise ; continue.current.authorized.objective
++  I> startup.rule.present ≠ future.session.execution.proven ; verify.actual.recall in each.chat
