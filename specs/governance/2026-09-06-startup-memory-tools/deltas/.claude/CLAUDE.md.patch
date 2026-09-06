@@ -1,7 +1,6 @@
 --- a/.claude/CLAUDE.md
 +++ b/.claude/CLAUDE.md
-@@ -13,0 +14,20 @@
-+
+@@ -14,0 +15,24 @@
 +## I> startup-memory-tools + context  ‼
 +  authority := direct.Apocky.request @2026-09-06 ; scope := every.new.chat
 +  W! startup.order := binding.PRIME_DIRECTIVE → PERSONA → memory.discovery+recall → substantive.work
@@ -20,4 +19,9 @@
 +  N! unavailable.tool represented.as.loaded/used | silent.context.omission | fabricated.recall
 +  N! memory.request.alone ⇒ start/restart.resident.services | change.credentials/config | write.memory | broaden.authority
 +  W! memory.tools.used + source.coverage + remaining.gaps stated.concise ; continue.current.authorized.objective
++  R! 3MNEME.context → pinned.adapter.brokerCall('search',{project_id:'apocv4-owner',query,k}) ; adapter := C:/Users/Apocky/.codex/staging/conversation-direct-release-2026-09-05T06-23-28-895Z/inprocess-windows-adapter/authority-auto-freshness-20260905.cjs ; required.SHA256 := 8077ec6f6593997061aa5e5eec702336bfa4e7485fb534e5f43419abdca2b049
++  W! existing.authorized.same-scope.delegated.lease.refresh ⊆ recall.workflow ; exception(change.credentials) := this.refresh.only ; owner.credentials.rotation + scope.expansion W! separate.authorization
++  W! source_file.filter := exact.returned.full.source_path ; inspect.primary.user-authored.records before voice/fact.attribution
++  W! native.admission.failure → explicit.code + available.read-only.fallback ; N! manual.credential-payload.access | direct.mint | disabled.shell.task.enable
 +  I> startup.rule.present ≠ future.session.execution.proven ; verify.actual.recall in each.chat
++
